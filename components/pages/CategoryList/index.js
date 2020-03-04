@@ -6,6 +6,7 @@ import CategoryItem from "./CategoryItem";
 import styles from "./styles";
 import Header from "../../Header/index";
 import config from "../../../config";
+import OurText from "../../OurText";
 
 const address = config.getCell("StoreAddress");
 
@@ -81,14 +82,18 @@ const CategoryList = (props) =>
                 style={styles.background}
                 locations={[0, 1.0]} 
                 colors={['#078998', '#65B7B9']}>
+					{state?.categories?.length ?
 					<Header {...props} showTitle = {true} showCart={true}/>
+                    : error ? <Header {...props} showTitle = {true} showCart={false}/>
+                    : <></>
+                    }
                     <View style={styles.categorylist}>
 						{ state?.categories?.length ?
 							state.categories.map( (v, k) =>
 							{
 								return <CategoryItem navigation={navigation} name={v.name} id={v.productCategoryId} imageUrl={v?.image?.mediaDetails?.file} key={k}/>
 							})
-						: error ? <Text style={styles.error}>Произошла ошибка при подключении. Проверьте интернет соединение и повторите попытку.</Text>
+						: error ? <OurText style={styles.error}>Произошла ошибка при подключении. Проверьте интернет соединение и повторите попытку.</OurText>
 							: <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
 						}
 					</View>

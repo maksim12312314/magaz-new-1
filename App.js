@@ -4,10 +4,13 @@ import CategoryList from "./components/pages/CategoryList/index";
 import Cart from "./components/pages/Cart/index";
 import Header from "./components/Header/index";
 import ProductList from "./components/pages/ProductsList/index";
-import { AppRegistry, ToastAndroid, Alert, AsyncStorage } from 'react-native';
+import { AppRegistry, ToastAndroid, Alert, AsyncStorage, Easing, Anumated } from 'react-native';
 import { name as appName } from "./app.json";
+
 import { createAppContainer,} from "react-navigation";
 import {createBottomTabNavigator} from "react-navigation-tabs";
+import { createStackNavigator } from 'react-navigation-stack';
+
 import DeliveryDetails from './components/Delivery/index';
 import * as hehe from './utils';
 import Orders from "./components/Orders/index";
@@ -203,31 +206,33 @@ const reducer = (state, action) =>
 		 */
 		case "minus":
 		{
+			const newState = {...state};
 			const elem = state.cartItems.filter( (v, i) =>
 			{
 				if ( v.id == action.payload )
 					return true;
 			});
-			const newState = {...state};
-			elem[0].count = Math.clamp(--elem[0].count, 0, elem[0].stockQuantity || 99);
 
-			if ( !elem[0].count )
+			if ( elem[0].count == 1 )
 			{
 				Alert.alert("УдОлить элементы", "Хотите удОлитЪ?", [
 					{
 						text: "Отмена",
-						onPress: () => {action.dispatch({type: "plus", payload: action.payload})},
+						onPress: () => {/*action.dispatch({type: "plus", payload: action.payload})*/},
 						style: "cancel"
 					},
 					{
 						text: "OK",
-						onPress: () => action.dispatch({type: "DeleteFromCart", payload: action.payload})
-					},
-					{cancelable: false},
-				]);
+						onPress: () => {
+							action.dispatch({type: "DeleteFromCart", payload: action.payload})
+						}
+					}
+				],
+				{cancelable: false});
 			}
 			else
 			{
+				elem[0].count = Math.clamp(--elem[0].count, 0, elem[0].stockQuantity || 99);
 				newState.cartItems[newState.cartItems.indexOf(elem[0])] = elem[0];
 			}
 
@@ -267,10 +272,13 @@ const initialState = {
 	deliveryDetails: {},
 };
 
+
+
+
 /**
- * Это очень красивая (net) навигация
+ * Стэк навигация
  */
-const NotYoursNavigator = createBottomTabNavigator( {
+const NotYoursNavigator = createStackNavigator({
 	CategoryList: { 
 		screen: CategoryList,
 		title: 'Category',
@@ -294,15 +302,24 @@ const NotYoursNavigator = createBottomTabNavigator( {
 	Orders: {
 		screen: Orders,
 		title: 'Orders',
-	}
+	},
+	
 },
 {
-	initialRouteName : "CategoryList",
-	backBehavior: "history",
+  initialRouteName : "CategoryList",
+  
+  backBehavior: "history",
+  mode: 'modal',
+    headerMode: 'none',
 	defaultNavigationOptions: {
-		tabBarVisible: true,
+		tabBarVisible:true,
+		
 	  },
-	  
+    
+   
+    
+
+
   } );
 
 /**Контейнер приложения */

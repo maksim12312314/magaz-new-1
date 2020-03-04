@@ -4,6 +4,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import { stateContext, dispatchContext } from "../../contexts";
 import { NavigationActions } from "react-navigation";
 import Header from "./../Header/index";
+import OurText from "../OurText";
 
 if (
     Platform.OS === 'android' &&
@@ -112,7 +113,7 @@ const TextField = (props)=>{
 
     return (
                 <View style={styles.container}>
-                    <Text style={{...styles.text, top: (isFocused||text)?-20:0, opacity: (isFocused||text)?0.7:1}} >{props.text}</Text>
+                    <OurText style={{...styles.text, top: (isFocused||text)?-20:0, opacity: (isFocused||text)?0.7:1}} >{props.text}</OurText>
                     <TextInput value={text} onChangeText={(e)=>{setText(e)}} style={styles.text_input} onFocus={()=>{setFocus(true);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}} onBlur={()=>{setFocus(false);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}} ></TextInput>
                 </View>
     )   
@@ -136,24 +137,24 @@ const Orders = (props) =>
         <Header {...props} showBack={true} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
-                <Text style={styles.textDelivery}>Выполненые заказы</Text>
+                <OurText style={styles.textDelivery}>Выполненые заказы</OurText>
                 <View style={styles.line}></View>
 		    </View>
             <View style={styles.time}>
-                <Text style={styles.text}>26 августа 2019, 4 часа утра</Text>
+                <OurText style={styles.text}>26 августа 2019, 4 часа утра</OurText>
             </View>
             <View style={styles.data}>
-                <Text style={styles.text_info}>Имя: {state.deliveryDetails["name"]}</Text>
-                <Text style={styles.text_info}>Телефон: {state.deliveryDetails["phone"]}</Text>
-                <Text style={styles.text_info}>Адрес: {state.deliveryDetails["address"]}</Text>
-                <Text style={styles.text_info}>Этаж: {state.deliveryDetails["floor"]}</Text>
-                <Text style={styles.text_info}>Примечания: {state.deliveryDetails["notes"]}</Text>
-                <Text style={styles.text_info}>Когда привезти: {state.deliveryDetails["when"]}</Text> 
+                <OurText style={styles.text_info}>Имя: {state.deliveryDetails["name"]}</OurText>
+                <OurText style={styles.text_info}>Телефон: {state.deliveryDetails["phone"]}</OurText>
+                <OurText style={styles.text_info}>Адрес: {state.deliveryDetails["address"]}</OurText>
+                <OurText style={styles.text_info}>Этаж: {state.deliveryDetails["floor"]}</OurText>
+                <OurText style={styles.text_info}>Примечания: {state.deliveryDetails["notes"]}</OurText>
+                <OurText style={styles.text_info}>Когда привезти: {state.deliveryDetails["when"]}</OurText> 
                     
             </View>
             <View style={styles.Buttons}>
                    <TouchableOpacity style={styles.button_go}>
-                         <Text style={styles.text_button}>Зарегистрировать заказ</Text>
+                         <OurText style={styles.text_button}>Зарегистрировать заказ</OurText>
                    </TouchableOpacity>
             </View>
         </View>

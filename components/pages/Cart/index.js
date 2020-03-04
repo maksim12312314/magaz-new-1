@@ -8,6 +8,7 @@ import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
 import Header from "../../Header/index";
+import OurText from "../../OurText";
 
 /** Компонент блока товаров  */
 const ItemsBlock = (props)=>{
@@ -18,7 +19,7 @@ const ItemsBlock = (props)=>{
     return (
         <View style={styles.itemsBlock}> 
             { !state.cartItems.length
-                ? <Text style={{color: "#FFF"}}>Товаров нет</Text>
+                ? <OurText style={{color: "#FFF"}}>Товаров нет</OurText>
                 : state.cartItems.map( (v, i) =>
                 {
                     return <CartItem key={i} data={v}/>
@@ -64,7 +65,7 @@ const Cart = (props) =>
                             navigation.navigate('Orders');
                     }}>
 
-                    <Text style={styles.text_button}>Оформить заказ</Text>
+                    <OurText style={styles.text_button}>Оформить заказ</OurText>
                 </TouchableOpacity>
                 
 		</ScrollView>

@@ -14,18 +14,19 @@ const styles = StyleSheet.create({
     item_price: {
         color: "#FFF",
         fontSize: 16,
-        marginHorizontal: 8,
+        marginHorizontal: 0,
     },
     item_count: {
         color: "#FFF",
         fontSize: 16,
         marginHorizontal: 16,
         flexGrow: 0,
+        width: 50,
     },
     right: {
         width: 120,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: "column",
+        alignItems: "flex-end",
     }
 });
 
