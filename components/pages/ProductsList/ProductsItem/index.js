@@ -4,6 +4,7 @@ import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
 import {Picker} from "native-base";
+import OurText from "../../../OurText";
 
 const address = config.getCell("StoreAddress");
 
@@ -14,7 +15,7 @@ const AttrPicker = (props) =>
 
     return (
         <>
-        <Text style={{color:  "#FFF", fontWeight: "bold"}}>{data.name}</Text>
+        <OurText style={{color:  "#FFF", fontWeight: "bold"}}>{data.name}</OurText>
         <Picker
             note
             mode="dropdown"
@@ -53,7 +54,7 @@ const ProductsItem = (props) =>
     return (
         <View style={styles.container}>
 
-            <Text style={styles.title}>{data.name}</Text>
+            <OurText style={styles.title}>{data.name}</OurText>
             <View style={styles.card}>
                 <View style={styles.left}>
                     <Image
@@ -67,7 +68,7 @@ const ProductsItem = (props) =>
                     </View>
             </View>
                 <View style={styles.bottom}>
-                    <Text style={styles.price}>Цена: {data.price || "Бесплатно"}</Text>
+                    <OurText style={styles.price}>Цена: {data.price || "Бесплатно"}</OurText>
                         <TouchableOpacity style={styles.button} onPress={ (e) =>
                         {
                             // Обрабатываем нажатие на кнопку "Купить"
@@ -86,11 +87,11 @@ const ProductsItem = (props) =>
                             // Добавляем в корзину
                             dispatch({type: "AddToCart", payload:payload, dispatch: dispatch});
                         }}>
-                            <Text style={styles.text_button}>Купить</Text>
+                            <OurText style={styles.text_button}>Купить</OurText>
                         </TouchableOpacity>
                 </View>
                     <View>
-                        <Text style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</Text>
+                        <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
                     </View>
         </View>
             

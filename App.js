@@ -208,31 +208,33 @@ const reducer = (state, action) =>
 		 */
 		case "minus":
 		{
+			const newState = {...state};
 			const elem = state.cartItems.filter( (v, i) =>
 			{
 				if ( v.id == action.payload )
 					return true;
 			});
-			const newState = {...state};
-			elem[0].count = Math.clamp(--elem[0].count, 0, elem[0].stockQuantity || 99);
 
-			if ( !elem[0].count )
+			if ( elem[0].count == 1 )
 			{
 				Alert.alert("УдОлить элементы", "Хотите удОлитЪ?", [
 					{
 						text: "Отмена",
-						onPress: () => {action.dispatch({type: "plus", payload: action.payload})},
+						onPress: () => {/*action.dispatch({type: "plus", payload: action.payload})*/},
 						style: "cancel"
 					},
 					{
 						text: "OK",
-						onPress: () => action.dispatch({type: "DeleteFromCart", payload: action.payload})
+						onPress: () => {
+							action.dispatch({type: "DeleteFromCart", payload: action.payload})
+						}
 					}
 				],
 				{cancelable: false});
 			}
 			else
 			{
+				elem[0].count = Math.clamp(--elem[0].count, 0, elem[0].stockQuantity || 99);
 				newState.cartItems[newState.cartItems.indexOf(elem[0])] = elem[0];
 			}
 

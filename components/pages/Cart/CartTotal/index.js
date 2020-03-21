@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Text, View } from "react-native";
 import styles from "./styles";
 import { stateContext, dispatchContext } from "../../../../contexts";
+import OurText from "../../../OurText";
 
 /** Компонент, который показывает итоговую цену */
 const CartTotal = (props) =>
@@ -16,7 +17,7 @@ const CartTotal = (props) =>
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Итого: {context.cartTotalPrice}$</Text>
+            <OurText style={styles.text}>Итого: {context.cartTotalPrice}$</OurText>
         </View>
     );
 }

@@ -3,6 +3,7 @@ import { Text, Image, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { dispatchContext, stateContext } from "../../../../contexts";
+import OurText from "../../../OurText";
 //import { TouchableOpacity } from "react-native-gesture-handler";
 
 const address = config.getCell("StoreAddress");
@@ -33,7 +34,7 @@ const CategoryItem = (props) =>
                                   :  `${address}wp-content/uploads/woocommerce-placeholder.png`
                 }}
             />
-            <Text style={styles.title}>{name}</Text>
+            <OurText style={styles.title}>{name}</OurText>
         </TouchableOpacity>
     );
 }

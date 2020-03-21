@@ -6,6 +6,7 @@ import Header from "./../../Header/index";
 import { LinearGradient } from 'expo-linear-gradient';
 import ProductsItem from './ProductsItem/index';
 import config from "../../../config";
+import OurText from "../../OurText";
 
 const address = config.getCell("StoreAddress");
 
@@ -86,7 +87,7 @@ const ProductsList = (props) =>
                     { state.products && state.products[state.currentCategory.id] ?
                     <View style={styles.items}>
                         <View style={styles.headTitle}>
-                            <Text style={styles.textTitle}>{state.currentCategory.name}</Text>
+                            <OurText style={styles.textTitle}>{state.currentCategory.name}</OurText>
                         </View>
 
                         {state.products[state.currentCategory.id].map( (v, i) =>
@@ -95,7 +96,7 @@ const ProductsList = (props) =>
                             })
                         }
                     </View>
-                    : error ? <Text style={styles.error}>Произошла ошибка при подключении. Проверьте интернет соединение и повторите попытку.</Text>
+                    : error ? <OurText style={styles.error}>Произошла ошибка при подключении. Проверьте интернет соединение и повторите попытку.</OurText>
                     : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
                     }
                 </LinearGradient>
