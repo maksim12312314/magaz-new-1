@@ -15,7 +15,6 @@ const ItemsBlock = (props)=>{
 
     const state = useContext(stateContext);
     
-    
     return (
         <View style={styles.itemsBlock}> 
             { !state.cartItems.length
@@ -27,7 +26,7 @@ const ItemsBlock = (props)=>{
             
         </View>
     )
-}
+};
 
 /** Компонент корзины */
 const Cart = (props) =>
@@ -35,28 +34,27 @@ const Cart = (props) =>
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const {navigation} = props;
-    
+
     return (
         <>
-        <LinearGradient
-            style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            minHeight: Dimensions.get("window").height,
-            }}
-            locations={[0, 1.0]} 
-            colors={["#E81C1C", "#E4724F"]}/>
-        <ScrollView contentContainerStyle={{justifyContent: "flex-start", alignItems:"center"}} style={styles.container}>
-            
-                <Header {...props} showBack={true} showTitle={"Заказы"} titleFunc={() => { navigation.navigate('DeliveryDetails') }}/>
-                <CartIcon/>
-                
-                <ItemsBlock/>
-                
-                <CartTotal/>
+            <LinearGradient
+                style={styles.gradient}
+                locations={[0, 1.0]}
+                colors={["#E81C1C", "#E4724F"]}/>
+
+                <Header {...props} title={"cartTitle"} titleFunc={() => { navigation.navigate('DeliveryDetails') }}/>
+                <ScrollView
+                    contentContainerStyle={{
+                        justifyContent: "flex-start", alignItems:"center"
+                    }}
+                    style={styles.container}>
+                        <CartIcon/>
+
+                        <ItemsBlock/>
+
+                        <CartTotal/>
+
+                </ScrollView>
                 <TouchableOpacity
                     activeOpacity={ !state.cartItems.length ? 1.0 : 0.2 }
                     style={!state.cartItems.length ? styles.button_disabled : styles.button_enabled}
@@ -65,12 +63,10 @@ const Cart = (props) =>
                             navigation.navigate('Orders');
                     }}>
 
-                    <OurText style={styles.text_button}>Оформить заказ</OurText>
+                    <OurText style={styles.text_button} translate={true}>cartCheckout</OurText>
                 </TouchableOpacity>
-                
-		</ScrollView>
         </>
     );
-}
+};
 
 export default Cart; 

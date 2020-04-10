@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         fontSize: 26,
         color: "#fff",
         textAlign: "center",
-        marginLeft: 90,
+        marginHorizontal: 30,
     },
     picture: {
         width: 110,
@@ -25,26 +25,30 @@ const styles = StyleSheet.create({
     right:
     {
         flex: 1,
-        marginRight: 40,
+        marginRight: 60,
         marginTop: 20,
     },
     left:
     {
         flex: 1,
-        marginLeft: 8,
+        marginTop: 20,
+        marginLeft: 10,
+        marginHorizontal: 70,
     },
     card:
     {
-        width: 350,
+        minWidth: Dimensions.get("window").width,
         maxHeight: 400,
         flexDirection: "row",
+        justifyContent: 'space-around',
     },
     bottom:
     {
-        width: 350,
+        minWidth: Dimensions.get("window").width,
         maxHeight: 400,
         marginTop: 15,
         flexDirection: "row",
+        justifyContent: 'space-around',
     },
     price:
     {
@@ -58,13 +62,13 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     button: {
-        paddingHorizontal: 40,
+        paddingHorizontal: 30,
         paddingVertical: 5,
         borderRadius: 15,
         textAlign: "center",
         justifyContent: 'center',
         backgroundColor: '#ffffff',
-        marginLeft: 50,
+        marginHorizontal: 70,
     },
     text_button: {
         color: "#078998",

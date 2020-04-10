@@ -12,7 +12,7 @@ const CartItem = (props) =>
     return (
         <View style={styles.container}>
             <OurText style={styles.item_name}>{name}</OurText>
-            <OurText style={styles.item_count}>{count} шт</OurText>
+            <OurText style={styles.item_count} params={{count}}>cartPcs</OurText>
             <View style={styles.right}>
                 <OurText style={styles.item_price}>{price*count}$</OurText>
                 <ItemCount id={id} count={count}/>

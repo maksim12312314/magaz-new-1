@@ -24,24 +24,24 @@ const CategoryList = (props) =>
     {
         if ( !state?.categories?.length )
         {
-            var categories;
+            let categories;
             ( async () =>
             {
                 // Получаем список категорий с хранилища
                 categories = await AsyncStorage.getItem("categoryList");
-                
+
                 // И устанавливаем его если есть
                 if ( categories )
                 {
                     categories = JSON.parse(categories);
-                    dispatch({type: "SetCategoriesList", payload: categories})
+                    dispatch({type: "SetCategoriesList", payload: categories});
                 }
             })();
             
             fetch(`${address}graphql`, {
                 method: 'POST',
                 headers: {
-                'Content-Type': 'application/json'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     query: `
@@ -68,37 +68,39 @@ const CategoryList = (props) =>
                         {
                             dispatch({type: "SetCategoriesList", payload: data});
                             await AsyncStorage.setItem("categoryList", JSON.stringify(data));
-                        })()
+                        })();
                     })
-                .catch(err => setError(true))
+                .catch(err => setError(true));
 
         }
     }, []);
 
 
     return (
-        <ScrollView style={styles.view}>
+        <>
             <LinearGradient
                 style={styles.background}
-                locations={[0, 1.0]} 
-                colors={['#078998', '#65B7B9']}>
-					{state?.categories?.length ?
-					<Header {...props} showTitle = {true} showCart={true}/>
-                    : error ? <Header {...props} showTitle = {true} showCart={false}/>
+                locations={[0, 1.0]}
+                colors={['#078998', '#65B7B9']} />
+
+            {state?.categories?.length ?
+                <Header {...props} showCart={true}/>
+                : error ? <Header {...props} showCart={false}/>
                     : <></>
-                    }
-                    <View style={styles.categorylist}>
-						{ state?.categories?.length ?
-							state.categories.map( (v, k) =>
-							{
-								return <CategoryItem navigation={navigation} name={v.name} id={v.productCategoryId} imageUrl={v?.image?.mediaDetails?.file} key={k}/>
-							})
-						: error ? <OurText style={styles.error}>Произошла ошибка при подключении. Проверьте интернет соединение и повторите попытку.</OurText>
-							: <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
-						}
-					</View>
-            </LinearGradient>
-		</ScrollView>
+            }
+            <ScrollView style={styles.view}>
+                        <View style={styles.categorylist}>
+                            { state?.categories?.length ?
+                                state.categories.map( (v, k) =>
+                                {
+                                    return <CategoryItem navigation={navigation} name={v.name} id={v.productCategoryId} imageUrl={v?.image?.mediaDetails?.file} key={k}/>
+                                })
+                            : error ? <OurText style={styles.error} translate={true}>errorFetch</OurText>
+                                : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
+                            }
+                        </View>
+            </ScrollView>
+        </>
     );
 }
 

@@ -149,7 +149,7 @@ const Editor = (props) =>
     return (
         <>
         <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#931DC4", "#F33BC8"]}/>
-        <Header {...props} showBack={true} showCart={true}/>
+        <Header {...props} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
                 <OurText style={styles.textDelivery}>Редактор заказов</OurText>

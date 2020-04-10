@@ -174,7 +174,7 @@ const DeliveryDetails = (props) =>
     return (
         <>
         <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#1DC44F", "#3BF3AE"]}/>
-        <Header {...props} showBack={true} showTitle={true} showCart={true}/>
+        <Header {...props} title={true} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
                 <OurText style={styles.textDelivery}>Детали доставки</OurText>

@@ -4,12 +4,16 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: "column",
-        /*justifyContent: "flex-start",
-        alignItems: "center",*/
+        maxHeight: Dimensions.get("window").height,
+    },
+    gradient: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
         minHeight: Dimensions.get("window").height,
-        //height: Dimensions.get("window").height,
     },
     items: {
         justifyContent: "center",
@@ -28,7 +32,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        marginBottom: 50,
+        marginBottom: 30,
     },
     button_disabled: {
         paddingHorizontal: 18,
@@ -40,7 +44,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        marginBottom: 50,
+        marginBottom: 30,
     },
     text_button: {
         color: "#E4724F",

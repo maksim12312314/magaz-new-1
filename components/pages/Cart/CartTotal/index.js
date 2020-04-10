@@ -17,7 +17,7 @@ const CartTotal = (props) =>
 
     return (
         <View style={styles.container}>
-            <OurText style={styles.text}>Итого: {context.cartTotalPrice}$</OurText>
+            <OurText style={styles.text} params={{total:context.cartTotalPrice, currency: "$"}}>cartTotal</OurText>
         </View>
     );
 }

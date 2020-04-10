@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
         borderColor: "#FFF",
     },
     productslist: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
         minHeight: Dimensions.get("window").height,
     },
     loading: {
@@ -29,6 +34,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: "#fff",
         textAlign: "center",
+        marginTop: 12,
     },
 });
 

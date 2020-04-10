@@ -78,12 +78,13 @@ const ProductsList = (props) =>
     }, [state.currentCategory]);
 
     return (
+        <>
+            <LinearGradient
+                style={styles.productslist}
+                locations={[0, 1.0]}
+                colors={['#2454e5', '#499eda']} />
+                <Header {...props} showCart={true}/>
             <ScrollView style={styles.view}>
-                <LinearGradient
-                    style={styles.productslist}
-                    locations={[0, 1.0]} 
-                    colors={['#2454e5', '#499eda']}>
-                    <Header {...props} showBack={true} showTitle={true} showCart={true}/>
                     { state.products && state.products[state.currentCategory.id] ?
                     <View style={styles.items}>
                         <View style={styles.headTitle}>
@@ -96,12 +97,11 @@ const ProductsList = (props) =>
                             })
                         }
                     </View>
-                    : error ? <OurText style={styles.error}>Произошла ошибка при подключении. Проверьте интернет соединение и повторите попытку.</OurText>
+                    : error ? <OurText style={styles.error} translate={true}>errorFetch</OurText>
                     : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
                     }
-                </LinearGradient>
             </ScrollView>
-
+        </>
     );
 }
 

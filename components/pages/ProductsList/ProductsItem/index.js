@@ -1,33 +1,51 @@
 import React, {useContext, useState} from "react";
-import { ScrollView, Text, Image, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Image, View, TouchableOpacity, AsyncStorage } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
-import {Picker} from "native-base";
+import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
+import PickerButton from "../../../PickerButton";
+import {useTranslation} from "react-i18next";
 
 const address = config.getCell("StoreAddress");
 
 const AttrPicker = (props) =>
 {
     const {data, onValueChange} = props;
-    const [selected, setSelected] = useState(data.options[0]);
+    const items = data.options.map( (v, i) => { return {Name: v, Value: v, Id: i} });
+    const [selected, setSelected] = useState(items[0]);
 
     return (
         <>
-        <OurText style={{color:  "#FFF", fontWeight: "bold"}}>{data.name}</OurText>
-        <Picker
-            note
-            mode="dropdown"
-            style={styles.picker}
-            selectedValue={selected}
-            onValueChange={(val) => setSelected(val)}
-        >
-            {data.options.map( (v, i) => <Picker.Item label={v} key={i} value={i} />)}
-        </Picker>
+            <OurText style={{color:  "#FFF", fontWeight: "bold"}}>{data.name}</OurText>
+
+            <PickerModal
+                renderSelectView={(disabled, sel, showModal) =>
+                    <PickerButton
+                        disabled={disabled}
+                        onPress={showModal}>{selected.Name || ""}</PickerButton>
+                }
+                onSelected={(val) => {
+                    if ( val && Object.keys(val).length !== 0 ) {
+                        setSelected(val);
+
+                        if (onValueChange)
+                            onValueChange(val);
+                    }
+                }}
+                items={items}
+                showToTopButton={true}
+                selected={selected}
+                backButtonDisabled={true}
+                showAlphabeticalIndex={true}
+                autoGenerateAlphabeticalIndex={true}
+                requireSelection={false}
+                autoSort={false}
+            />
         </>
     )
-}
+};
 
 const AttrPickersParent = (props) =>
 {
@@ -40,7 +58,7 @@ const AttrPickersParent = (props) =>
             })}
         </>
     )
-}
+};
 
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
@@ -50,6 +68,7 @@ const ProductsItem = (props) =>
     const dispatch = useContext(dispatchContext);
     const [selected, setSelected] = useState({});
     const itemAttributes = data?.attributes?.nodes || [];
+    const {t} = useTranslation();
     
     return (
         <View style={styles.container}>
@@ -68,7 +87,9 @@ const ProductsItem = (props) =>
                     </View>
             </View>
                 <View style={styles.bottom}>
-                    <OurText style={styles.price}>Цена: {data.price || "Бесплатно"}</OurText>
+                    <OurText style={styles.price} params={{
+                        price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
+                    }}>productPrice</OurText>
                         <TouchableOpacity style={styles.button} onPress={ (e) =>
                         {
                             // Обрабатываем нажатие на кнопку "Купить"
@@ -83,11 +104,11 @@ const ProductsItem = (props) =>
                                 selectedVariants: [
                                     "variantID"
                                 ]
-                            }
+                            };
                             // Добавляем в корзину
-                            dispatch({type: "AddToCart", payload:payload, dispatch: dispatch});
+                            dispatch({type: "AddToCart", payload:payload, dispatch: dispatch, t: t});
                         }}>
-                            <OurText style={styles.text_button}>Купить</OurText>
+                            <OurText style={styles.text_button} translate={true}>productBuy</OurText>
                         </TouchableOpacity>
                 </View>
                     <View>
@@ -97,6 +118,6 @@ const ProductsItem = (props) =>
             
 
     );
-}
+};
 
 export default ProductsItem;
