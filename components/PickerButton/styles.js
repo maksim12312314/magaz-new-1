@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
         flexWrap: 'nowrap',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: 180,
+        maxWidth: 180,
         paddingLeft: 16,
         paddingVertical: 8,
         borderStyle: 'solid',

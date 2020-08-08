@@ -18,6 +18,25 @@ import Editor from "./components/Orders/editor";
 
 import "./i18n";
 import { useTranslation} from "react-i18next";
+import {
+	SET_CART_ITEMS,
+	SET_FIELD,
+	SET_DELIVERY_DETAILS_FIELD,
+	CHANGE_BUTTON_STATUS,
+	SET_CATEGORY_PAGE_ID,
+	ADD_TO_CART,
+	SET_PRODUCTS_LIST,
+	SET_CATEGORIES_LIST,
+	COMPUTE_TOTAL_PRICE,
+	DELETE_FROM_CART,
+	MINUS,
+	PLUS,
+} from "./types";
+
+import {
+	DeleteFromCart,
+	ComputeTotalPrice,
+} from "./actions";
 
 const showToastMessage = (message) =>
 {
@@ -50,7 +69,7 @@ const reducer = (state, action) =>
 	 */
 	switch (action.type)
 	{
-		case "SetCartItems":
+		case SET_CART_ITEMS:
 		{
 			const newState = {...state};
 			newState.cartItems = action.cartItems.cart || [];
@@ -58,7 +77,7 @@ const reducer = (state, action) =>
 			return newState;
 		}
 
-		case "SetField":
+		case SET_FIELD:
 		{
 			const newState = {...state};
 			newState[action.fieldName] = action.payload;
@@ -67,7 +86,7 @@ const reducer = (state, action) =>
 		}
 
 
-		case "SetDeliveryDetailsField":
+		case SET_DELIVERY_DETAILS_FIELD:
 		{
 			const newState = {...state};
 			newState.deliveryDetails[action.fieldName] = action.payload;
@@ -75,7 +94,7 @@ const reducer = (state, action) =>
 			return newState;
 		}
 		
-		case "ChangeButtonStatus":{
+		case CHANGE_BUTTON_STATUS:{
 			const newState = {...state};
 			
 			if(isAllDeliveryDetailsSet(newState) && !action.buttonEnabled)
@@ -89,7 +108,7 @@ const reducer = (state, action) =>
 		/**
 		 * Устанавливает id категории для текущей страницы
 		 */
-		case "SetCategoryPageId":
+		case SET_CATEGORY_PAGE_ID:
 		{
 			const newState = {...state};
 			newState.currentCategory = action.payload;
@@ -98,7 +117,7 @@ const reducer = (state, action) =>
 		/**
 		 * Заносит товар и его данные в state
 		 */
-		case "AddToCart":
+		case ADD_TO_CART:
 		{
 			const t = action.t;
 			const newState = {...state};
@@ -139,7 +158,7 @@ const reducer = (state, action) =>
 				AsyncStorage.setItem("cartItems", JSON.stringify({cart:newState.cartItems}));
 			})();
 
-			action.dispatch({type: "ComputeTotalPrice"});
+			action.dispatch(ComputeTotalPrice());
 			showToastMessage(t("productAddedMessage", {product: action.payload.name}));
 
 			return newState;
@@ -148,7 +167,7 @@ const reducer = (state, action) =>
 		/**
 		 * Устанавливает список продуктов для текущей страницы
 		 */
-		case "SetProductsList":
+		case SET_PRODUCTS_LIST:
 		{
 			const newState = {...state};
 			
@@ -160,7 +179,7 @@ const reducer = (state, action) =>
 		/**
 		 * Устанавливает список категорий для текущей страницы
 		 */
-		case "SetCategoriesList":
+		case SET_CATEGORIES_LIST:
 		{
 			const newState = {...state};
 			
@@ -172,7 +191,7 @@ const reducer = (state, action) =>
 		/**
 		 * Расчитывает общую цену для корзины
 		 */
-		case "ComputeTotalPrice":
+		case COMPUTE_TOTAL_PRICE:
 		{
 			const newState = {...state};
 			newState.cartTotalPrice = 0;
@@ -187,7 +206,7 @@ const reducer = (state, action) =>
 		/**
 		 * Удаляет товар из корзины
 		 */
-		case "DeleteFromCart":
+		case DELETE_FROM_CART:
 		{
 			const newState = {...state};
 			
@@ -208,7 +227,7 @@ const reducer = (state, action) =>
 		/**
 		 * Минусует 1 товар из корзины
 		 */
-		case "minus":
+		case MINUS:
 		{
 			const t = action.t;
 			const newState = {...state};
@@ -229,7 +248,7 @@ const reducer = (state, action) =>
 					{
 						text: t("ok"),
 						onPress: () => {
-							action.dispatch({type: "DeleteFromCart", payload: action.payload})
+							action.dispatch(DeleteFromCart(action.payload));
 						}
 					}
 				],
@@ -246,7 +265,7 @@ const reducer = (state, action) =>
 		/**
 		 * Плюсует 1 товар в корзину
 		 */
-		case "plus":
+		case PLUS:
 		{
 			const elem = state.cartItems.filter( (v, i) =>
 			{

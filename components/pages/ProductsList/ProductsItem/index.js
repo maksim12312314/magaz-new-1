@@ -8,6 +8,10 @@ import OurText from "../../../OurText";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
 
+import {
+    AddToCart,
+    ComputeTotalPrice,
+} from "../../../../actions";
 const address = config.getCell("StoreAddress");
 
 const AttrPicker = (props) =>
@@ -106,7 +110,8 @@ const ProductsItem = (props) =>
                                 ]
                             };
                             // Добавляем в корзину
-                            dispatch({type: "AddToCart", payload:payload, dispatch: dispatch, t: t});
+                            dispatch(AddToCart(payload, dispatch, t));
+                            dispatch(ComputeTotalPrice());
                         }}>
                             <OurText style={styles.text_button} translate={true}>productBuy</OurText>
                         </TouchableOpacity>

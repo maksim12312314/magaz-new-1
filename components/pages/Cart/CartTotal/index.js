@@ -4,6 +4,10 @@ import styles from "./styles";
 import { stateContext, dispatchContext } from "../../../../contexts";
 import OurText from "../../../OurText";
 
+import {
+    ComputeTotalPrice,
+} from "../../../../actions";
+
 /** Компонент, который показывает итоговую цену */
 const CartTotal = (props) =>
 {
@@ -12,7 +16,7 @@ const CartTotal = (props) =>
     
     useEffect( () =>
     {
-        dispatch({type: "ComputeTotalPrice"});
+        dispatch(ComputeTotalPrice());
     }, []);
 
     return (

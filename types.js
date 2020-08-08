@@ -1,0 +1,12 @@
+export const SET_CART_ITEMS = "SetCartItems";
+export const SET_FIELD = "SetField";
+export const SET_DELIVERY_DETAILS_FIELD = "SetDeliveryDetailsField";
+export const CHANGE_BUTTON_STATUS = "ChangeButtonStatus";
+export const SET_CATEGORY_PAGE_ID = "SetCategoryPageId";
+export const ADD_TO_CART =  "AddToCart";
+export const SET_PRODUCTS_LIST =  "SetProductsList";
+export const SET_CATEGORIES_LIST = "SetCategoriesList";
+export const COMPUTE_TOTAL_PRICE = "ComputeTotalPrice";
+export const DELETE_FROM_CART = "DeleteFromCart";
+export const MINUS = "minus";
+export const PLUS = "plus";

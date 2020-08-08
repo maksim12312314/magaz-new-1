@@ -8,6 +8,10 @@ import Header from "../../Header/index";
 import config from "../../../config";
 import OurText from "../../OurText";
 
+import {
+    SetCategoriesList,
+} from "../../../actions";
+
 const address = config.getCell("StoreAddress");
 
 /**Список категорий товаров*/
@@ -34,7 +38,8 @@ const CategoryList = (props) =>
                 if ( categories )
                 {
                     categories = JSON.parse(categories);
-                    dispatch({type: "SetCategoriesList", payload: categories});
+                    console.log(SetCategoriesList, "wtf")
+                    dispatch(SetCategoriesList(categories));
                 }
             })();
             
@@ -66,7 +71,7 @@ const CategoryList = (props) =>
                     {
                         ( async () =>
                         {
-                            dispatch({type: "SetCategoriesList", payload: data});
+                            dispatch(SetCategoriesList(data));
                             await AsyncStorage.setItem("categoryList", JSON.stringify(data));
                         })();
                     })

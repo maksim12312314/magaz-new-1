@@ -6,6 +6,13 @@ import { faPlusCircle, faMinusCircle, faTimesCircle } from '@fortawesome/free-so
 import styles from "./styles";
 import {useTranslation} from "react-i18next";
 
+import {
+    Plus,
+    Minus,
+    DeleteFromCart,
+    ComputeTotalPrice,
+} from "../../../../../actions";
+
 const ItemControlButton = (props) =>
 {
     const { onPress, icon } = props;
@@ -32,16 +39,14 @@ const ItemCount = (props) =>
                 <ItemControlButton icon={faPlusCircle} onPress={(e) =>
                 {
                     // Добавляем 1 товар 
-                    dispatch({type: "plus", payload: id});
-                    // Расчитываем итог
-                    dispatch({type: "ComputeTotalPrice"});
+                    dispatch(Plus(id));
+                    dispatch(ComputeTotalPrice());
                 }}/>
                 <ItemControlButton icon={faMinusCircle} onPress={(e) =>
                 {
                     // Вычитаем 1 товар
-                    dispatch({type: "minus", payload: id, dispatch: dispatch, t: t});
-                    // Расчитываем итог
-                    dispatch({type: "ComputeTotalPrice"});
+                    dispatch(Minus(id, dispatch, t));
+                    dispatch(ComputeTotalPrice());
                 }}/>
                 <ItemControlButton icon={faTimesCircle} onPress={(e) =>
                 {
@@ -53,8 +58,7 @@ const ItemCount = (props) =>
                         {
                             text: t("ok"),
                             onPress: () => {
-                                dispatch({type: "DeleteFromCart", payload: id, showAlert: true});
-                                dispatch({type: "ComputeTotalPrice"});
+                                dispatch(DeleteFromCart(id, true));
                             },
                         },,
                     ],
