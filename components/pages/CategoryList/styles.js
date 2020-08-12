@@ -14,8 +14,7 @@ const styles = StyleSheet.create({
         minHeight: Dimensions.get("window").height,
     },
     categorylist: {
-        justifyContent: "center",
-        alignItems: "center",
+        flexDirection:"row",
     },
     loading: {
         alignSelf: "center",

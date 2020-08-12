@@ -15,18 +15,20 @@ import { FlatList } from "react-native-gesture-handler";
 
 const address = config.getCell("StoreAddress");
 
-const GetCategoryItem = ({item}) => {
-    console.log("ITEM IS", item)
-    return <CategoryItem name={item.name} id={item.productCategoryId} imageUrl={item?.image?.mediaDetails?.file}/>
-};
-
 /**Список категорий товаров*/
 const CategoryList = (props) =>
 {
     const { navigation } = props;
+
+    const GetCategoryItem = ({item}) => {
+        return (
+            <CategoryItem navigation={navigation} name={item.name} id={item.productCategoryId} imageUrl={item?.image?.mediaDetails?.file}/>
+        )
+    };
+
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-	
+    
 	const [error, setError] = useState(false);
 
     // Получаем данные от сервера или хранилища
@@ -78,6 +80,7 @@ const CategoryList = (props) =>
                         ( async () =>
                         {
                             dispatch(SetCategoriesList(data));
+                            console.log(data)
                             await AsyncStorage.setItem("categoryList", JSON.stringify(data));
                         })();
                     })
@@ -98,14 +101,12 @@ const CategoryList = (props) =>
                 : error ? <Header {...props} showCart={false}/>
                     : <></>
             }
-        <View style={styles.categorylist}>
             <FlatList
-            horizontal={false}
+            contentContainerStyle={{alignItems:"center", justifyContent: "center"}}
             numColumns={2}
             data={state.categories}
             renderItem={GetCategoryItem}
-            keyExtractor={item => state.categories.indexOf(item)}/>
-        </View>
+            keyExtractor={item => item.productCategoryId}/>
         </>
     );
 }
