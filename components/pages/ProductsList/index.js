@@ -21,7 +21,7 @@ const ProductsList = (props) =>
   // const { navigation } = props;
   const GetProductsItem = ({item}) => {
     return (
-        <ProductsItem name={item.currentCategory.name} id={item.productId}/>
+        <ProductsItem name={item.name} id={item.productId}/>
     )
 };
     const state = useContext(stateContext);
