@@ -11,11 +11,19 @@ import OurText from "../../OurText";
 import {
     SetProductsList,
 } from "../../../actions";
+import { FlatList } from "react-native-gesture-handler";
+
 const address = config.getCell("StoreAddress");
 
 /**Список товаров той или иной категории */
 const ProductsList = (props) =>
 {
+  // const { navigation } = props;
+  const GetProductsItem = ({item}) => {
+    return (
+        <ProductsItem name={item.currentCategory.name} id={item.productId}/>
+    )
+};
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const [error, setError] = useState(false);
@@ -88,7 +96,7 @@ const ProductsList = (props) =>
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
-            <ScrollView style={styles.view}>
+            {/* <ScrollView style={styles.view}>
                     { state.products && state.products[state.currentCategory.id] ?
                     <View style={styles.items}>
                         <View style={styles.headTitle}>
@@ -104,7 +112,11 @@ const ProductsList = (props) =>
                     : error ? <OurText style={styles.error} translate={true}>errorFetch</OurText>
                     : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
                     }
-            </ScrollView>
+            </ScrollView> */}
+            <FlatList
+            data={state.data}
+            renderItem={GetProductsItem}
+            keyExtractor={item => item.productId}/>
         </>
     );
 }
