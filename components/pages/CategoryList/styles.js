@@ -2,6 +2,8 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     view: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     background: {
         position: 'absolute',
@@ -12,10 +14,8 @@ const styles = StyleSheet.create({
         minHeight: Dimensions.get("window").height,
     },
     categorylist: {
-        flexDirection: "row",
-        flexWrap: "wrap",
         justifyContent: "center",
-        
+        alignItems: "center",
     },
     loading: {
         alignSelf: "center",
