@@ -18,6 +18,11 @@ import Header from "./../Header/index";
 import OurText from "../OurText";
 
 
+import {
+    SetDeliveryDetailsField,
+    ChangeButtonStatus
+} from "../../actions";
+
 if (
     Platform.OS === 'android' &&
     UIManager.setLayoutAnimationEnabledExperimental
@@ -130,15 +135,15 @@ const TextField = (props)=>{
 
     useEffect(()=>{
         
-            dispatch({type:"SetDeliveryDetailsField",fieldName:fieldName,payload:""})
+            dispatch(SetDeliveryDetailsField(fieldName, payload));
     }, [] )
 
 
     return (
                 <View style={styles.container}>
                     <OurText style={{...styles.text, top: (isFocused||state.deliveryDetails[fieldName])?-20:0, opacity: (isFocused||state.deliveryDetails[fieldName])?0.7:1}} >{props.text}</OurText>
-                    <TextInput value={state.deliveryDetails[fieldName]} onChangeText={(e)=>{ dispatch({type:"SetDeliveryDetailsField",fieldName:fieldName,payload:e});
-                        dispatch({type:"ChangeButtonStatus", buttonEnabled:buttonEnabled, setButtonEnabled });}} 
+                    <TextInput value={state.deliveryDetails[fieldName]} onChangeText={(e)=>{ dispatch(SetDeliveryDetailsField( fieldName, e));
+                        dispatch(ChangeButtonStatus(buttonEnabled, setButtonEnabled ));}} 
                         style={styles.text_input} onFocus={()=>{setFocus(true);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}} onBlur={()=>{setFocus(false);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}
                     }>
                     </TextInput>

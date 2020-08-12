@@ -6,6 +6,9 @@ import { dispatchContext, stateContext } from "../../../../contexts";
 import OurText from "../../../OurText";
 //import { TouchableOpacity } from "react-native-gesture-handler";
 
+import {
+    SetCategoryPageId,
+} from "../../../../actions";
 const address = config.getCell("StoreAddress");
 
 /**Компонент категории */
@@ -21,7 +24,7 @@ const CategoryItem = (props) =>
             // Обрабатываем нажатие на иконку категории
             // и устанавливаем id данной категории
             // для отображения списка товаров
-            dispatch({type: "SetCategoryPageId", payload: {id, name} });
+            dispatch(SetCategoryPageId( {id, name} ));
             
             // Переходим к списку продуктов
             navigation.navigate("ProductList");

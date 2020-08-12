@@ -8,6 +8,9 @@ import ProductsItem from './ProductsItem/index';
 import config from "../../../config";
 import OurText from "../../OurText";
 
+import {
+    SetProductsList,
+} from "../../../actions";
 const address = config.getCell("StoreAddress");
 
 /**Список товаров той или иной категории */
@@ -71,7 +74,7 @@ const ProductsList = (props) =>
                         setError(true)
                     else
                         // Устанавливаем полученные данные
-                        dispatch({type: "SetProductsList", payload: data, id: state.currentCategory.id});
+                        dispatch(SetProductsList(data, state.currentCategory.id));
                 })
             // Иначе показываем ошибку
             .catch(err => setError(true))

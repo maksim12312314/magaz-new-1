@@ -6,6 +6,10 @@ import { stateContext, dispatchContext } from "../../contexts";
 import OurText from "../OurText";
 import styles from "./styles.js";
 
+import {
+    SetCartItems,
+    ComputeTotalPrice,
+} from "../../actions";
 /** Шапочка приложения с навигацией*/
 const Header = (props) =>
 {
@@ -33,8 +37,8 @@ const Header = (props) =>
             catch (e) {}
 
             if(json){
-                dispatch({type: "SetCartItems", cartItems: json});
-                dispatch({type: "ComputeTotalPrice"});
+                dispatch(SetCartItems(json));
+                dispatch(ComputeTotalPrice());
             }
             
         });

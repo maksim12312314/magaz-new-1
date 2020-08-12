@@ -18,7 +18,8 @@ import Editor from "./components/Orders/editor";
 
 import "./i18n";
 import { useTranslation} from "react-i18next";
-import {SET_CART_ITEMS,
+import {
+	SET_CART_ITEMS,
 	SET_FIELD,
 	SET_DELIVERY_DETAILS_FIELD,
 	CHANGE_BUTTON_STATUS,
@@ -29,7 +30,13 @@ import {SET_CART_ITEMS,
 	COMPUTE_TOTAL_PRICE,
 	DELETE_FROM_CART,
 	MINUS,
-	PLUS,} from "./types"
+	PLUS,
+} from "./types";
+
+import {
+	DeleteFromCart,
+	ComputeTotalPrice,
+} from "./actions";
 
 const showToastMessage = (message) =>
 {
@@ -151,7 +158,7 @@ const reducer = (state, action) =>
 				AsyncStorage.setItem("cartItems", JSON.stringify({cart:newState.cartItems}));
 			})();
 
-			action.dispatch({type: "ComputeTotalPrice"});
+			action.dispatch(ComputeTotalPrice());
 			showToastMessage(t("productAddedMessage", {product: action.payload.name}));
 
 			return newState;
@@ -241,7 +248,7 @@ const reducer = (state, action) =>
 					{
 						text: t("ok"),
 						onPress: () => {
-							action.dispatch({type: "DeleteFromCart", payload: action.payload})
+							action.dispatch(DeleteFromCart(action.payload));
 						}
 					}
 				],
