@@ -21,7 +21,7 @@ const ProductsList = (props) =>
   // const { navigation } = props;
   const GetProductsItem = ({item}) => {
     return (
-        <ProductsItem name={item.name} id={item.productId}/>
+        <ProductsItem id={item.currentCategory.id}/>
     )
 };
     const state = useContext(stateContext);
@@ -84,6 +84,7 @@ const ProductsList = (props) =>
                     else
                         // Устанавливаем полученные данные
                         dispatch(SetProductsList(data, state.currentCategory.id));
+                        console.log( data);
                 })
             // Иначе показываем ошибку
             .catch(err => {setError(true)})
@@ -96,7 +97,6 @@ const ProductsList = (props) =>
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
-            {/* <ScrollView style={styles.view}>
                     { state.products && state.products[state.currentCategory.id] ?
                     <View style={styles.items}>
                         <View style={styles.headTitle}>
@@ -112,11 +112,11 @@ const ProductsList = (props) =>
                     : error ? <OurText style={styles.error} translate={true}>errorFetch</OurText>
                     : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
                     }
-            </ScrollView> */}
+            
             <FlatList
-            data={state.data}
+            data={state.products && state.products[state.currentCategory.id]}
             renderItem={GetProductsItem}
-            keyExtractor={item => item.productId}/>
+            keyExtractor={item => item.currentCategory.id}/>
         </>
     );
 }
