@@ -11,6 +11,7 @@ import OurText from "../../OurText";
 import {
     SetProductsList,
 } from "../../../actions";
+
 import { FlatList } from "react-native-gesture-handler";
 
 const address = config.getCell("StoreAddress");
@@ -21,7 +22,7 @@ const ProductsList = (props) =>
   // const { navigation } = props;
   const GetProductsItem = ({item}) => {
     return (
-        <ProductsItem id={item.currentCategory.id}/>
+        <ProductsItem id={item.productId} data={item}/>
     )
 };
     const state = useContext(stateContext);
@@ -97,26 +98,14 @@ const ProductsList = (props) =>
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
-                    { state.products && state.products[state.currentCategory.id] ?
-                    <View style={styles.items}>
-                        <View style={styles.headTitle}>
-                            <OurText style={styles.textTitle}>{state.currentCategory.name}</OurText>
-                        </View>
-
-                        {state.products[state.currentCategory.id].map( (v, i) =>
-                            {
-                                return <ProductsItem key={i} data={v}/>
-                            })
-                        }
-                    </View>
-                    : error ? <OurText style={styles.error} translate={true}>errorFetch</OurText>
-                    : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
-                    }
-            
+            { state.products && state.products[state.currentCategory.id].length ?
             <FlatList
-            data={state.products && state.products[state.currentCategory.id]}
+            data={state.products[state.currentCategory.id]}
             renderItem={GetProductsItem}
-            keyExtractor={item => item.currentCategory.id}/>
+            keyExtractor={item => item.productId}/>
+              :
+              <></>
+            }
         </>
     );
 }
