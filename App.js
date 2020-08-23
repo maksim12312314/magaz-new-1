@@ -72,7 +72,7 @@ const reducer = (state, action) =>
 		case SET_CART_ITEMS:
 		{
 			const newState = {...state};
-			newState.cartItems = action.cartItems.cart || [];
+			newState.cartItems = action?.payload?.cart || [];
 			
 			return newState;
 		}
@@ -119,7 +119,7 @@ const reducer = (state, action) =>
 		 */
 		case ADD_TO_CART:
 		{
-			const t = action.t;
+			const t = action.t; // Translate
 			const newState = {...state};
 
 			/*const containing = newState.cartItems.reduce( (a,e,i,m)=>{
@@ -185,6 +185,7 @@ const reducer = (state, action) =>
 			
 			newState.categories = action.payload.productCategories.nodes;
 			
+
 			return newState;
 		}
 

@@ -11,11 +11,20 @@ import OurText from "../../OurText";
 import {
     SetProductsList,
 } from "../../../actions";
+
+import { FlatList } from "react-native-gesture-handler";
+
 const address = config.getCell("StoreAddress");
 
 /**Список товаров той или иной категории */
 const ProductsList = (props) =>
 {
+  // const { navigation } = props;
+  const GetProductsItem = ({item}) => {
+    return (
+        <ProductsItem id={item.productId} data={item}/>
+    )
+};
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const [error, setError] = useState(false);
@@ -70,14 +79,16 @@ const ProductsList = (props) =>
             .then( (res) => 
                 {
                     const {data} = res
+                   
                     if ( data.errors )
                         setError(true)
                     else
                         // Устанавливаем полученные данные
                         dispatch(SetProductsList(data, state.currentCategory.id));
+                        console.log( data);
                 })
             // Иначе показываем ошибку
-            .catch(err => setError(true))
+            .catch(err => {setError(true)})
     }, [state.currentCategory]);
 
     return (
@@ -87,23 +98,14 @@ const ProductsList = (props) =>
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
-            <ScrollView style={styles.view}>
-                    { state.products && state.products[state.currentCategory.id] ?
-                    <View style={styles.items}>
-                        <View style={styles.headTitle}>
-                            <OurText style={styles.textTitle}>{state.currentCategory.name}</OurText>
-                        </View>
-
-                        {state.products[state.currentCategory.id].map( (v, i) =>
-                            {
-                                return <ProductsItem key={i} data={v}/>
-                            })
-                        }
-                    </View>
-                    : error ? <OurText style={styles.error} translate={true}>errorFetch</OurText>
-                    : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
-                    }
-            </ScrollView>
+            { state.products && state.products[state.currentCategory.id].length ?
+            <FlatList
+            data={state.products[state.currentCategory.id]}
+            renderItem={GetProductsItem}
+            keyExtractor={item => item.productId}/>
+              :
+              <></>
+            }
         </>
     );
 }

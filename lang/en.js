@@ -6,6 +6,7 @@ const en = {
         cartCheckout: "Checkout",
         cartDeleteTitle: "Delete from cart",
         cartDeleteMessage: "Are you sure that you want to delete this item from cart?",
+        cartEmpty: "So empty(",
         cancel: "Cancel",
         ok: "Ok",
 

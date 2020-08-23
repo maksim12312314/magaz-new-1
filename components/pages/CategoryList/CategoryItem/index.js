@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Text, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { dispatchContext, stateContext } from "../../../../contexts";
@@ -19,26 +19,28 @@ const CategoryItem = (props) =>
     const dispatch = useContext(dispatchContext);
 
     return (
-        <TouchableOpacity style={styles.container} onPress={(e) =>
-        {
-            // Обрабатываем нажатие на иконку категории
-            // и устанавливаем id данной категории
-            // для отображения списка товаров
-            dispatch(SetCategoryPageId( {id, name} ));
-            
-            // Переходим к списку продуктов
-            navigation.navigate("ProductList");
-            
-        }}>
-            <Image
-                style={styles.picture}
-                source={{
-                    uri: imageUrl ? `${address}wp-content/uploads/` + imageUrl
-                                  :  `${address}wp-content/uploads/woocommerce-placeholder.png`
-                }}
-            />
-            <OurText style={styles.title}>{name}</OurText>
-        </TouchableOpacity>
+        <View style={styles.view}>
+            <TouchableOpacity style={styles.container} onPress={(e) =>
+            {
+                // Обрабатываем нажатие на иконку категории
+                // и устанавливаем id данной категории
+                // для отображения списка товаров
+                dispatch(SetCategoryPageId( {id, name} ));
+                
+                // Переходим к списку продуктов
+                navigation.navigate("ProductList");
+                
+            }}>
+                <Image
+                    style={styles.picture}
+                    source={{
+                        uri: imageUrl ? `${address}wp-content/uploads/` + imageUrl
+                                    :  `${address}wp-content/uploads/woocommerce-placeholder.png`
+                    }}
+                />
+                <View style={styles.textView}><OurText style={styles.title}>{name}</OurText></View>
+            </TouchableOpacity>
+        </View>
     );
 }
 

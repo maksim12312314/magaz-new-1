@@ -37,7 +37,7 @@ export const AddToCart = (product, dispatch, t) => {
     return {type: ADD_TO_CART, payload: product, dispatch, t};
 };
 
-export const SetProductList = (products, id) => {
+export const SetProductsList = (products, id) => {
     return {type: SET_PRODUCTS_LIST, payload: products, id};
 };
 

@@ -11,6 +11,7 @@ import OurText from "../../OurText";
 import {
     SetCategoriesList,
 } from "../../../actions";
+import { FlatList } from "react-native-gesture-handler";
 
 const address = config.getCell("StoreAddress");
 
@@ -18,9 +19,16 @@ const address = config.getCell("StoreAddress");
 const CategoryList = (props) =>
 {
     const { navigation } = props;
+
+    const GetCategoryItem = ({item}) => {
+        return (
+            <CategoryItem navigation={navigation} name={item.name} id={item.productCategoryId} imageUrl={item?.image?.mediaDetails?.file}/>
+        )
+    };
+
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-	
+    
 	const [error, setError] = useState(false);
 
     // Получаем данные от сервера или хранилища
@@ -38,7 +46,7 @@ const CategoryList = (props) =>
                 if ( categories )
                 {
                     categories = JSON.parse(categories);
-                    console.log(SetCategoriesList, "wtf")
+                    
                     dispatch(SetCategoriesList(categories));
                 }
             })();
@@ -72,6 +80,7 @@ const CategoryList = (props) =>
                         ( async () =>
                         {
                             dispatch(SetCategoriesList(data));
+                            console.log(data)
                             await AsyncStorage.setItem("categoryList", JSON.stringify(data));
                         })();
                     })
@@ -83,28 +92,21 @@ const CategoryList = (props) =>
 
     return (
         <>
-            <LinearGradient
+        <LinearGradient
                 style={styles.background}
                 locations={[0, 1.0]}
                 colors={['#078998', '#65B7B9']} />
-
-            {state?.categories?.length ?
+        {state?.categories?.length ?
                 <Header {...props} showCart={true}/>
                 : error ? <Header {...props} showCart={false}/>
                     : <></>
             }
-            <ScrollView style={styles.view}>
-                        <View style={styles.categorylist}>
-                            { state?.categories?.length ?
-                                state.categories.map( (v, k) =>
-                                {
-                                    return <CategoryItem navigation={navigation} name={v.name} id={v.productCategoryId} imageUrl={v?.image?.mediaDetails?.file} key={k}/>
-                                })
-                            : error ? <OurText style={styles.error} translate={true}>errorFetch</OurText>
-                                : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
-                            }
-                        </View>
-            </ScrollView>
+            <FlatList
+            contentContainerStyle={{alignItems:"center", justifyContent: "center"}}
+            numColumns={2}
+            data={state.categories}
+            renderItem={GetCategoryItem}
+            keyExtractor={item => item.productCategoryId}/>
         </>
     );
 }

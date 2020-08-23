@@ -6,6 +6,7 @@ const ru = {
         cartCheckout: "Оформить заказ",
         cartDeleteTitle: "Удалить из корзины",
         cartDeleteMessage: "Вы действительно хотите удалить товар из корзины?",
+        cartEmpty: "Товаров нет.",
         cancel: "Отмена",
         ok: "Ок",
 
