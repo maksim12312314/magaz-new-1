@@ -1,10 +1,174 @@
 import React, {useState, useContext} from "react";
-import { LayoutAnimation, Platform, UIManager, View, StyleSheet, TextInput, Text, Dimensions, Button, TouchableOpacity, ScrollView } from "react-native";
+import { LayoutAnimation, Platform, UIManager,FlatList, View, StyleSheet, TextInput, Text, Dimensions, Button, TouchableOpacity, ScrollView } from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import { stateContext, dispatchContext } from "../../contexts";
 import { NavigationActions } from "react-navigation";
 import Header from "./../Header/index";
 import OurText from "../OurText";
+
+
+const TextField = (props)=>{
+
+    const [isFocused, setFocus] = useState(false);
+    
+    const [text, setText] = useState("");
+
+    
+        return (
+                <View style={styles.container}>
+                    <OurText style={{...styles.text, top: (isFocused||text)?-20:0, opacity: (isFocused||text)?0.7:1}} >{props.text}</OurText>
+                    <TextInput value={text} onChangeText={(e)=>{setText(e)}} style={styles.text_input} onFocus={()=>{setFocus(true);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}} onBlur={()=>{setFocus(false);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}} ></TextInput>
+                </View>
+            )   
+        }
+/* Компонент списка заказов */
+const Orders = (props) => { 
+
+    const { navigation } = props;  
+    const state = useContext(stateContext);
+    const dispatch = useContext(dispatchContext);
+
+
+const DATA =[
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },   {
+        id: '1',
+        title: "item"
+    },
+    {
+        id: '1',
+        title: "item"
+    },
+       {
+        id: '1',
+        title: "item"
+    },   {
+        id: '1',
+        title: "item"
+    },   {
+        id: '1',
+        title: "item"
+    },   {
+        id: '1',
+        title: "item"
+    },   {
+        id: '1',
+        title: "item"
+    },   {
+        id: '1',
+        title: "item"
+    },   {
+        id: '1',
+        title: "item"
+    },
+    
+];
+    
+
+
+
+
+const Item = ({title, style}) => (
+    <View style={styles.data}>
+        <OurText style={styles.text_info}>Имя: {state.deliveryDetails["name"]}</OurText>
+        <OurText style={styles.text_info}>Телефон: {state.deliveryDetails["phone"]}</OurText>
+        <OurText style={styles.text_info}>Адрес: {state.deliveryDetails["address"]}</OurText>
+        <OurText style={styles.text_info}>Этаж: {state.deliveryDetails["floor"]}</OurText>
+        <OurText style={styles.text_info}>Примечания: {state.deliveryDetails["notes"]}</OurText>
+        <OurText style={styles.text_info}>Когда привезти: {state.deliveryDetails["when"]}</OurText>
+        <View style={styles.Buttons}>
+            <TouchableOpacity style={styles.button_go}>
+                <OurText style={styles.text_button}>Зарегистрировать заказ</OurText>
+            </TouchableOpacity>
+        </View>
+    </View>
+
+);   
+
+
+   
+
+    const renderItem = ({ item }) => (
+        <Item title={item.title} />
+    );
+
+    return (
+        <>
+        <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#931DC4", "#F33BC8"]}/>
+                <Header {...props} showCart={true}/>
+        <View style={styles.main}>
+            <View style={styles.header}>
+                <OurText style={styles.textDelivery}>Выполненые заказы</OurText>
+                <View style={styles.line}></View>
+		    </View>
+        </View>
+        <FlatList
+        contentContainerStyle={{alignItems:"center", justifyContent: "center"}}
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        />        
+        </>
+    );
+}
 
 if (
     Platform.OS === 'android' &&
@@ -59,6 +223,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        padding: 20,
+        
        
 
     },
@@ -66,12 +232,11 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "flex-start",
         width: 300,
+        left: 80,
+        paddingTop: 40,
     },
     header: {
         marginBottom: 20,
-    },
-    Buttons: {
-       
     },
     button_go: {
        
@@ -101,66 +266,4 @@ const styles = StyleSheet.create({
         color: "#fff",
     }
 });
-
-const TextField = (props)=>{
-
-    const [isFocused, setFocus] = useState(false);
-    
-    const [text, setText] = useState("");
-    
-
-    
-
-    return (
-                <View style={styles.container}>
-                    <OurText style={{...styles.text, top: (isFocused||text)?-20:0, opacity: (isFocused||text)?0.7:1}} >{props.text}</OurText>
-                    <TextInput value={text} onChangeText={(e)=>{setText(e)}} style={styles.text_input} onFocus={()=>{setFocus(true);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}} onBlur={()=>{setFocus(false);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);}} ></TextInput>
-                </View>
-    )   
-
-}
-
-
-
-/** Компонент списка заказов */
-const Orders = (props) =>
-{
-
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-    const { navigation } = props;
-
-    return (
-        <>
-        <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#931DC4", "#F33BC8"]}/>
-        <ScrollView>
-        <Header {...props} showCart={true}/>
-        <View style={styles.main}>
-            <View style={styles.header}>
-                <OurText style={styles.textDelivery}>Выполненые заказы</OurText>
-                <View style={styles.line}></View>
-		    </View>
-            <View style={styles.time}>
-                <OurText style={styles.text}>26 августа 2019, 4 часа утра</OurText>
-            </View>
-            <View style={styles.data}>
-                <OurText style={styles.text_info}>Имя: {state.deliveryDetails["name"]}</OurText>
-                <OurText style={styles.text_info}>Телефон: {state.deliveryDetails["phone"]}</OurText>
-                <OurText style={styles.text_info}>Адрес: {state.deliveryDetails["address"]}</OurText>
-                <OurText style={styles.text_info}>Этаж: {state.deliveryDetails["floor"]}</OurText>
-                <OurText style={styles.text_info}>Примечания: {state.deliveryDetails["notes"]}</OurText>
-                <OurText style={styles.text_info}>Когда привезти: {state.deliveryDetails["when"]}</OurText> 
-                    
-            </View>
-            <View style={styles.Buttons}>
-                   <TouchableOpacity style={styles.button_go}>
-                         <OurText style={styles.text_button}>Зарегистрировать заказ</OurText>
-                   </TouchableOpacity>
-            </View>
-        </View>
-        </ScrollView>
-        </>
-    );
-}
-
 export default Orders;
