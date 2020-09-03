@@ -60,7 +60,7 @@ const Cart = (props) =>
                     style={!state.cartItems.length ? styles.button_disabled : styles.button_enabled}
                     onPress={()=>{
                         if ( state.cartItems.length )
-                            navigation.navigate('Orders');
+                            navigation.navigate('DeliveryDetails');
                     }}>
 
                     <OurText style={styles.text_button} translate={true}>cartCheckout</OurText>

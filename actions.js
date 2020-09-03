@@ -22,11 +22,11 @@ export const SetField = (fieldName, value) => {
 };
 
 export const SetDeliveryDetailsField = (fieldName, value) => {
-    return {type: SET_DELIVERY_DETAILS_FIELD, payload: value, fieldName};
+    return {type: SET_DELIVERY_DETAILS_FIELD, payload: value, fieldName: fieldName};
 };
 
-export const ChangeButtonStatus = (buttonEnabled) => {
-    return {type: CHANGE_BUTTON_STATUS, buttonEnabled};
+export const ChangeButtonStatus = (buttonEnabled, setButtonEnabled) => {
+    return {type: CHANGE_BUTTON_STATUS, buttonEnabled, setButtonEnabled};
 };
 
 export const SetCategoryPageId = (id) => {
