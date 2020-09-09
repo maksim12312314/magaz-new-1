@@ -13,6 +13,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import DeliveryDetails from './components/Delivery/index';
 import * as hehe from './utils';
+import { createDBTables } from "./db_handler";
 import Orders from "./components/Orders/index";
 import Editor from "./components/Orders/editor";
 
@@ -37,6 +38,7 @@ import {
 	DeleteFromCart,
 	ComputeTotalPrice,
 } from "./actions";
+import { CreateTables } from "./db_handler";
 
 const showToastMessage = (message) =>
 {
@@ -353,6 +355,8 @@ const AppContainer = createAppContainer(NotYoursNavigator);
 const App = () =>
 {
 	const [state, dispatch] = useReducer(reducer, initialState);
+
+	createDBTables();
 
 	// Сюда запихиваем свою страницу
 	// после чего можно работать над ней
