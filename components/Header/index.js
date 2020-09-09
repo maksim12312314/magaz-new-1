@@ -101,7 +101,7 @@ const Header = (props) =>
                                 </Svg>
                                 
                             </TouchableOpacity>                  
-                            <OurText style={{color:'white'}}>
+                            <OurText style={styles.priceText}>
                                 {state.cartTotalPrice}$
                             </OurText>
                         </View> : <></>
