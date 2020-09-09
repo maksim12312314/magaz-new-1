@@ -85,7 +85,6 @@ const ProductsList = (props) =>
                     else
                         // Устанавливаем полученные данные
                         dispatch(SetProductsList(data, state.currentCategory.id));
-                        console.log( data);
                 })
             // Иначе показываем ошибку
             .catch(err => {setError(true)})
@@ -98,9 +97,9 @@ const ProductsList = (props) =>
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
-            { state.products && state.products[state.currentCategory.id].length ?
+            { state?.products[state?.currentCategory.id]?.length ?
             <FlatList
-            data={state.products[state.currentCategory.id]}
+            data={state?.products[state?.currentCategory?.id]}
             renderItem={GetProductsItem}
             keyExtractor={item => item.productId}/>
               :
