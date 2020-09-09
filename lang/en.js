@@ -9,8 +9,9 @@ const en = {
         cartEmpty: "So empty(",
         cancel: "Cancel",
         ok: "Ok",
-
+        
         completedOrdersTitle: "Completed Orders",
+        delivery: "Delivery Details",
         orderFormName: "Name:",
         orderFormPhoneNum: "Phone number:",
         orderFormAddress: "Address:",

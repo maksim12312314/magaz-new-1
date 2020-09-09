@@ -11,6 +11,7 @@ const ru = {
         ok: "Ок",
 
         completedOrdersTitle: "Выполненые заказы",
+        delivery: "Детали доставки",
 
         orderFormName: "Имя:",
         orderFormPhoneNum: "Телефон:",

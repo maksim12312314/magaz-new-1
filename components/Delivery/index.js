@@ -17,6 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { stateContext, dispatchContext } from "../../contexts";
 import Header from "../Header";
 import OurText from "../OurText";
+import {useTranslation} from "react-i18next";
 
 
 import {
@@ -178,10 +179,12 @@ const DeliveryDetails = (props) =>
 
     const [enabled, setEnabled] = useState(false);
     
+    const {t} = useTranslation()
+    
     return (
         <>
         <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#1DC44F", "#3BF3AE"]}/>
-        <Header {...props} title={true} showCart={true}/>
+        <Header {...props} title={t('delivery')} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
                 <OurText style={styles.textDelivery}>Детали доставки</OurText>
