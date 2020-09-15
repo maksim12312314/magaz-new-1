@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: "#FFF",
     },
-    productslist: {
+    productList: {
         position: 'absolute',
         left: 0,
         right: 0,

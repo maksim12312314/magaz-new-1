@@ -78,7 +78,7 @@ const ProductsList = (props) =>
             .then(res => {return res.json()})
             .then( (res) => 
                 {
-                    const {data} = res
+                    const {data} = res;
                    
                     if ( data.errors )
                         setError(true)
@@ -93,13 +93,13 @@ const ProductsList = (props) =>
     return (
         <>
             <LinearGradient
-                style={styles.productslist}
+                style={styles.productList}
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
             { state.products && state.products[state.currentCategory.id].length ?
             <FlatList
-            data={state?.products[state?.currentCategory?.id]}
+            data={state.products[state.currentCategory.id]}
             renderItem={GetProductsItem}
             keyExtractor={item => item.productId}/>
               :
@@ -107,6 +107,6 @@ const ProductsList = (props) =>
             }
         </>
     );
-}
+};
 
 export default ProductsList;
