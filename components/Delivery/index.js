@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
     data: {
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        width: 233,
+        width: 233,    
+        paddingTop:120,
     },
     header: {
         marginBottom: 20,
@@ -162,7 +163,7 @@ const PlaceOrderButton = (props) =>
     return (
         <TouchableOpacity activeOpacity={buttonEnabled ? 0.2 : 1} style={buttonEnabled ? styles.button_enabled : styles.button_disabled} onPress={()=>{
             if (buttonEnabled)
-                navigation.navigate('Editor');
+                navigation.navigate('Editor')
         }
         }>            
                 <OurText style={styles.text_button}>Оформить заказ</OurText>
@@ -175,7 +176,7 @@ const DeliveryDetails = (props) =>
 {
     const {navigation} = props;
 
-    const [buttonEnabled, setButtonEnabled] = useState(true);
+    const [buttonEnabled, setButtonEnabled] = useState(false);
 
     const [enabled, setEnabled] = useState(false);
     
@@ -187,8 +188,8 @@ const DeliveryDetails = (props) =>
         <Header {...props} title={t('delivery')} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
-                <OurText style={styles.textDelivery}>Детали доставки</OurText>
-                <View style={styles.line}></View>
+                {/* <OurText style={styles.textDelivery}>Детали доставки</OurText> */}
+                {/* <View style={styles.line}></View> */}
 		    </View>
             <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={192} style={styles.data}>
                 <TextField buttonEnabled={buttonEnabled} setButtonEnabled={setButtonEnabled} fieldName="name" text="Имя"/>

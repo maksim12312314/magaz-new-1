@@ -5,6 +5,7 @@ import { stateContext, dispatchContext } from "../../contexts";
 import { NavigationActions } from "react-navigation";
 import Header from "./../Header/index";
 import OurText from "../OurText";
+import {useTranslation} from "react-i18next";
 
 
 const TextField = (props)=>{
@@ -27,6 +28,7 @@ const Orders = (props) => {
     const { navigation } = props;  
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
+    const {t} = useTranslation()
 
 
 const DATA =[
@@ -35,88 +37,88 @@ const DATA =[
         title: "item"
     },
     {
-        id: '1',
+        id: '2',
         title: "item"
     },
     {
-        id: '1',
+        id: '3',
         title: "item"
     },
     {
-        id: '1',
+        id: '4',
         title: "item"
     },
     {
-        id: '1',
+        id: '5',
         title: "item"
     },
     {
-        id: '1',
+        id: '6',
         title: "item"
     },
     {
-        id: '1',
+        id: '7',
         title: "item"
     },
     {
-        id: '1',
+        id: '8',
         title: "item"
     },
     {
-        id: '1',
+        id: '9',
         title: "item"
     },
     {
-        id: '1',
+        id: '10',
         title: "item"
     },
     {
-        id: '1',
+        id: '11',
         title: "item"
     },
     {
-        id: '1',
+        id: '12',
         title: "item"
     },
     {
-        id: '1',
+        id: '13',
         title: "item"
     },
     {
-        id: '1',
+        id: '14',
         title: "item"
     },
     {
-        id: '1',
+        id: '15',
         title: "item"
     },   {
-        id: '1',
+        id: '16',
         title: "item"
     },
     {
-        id: '1',
+        id: '17',
         title: "item"
     },
        {
-        id: '1',
+        id: '18',
         title: "item"
     },   {
-        id: '1',
+        id: '19',
         title: "item"
     },   {
-        id: '1',
+        id: '20',
         title: "item"
     },   {
-        id: '1',
+        id: '21',
         title: "item"
     },   {
-        id: '1',
+        id: '22',
         title: "item"
     },   {
-        id: '1',
+        id: '23',
         title: "item"
     },   {
-        id: '1',
+        id: '24',
         title: "item"
     },
     
@@ -153,11 +155,11 @@ const Item = ({title, style}) => (
     return (
         <>
         <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#931DC4", "#F33BC8"]}/>
-                <Header {...props} showCart={true}/>
+                <Header {...props} title={t("completedOrdersTitle")} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
-                <OurText style={styles.textDelivery}>Выполненые заказы</OurText>
-                <View style={styles.line}></View>
+                {/* <OurText style={styles.textDelivery}>Выполненые заказы</OurText>
+                <View style={styles.line}></View> */}
 		    </View>
         </View>
         <FlatList
@@ -231,8 +233,8 @@ const styles = StyleSheet.create({
     data: {
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        width: 300,
-        left: 80,
+        width: Dimensions.get("window").width,
+        left: 12,
         paddingTop: 40,
     },
     header: {
@@ -240,24 +242,21 @@ const styles = StyleSheet.create({
     },
     button_go: {
        
-        paddingHorizontal: 4,
-        paddingVertical: 4,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
         backgroundColor: '#ffffff',
-        left: 0,
+        left: 70,
         right:0,
         marginBottom:10,
-        top: 10,
+        top: 15,
     },    
     text_button: {
         color: "#961EC4",
         
-    }, 
-    time: {
-        bottom: 18,
-    }, 
+    },
     UpHeader: {
         color: '#fff',
     },

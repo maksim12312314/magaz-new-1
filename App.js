@@ -294,7 +294,14 @@ const initialState = {
 	cartItems: [],
 	cartTotalPrice: 0,
 	currentCategory: -1,
-	deliveryDetails: {},
+	deliveryDetails: {
+		name:"",
+		phone:"",
+		address:"",
+		floor:"",
+		notes:"",
+		when:""
+	},
 };
 
 
