@@ -3,24 +3,26 @@ import config from './config'
 
 const db = SQLite.openDatabase(config.getCell("DatabaseName"), config.getCell("DatabaseVersion"));
 
-const executeSql = (sql, args) => {
+const executeSql = (sql, args, onSuccess, err) => {
+    // console.log("cb2", typeof onSuccess)
     db.transaction( (tr) => {
-        tr.executeSql(sql, args);
+        tr.executeSql(sql, args, onSuccess, err)
     });
 };
 
 export const createDBTables = () => {
-    executeSql(`CREATE TABLE IF NOT EXIST CategoryList(
+    console.log('HELELELelr')
+    executeSql(`CREATE TABLE IF NOT EXISTS CategoryList(
         name TEXT,
         productCategoryId INTEGER,
-        imageLink TEXT);
-    CREATE TABLE IF NOT EXIST ProductList(
+        imageLink TEXT)`, [], ()=>{console.log("gg")}, (tr, err)=>{console.log(err)});
+    executeSql(`CREATE TABLE IF NOT EXISTS ProductList(
         name TEXT,
         productId INTEGER,
-        imageLink TEXT;
-    CREATE TABLE IF NOT EXIST Images(
+        imageLink TEXT)`, [], ()=>{console.log("gg")}, (tr, err)=>{console.log(err)});
+    executeSql(`CREATE TABLE IF NOT EXISTS Images(
         imageLink TEXT,
-        imageData TEXT);`);
+        imageData TEXT)`, [], ()=>{console.log("gg")}, (tr, err)=>{console.log(err)});
 };
 
 export const addCategory = (name, productCategoryId, imageLink) => {
@@ -39,4 +41,9 @@ export const addImage = (imageLink, imageData) => {
     executeSql(`INSERT INTO Images(
     	imageLink,
         imageData) VALUES(?, ?)`, [imageLink, imageData]);
+};
+
+export const getImage = (imageLink, cb, err) => {
+    // console.log("cb", typeof cb)
+    executeSql(`SELECT imageData FROM Images WHERE imageLink='${imageLink}' LIMIT 1`, [], cb, err)
 };

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { Image, View, TouchableOpacity, AsyncStorage } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
@@ -7,6 +7,8 @@ import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
+import { addImage, getImage } from "../../../../db_handler";
+import base64 from 'react-native-base64'
 
 import {
     AddToCart,
@@ -70,10 +72,37 @@ const ProductsItem = (props) =>
     const {data} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
+    const [image, setImage] = useState();
     const [selected, setSelected] = useState({});
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
     
+    useEffect( () => {
+        const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
+        :  `${address}wp-content/uploads/woocommerce-placeholder.png`
+
+
+        
+
+        const cb = ( tr, result )=> {
+            console.log("asdas",result)
+            if ( !result.rows.length ) {
+                fetch(url, {method: "GET"})
+                .then( res => {
+                    const bs = base64.encode(res.text());
+                    console.log("sxdassd", bs)
+                    addImage(url, bs);
+                    setImage(bs)
+                } )
+            }
+
+        }
+        let image = getImage(url, cb, (tr, err) => console.log(`ERROR ${err}`));
+        
+        
+        
+    }, []);
+
     return (
         <View style={styles.container}>
 
@@ -82,8 +111,7 @@ const ProductsItem = (props) =>
                 <View style={styles.left}>
                     <Image
                         style={styles.picture}
-                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
-                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+                        source={{uri: image}}
                     />
                 </View>
                     <View style={styles.right}>

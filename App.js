@@ -186,7 +186,6 @@ const reducer = (state, action) =>
 			const newState = {...state};
 			
 			newState.categories = action.payload.productCategories.nodes;
-			
 
 			return newState;
 		}

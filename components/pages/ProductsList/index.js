@@ -97,11 +97,11 @@ const ProductsList = (props) =>
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
-            { state.products && state.products[state.currentCategory.id].length ?
+            { state.products && state.products[state.currentCategory.id]?.length ?
             <FlatList
             data={state.products[state.currentCategory.id]}
             renderItem={GetProductsItem}
-            keyExtractor={item => item.productId}/>
+            keyExtractor={item => String(item.productId)}/>
               :
               <></>
             }

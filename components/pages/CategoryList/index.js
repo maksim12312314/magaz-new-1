@@ -80,7 +80,6 @@ const CategoryList = (props) =>
                         ( async () =>
                         {
                             dispatch(SetCategoriesList(data));
-                            console.log(data)
                             await AsyncStorage.setItem("categoryList", JSON.stringify(data));
                         })();
                     })
