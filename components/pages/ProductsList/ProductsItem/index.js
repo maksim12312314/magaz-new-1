@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import { Image, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Image, View, TouchableOpacity, AsyncStorage, Button } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
@@ -7,6 +7,7 @@ import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
+import Modal from 'react-native-modal';
 
 import {
     AddToCart,
@@ -22,7 +23,7 @@ const AttrPicker = (props) =>
 
     return (
         <>
-            <OurText style={{color:  "#FFF", fontWeight: "bold"}}>{data.name}</OurText>
+            <OurText style={{color:  "#FFF", fontWeight: "bold", marginTop: 15,}}>{data.name}</OurText>
 
             <PickerModal
                 renderSelectView={(disabled, sel, showModal) =>
@@ -73,6 +74,11 @@ const ProductsItem = (props) =>
     const [selected, setSelected] = useState({});
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+      };
     
     return (
         <View style={styles.container}>
@@ -80,16 +86,43 @@ const ProductsItem = (props) =>
             <OurText style={styles.title}>{data.name}</OurText>
             <View style={styles.card}>
                 <View style={styles.left}>
+                <TouchableOpacity
+                onPress={toggleModal}
+                >
+                <Image
+                        style={styles.picture}
+                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
+                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+                    />
+                    </TouchableOpacity>
+                <Modal isVisible={isModalVisible}>
                     <Image
                         style={styles.picture}
                         source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
                         :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
                     />
+                    <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
+                     <OurText style={styles.text_button}>Close</OurText>
+                     </TouchableOpacity>
+                    </Modal>
                 </View>
-                    <View style={styles.right}>
-                        <AttrPickersParent data={itemAttributes}/>
-                    </View>
+                    
+                        <View style={styles.right}>
+                            <AttrPickersParent data={itemAttributes}/>
+                         </View>
             </View>
+            <View style={styles.left_bottom}>
+                    <Image
+                        style={styles.picture_bottom}
+                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
+                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+                    />
+                    <Image
+                        style={styles.picture_bottom}
+                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
+                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+                    />
+                    </View>
                 <View style={styles.bottom}>
                     <OurText style={styles.price} params={{
                         price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
