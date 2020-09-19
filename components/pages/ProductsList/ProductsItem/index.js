@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react";
-import { Image, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Image, View, TouchableOpacity, AsyncStorage, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
@@ -13,6 +13,10 @@ import {
     ComputeTotalPrice,
 } from "../../../../actions";
 const address = config.getCell("StoreAddress");
+
+const totalHeight = Dimensions.get("window").height 
+const itemHeight = totalHeight / 2;
+
 
 const AttrPicker = (props) =>
 {
@@ -67,15 +71,47 @@ const AttrPickersParent = (props) =>
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data} = props;
+    const {data, y, index} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const [selected, setSelected] = useState({});
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
     
+
+    const position = Animated.subtract(index * itemHeight, y);
+    const isDisappearing = -itemHeight;
+    const isTop = 0;
+    const isBottom = totalHeight - itemHeight;
+    const isAppearing = totalHeight;
+    const translateY = Animated.add(
+        Animated.add(
+        y,
+        y.interpolate({
+            inputRange: [0, 0.00001 + index * itemHeight],
+            outputRange: [0, -index * itemHeight],
+            extrapolateRight: "clamp",
+        })
+        ),
+        position.interpolate({
+        inputRange: [isBottom, isAppearing],
+        outputRange: [0, -itemHeight / 4],
+        extrapolate: "clamp",
+        })
+    );
+    const scale = position.interpolate({
+        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
+        outputRange: [0.5, 1, 1, 0.5],
+        extrapolate: "clamp",
+    });
+    const opacity = position.interpolate({
+        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
+        outputRange: [0.5, 1, 1, 0.5],
+    });
+
+
     return (
-        <View style={styles.container}>
+        <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateY }, { scale }] }]}>
 
             <OurText style={styles.title}>{data.name}</OurText>
             <View style={styles.card}>
@@ -119,7 +155,7 @@ const ProductsItem = (props) =>
                     <View>
                         <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
                     </View>
-        </View>
+        </Animated.View>
             
 
     );
