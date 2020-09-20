@@ -22,9 +22,11 @@ const ProductsList = (props) =>
   // const { navigation } = props;
   const GetProductsItem = ({item}) => {
     return (
-        <ProductsItem id={item.productId} data={item}/>
+        <ProductsItem id={item.productId} data={item} galleryImg={item.galleryImages?.nodes[1]?.mediaDetails?.file}
+                      imageUrl={item.image?.mediaDetails?.file} name={item.name}
+        />
     )
-};
+  };
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const [error, setError] = useState(false);
@@ -49,6 +51,13 @@ const ProductsList = (props) =>
                                   mediaDetails {
                                     file
                                   }
+                                }
+                                galleryImages {
+                                    nodes {
+                                      mediaDetails {
+                                        file
+                                      }
+                                    }
                                 }
                                 ... on VariableProduct {
                                   variations {

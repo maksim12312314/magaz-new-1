@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { Image, View, TouchableOpacity, AsyncStorage, Button } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
@@ -65,10 +65,23 @@ const AttrPickersParent = (props) =>
     )
 };
 
+// const GalleryImg = (props) =>
+// {
+//     const {data, galleryImg, imageUrl, name, } = props;
+//     return(
+//         <Image
+//             style={styles.picture_bottom}
+//             source={{uri: galleryImg ?  `${address}wp-content/uploads/` + galleryImg
+//             :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+//         />
+//     )
+// };
+
+
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data} = props;
+    const {data, galleryImg, imageUrl, name, } = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const [selected, setSelected] = useState({});
@@ -83,7 +96,7 @@ const ProductsItem = (props) =>
     return (
         <View style={styles.container}>
 
-            <OurText style={styles.title}>{data.name}</OurText>
+            <OurText style={styles.title}>{name}</OurText>
             <View style={styles.card}>
                 <View style={styles.left}>
                 <TouchableOpacity
@@ -91,14 +104,14 @@ const ProductsItem = (props) =>
                 >
                 <Image
                         style={styles.picture}
-                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
+                        source={{uri: imageUrl ? `${address}wp-content/uploads/` + imageUrl
                         :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
                     />
                     </TouchableOpacity>
                 <Modal isVisible={isModalVisible}>
                     <Image
                         style={styles.picture}
-                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
+                        source={{uri: imageUrl ? `${address}wp-content/uploads/` + imageUrl
                         :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
                     />
                     <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
@@ -112,16 +125,14 @@ const ProductsItem = (props) =>
                          </View>
             </View>
             <View style={styles.left_bottom}>
-                    <Image
-                        style={styles.picture_bottom}
-                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
-                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
-                    />
-                    <Image
-                        style={styles.picture_bottom}
-                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
-                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
-                    />
+
+                {galleryImg && galleryImg.length ?
+            <Image
+            style={styles.picture_bottom}
+            source={{uri: galleryImg ?  `${address}wp-content/uploads/` + galleryImg
+            :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+            /> : <></>
+                }
                     </View>
                 <View style={styles.bottom}>
                     <OurText style={styles.price} params={{
