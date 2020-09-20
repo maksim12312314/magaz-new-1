@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         paddingVertical: 30,
-        marginHorizontal: 20,
+        marginHorizontal: 20
+        
     },
     title: {
         fontSize: 26,

@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from "react";
-import { Image, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Image, View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
@@ -8,13 +8,20 @@ import OurText from "../../../OurText";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
 import { addImage, getImage } from "../../../../db_handler";
-import base64 from 'react-native-base64'
+import ImgToBase64 from "react-native-image-base64";
 
 import {
     AddToCart,
     ComputeTotalPrice,
 } from "../../../../actions";
+import { clockRunning } from "react-native-reanimated";
 const address = config.getCell("StoreAddress");
+
+const totalHeight = Dimensions.get("window").height 
+const itemHeight = totalHeight / 2;
+
+
+
 
 const AttrPicker = (props) =>
 {
@@ -69,7 +76,7 @@ const AttrPickersParent = (props) =>
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data} = props;
+    const {data, y, index} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const [image, setImage] = useState();
@@ -87,24 +94,60 @@ const ProductsItem = (props) =>
         const cb = ( tr, result )=> {
             console.log("asdas",result)
             if ( !result.rows.length ) {
-                fetch(url, {method: "GET"})
-                .then( res => {
-                    const bs = base64.encode(res.text());
-                    console.log("sxdassd", bs)
-                    addImage(url, bs);
-                    setImage(bs)
-                } )
+                fetch(url)
+                .then( res =>  res.blob() )
+                .then( data => {
+                    const base = base64.encode(data);
+                    console.log("sxdassd", base)
+                    //addImage(url, base);
+                    setImage(base);
+                });
+                ImgToBase64.getBase64String(url)
+                .then( base => { console.log(base)})
+                console.log(url)
+                
             }
 
         }
-        let image = getImage(url, cb, (tr, err) => console.log(`ERROR ${err}`));
+        getImage(url, cb, (tr, err) => console.log(`ERROR ${err}`));
         
         
         
     }, []);
 
+    const position = Animated.subtract(index * itemHeight, y);
+    const isDisappearing = -itemHeight;
+    const isTop = 0;
+    const isBottom = totalHeight - itemHeight;
+    const isAppearing = totalHeight;
+    const translateY = Animated.add(
+        Animated.add(
+        y,
+        y.interpolate({
+            inputRange: [0, 0.00001 + index * itemHeight],
+            outputRange: [0, -index * itemHeight],
+            extrapolateRight: "clamp",
+        })
+        ),
+        position.interpolate({
+        inputRange: [isBottom, isAppearing],
+        outputRange: [0, -itemHeight / 4],
+        extrapolate: "clamp",
+        })
+    );
+    const scale = position.interpolate({
+        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
+        outputRange: [0.5, 1, 1, 0.5],
+        extrapolate: "clamp",
+    });
+    const opacity = position.interpolate({
+        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
+        outputRange: [0.5, 1, 1, 0.5],
+    });
+
+
     return (
-        <View style={styles.container}>
+        <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateY }, { scale }] }]}>
 
             <OurText style={styles.title}>{data.name}</OurText>
             <View style={styles.card}>
@@ -147,7 +190,7 @@ const ProductsItem = (props) =>
                     <View>
                         <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
                     </View>
-        </View>
+        </Animated.View>
             
 
     );

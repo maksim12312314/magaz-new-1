@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { stateContext, dispatchContext } from "../../../contexts";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator , Animated} from "react-native";
 import styles from "./styles";
 import Header from "./../../Header/index";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,18 +16,22 @@ import { FlatList } from "react-native-gesture-handler";
 
 const address = config.getCell("StoreAddress");
 
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
 /**Список товаров той или иной категории */
 const ProductsList = (props) =>
 {
   // const { navigation } = props;
-  const GetProductsItem = ({item}) => {
-    return (
-        <ProductsItem id={item.productId} data={item}/>
-    )
-};
+  
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const [error, setError] = useState(false);
+
+
+    const y = new Animated.Value(0);
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
+      useNativeDriver: true,
+    });
     
     // Получаем данные от сервера
     useEffect( () =>
@@ -97,11 +101,19 @@ const ProductsList = (props) =>
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
                 <Header {...props} showCart={true}/>
-            { state.products && state.products[state.currentCategory.id]?.length ?
-            <FlatList
-            data={state.products[state.currentCategory.id]}
-            renderItem={GetProductsItem}
-            keyExtractor={item => String(item.productId)}/>
+            {
+            state.products && state.products[state.currentCategory.id]?.length ?
+              <AnimatedFlatList
+              scrollEventThrottle={16}
+              data={state.products[state.currentCategory.id]}
+              renderItem={({item, index}) => {
+                return (
+                    <ProductsItem index={index} id={item.productId} data={item} y={y}/>
+                )
+              }
+            }
+            keyExtractor={item => String(item.productId)}
+            {...{ onScroll }} />
               :
               <></>
             }
