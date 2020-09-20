@@ -8,7 +8,6 @@ import OurText from "../../../OurText";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
 import { addImage, getImage } from "../../../../db_handler";
-import ImgToBase64 from "react-native-image-base64";
 
 import {
     AddToCart,
@@ -86,26 +85,25 @@ const ProductsItem = (props) =>
     
     useEffect( () => {
         const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
-        :  `${address}wp-content/uploads/woocommerce-placeholder.png`
+        :  `${address}wp-content/uploads/woocommerce-placeholder.png`;
 
 
         
 
         const cb = ( tr, result )=> {
-            console.log("asdas",result)
             if ( !result.rows.length ) {
                 fetch(url)
                 .then( res =>  res.blob() )
                 .then( data => {
-                    const base = base64.encode(data);
-                    console.log("sxdassd", base)
-                    //addImage(url, base);
-                    setImage(base);
+                    const reader = new FileReader();
+                    reader.readAsDataURL(data);
+                    reader.onload = () => {
+                        setImage(reader.result);
+                        addImage(url, reader.result);
+                    }
                 });
-                ImgToBase64.getBase64String(url)
-                .then( base => { console.log(base)})
-                console.log(url)
-                
+            } else {
+                setImage(url, result.rows[0]);
             }
 
         }
