@@ -128,7 +128,7 @@ const DATA =[
 
 
 
-const Item = ({title, style}) => (
+const Item = ({title, style, index}) => (
     <View style={styles.data}>
         <OurText style={styles.text_info}>Имя: {state.deliveryDetails["name"]}</OurText>
         <OurText style={styles.text_info}>Телефон: {state.deliveryDetails["phone"]}</OurText>
@@ -141,6 +141,11 @@ const Item = ({title, style}) => (
                 <OurText style={styles.text_button}>Зарегистрировать заказ</OurText>
             </TouchableOpacity>
         </View>
+        <View style={styles.Buttons}>
+            <TouchableOpacity style={styles.button_del}>
+                <OurText style={styles.text_button}>Отменить заказ</OurText>
+            </TouchableOpacity>
+        </View>
     </View>
 
 );   
@@ -148,9 +153,13 @@ const Item = ({title, style}) => (
 
    
 
-    const renderItem = ({ item }) => (
-        <Item title={item.title} />
-    );
+    // const renderItem = ({ item }) => (
+    //     <Item title={item.title} />
+    // );
+    
+    
+
+
 
     return (
         <>
@@ -165,7 +174,9 @@ const Item = ({title, style}) => (
         <FlatList
         contentContainerStyle={{alignItems:"center", justifyContent: "center"}}
         data={DATA}
-        renderItem={renderItem}
+        renderItem={({ item, index }) => (
+            <Item title={item.title} index={index} />
+        )}
         keyExtractor={item => item.id}
         />        
         </>
@@ -252,6 +263,21 @@ const styles = StyleSheet.create({
         right:0,
         marginBottom:10,
         top: 15,
+        width: 220,
+    },
+    button_del: {
+       
+        paddingHorizontal: 12,
+        paddingVertical: 6,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 10,
+        backgroundColor: '#ffffff',
+        left: 70,
+        right:0,
+        marginBottom:10,
+        top: 15,
+        width: 220,
     },    
     text_button: {
         color: "#961EC4",

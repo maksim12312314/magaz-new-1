@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "flex-start",
         width: 233,    
-        paddingTop:120,
+        paddingTop:130,
     },
     header: {
         marginBottom: 20,
@@ -156,6 +156,9 @@ const TextField = (props)=>{
 
 }
 
+
+
+
 const PlaceOrderButton = (props) =>
 {
     const {navigation, buttonEnabled, setButtonEnabled} = props;
@@ -177,11 +180,12 @@ const DeliveryDetails = (props) =>
     const {navigation} = props;
 
     const [buttonEnabled, setButtonEnabled] = useState(false);
-
-    const [enabled, setEnabled] = useState(false);
     
     const {t} = useTranslation()
-    
+    const dispatch = useContext(dispatchContext);
+    useEffect(() => {
+        dispatch(ChangeButtonStatus(buttonEnabled, setButtonEnabled ));
+    });
     return (
         <>
         <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#1DC44F", "#3BF3AE"]}/>
@@ -202,9 +206,10 @@ const DeliveryDetails = (props) =>
             
             
         </View>
+        <PlaceOrderButton buttonEnabled={buttonEnabled} setButtonEnabled={setButtonEnabled} navigation={navigation} />
+    
 
-        <PlaceOrderButton buttonEnabled={buttonEnabled} setButtonEnabled={setButtonEnabled} navigation={navigation}/>
-        
+
         </>
     );
 }
