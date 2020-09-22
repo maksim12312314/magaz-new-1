@@ -28,5 +28,7 @@ class Config
 
 const config = new Config();
 config.setCell("StoreAddress", "http://edoprovod.ru/");
+config.setCell("DatabaseName", "magaz");
+config.setCell("DatabaseVersion", 1);
 
 export default config; 
