@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from "react";
-import { Image, View, TouchableOpacity, AsyncStorage, Button } from "react-native";
+import { Image, View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
@@ -7,13 +7,21 @@ import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
+import { addImage, getImage } from "../../../../db_handler";
 import Modal from 'react-native-modal';
 
 import {
     AddToCart,
     ComputeTotalPrice,
 } from "../../../../actions";
+import { clockRunning } from "react-native-reanimated";
 const address = config.getCell("StoreAddress");
+
+const totalHeight = Dimensions.get("window").height 
+const itemHeight = totalHeight / 2;
+
+
+
 
 const AttrPicker = (props) =>
 {
@@ -65,25 +73,13 @@ const AttrPickersParent = (props) =>
     )
 };
 
-// const GalleryImg = (props) =>
-// {
-//     const {data, galleryImg, imageUrl, name, } = props;
-//     return(
-//         <Image
-//             style={styles.picture_bottom}
-//             source={{uri: galleryImg ?  `${address}wp-content/uploads/` + galleryImg
-//             :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
-//         />
-//     )
-// };
-
-
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data, galleryImg, imageUrl, name, } = props;
+    const {data, y, index, name, galleryImg, imageUrl} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
+    const [image, setImage] = useState();
     const [selected, setSelected] = useState({});
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
@@ -93,8 +89,69 @@ const ProductsItem = (props) =>
         setModalVisible(!isModalVisible);
       };
     
+    useEffect( () => {
+        const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
+        :  `${address}wp-content/uploads/woocommerce-placeholder.png`;
+
+
+        
+
+        const cb = ( tr, result )=> {
+            if ( !result.rows.length ) {
+                fetch(url)
+                .then( res =>  res.blob() )
+                .then( data => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(data);
+                    reader.onload = () => {
+                        setImage(reader.result);
+                        addImage(url, reader.result);
+                    }
+                });
+            } else {
+                setImage(url, result.rows[0]);
+            }
+
+        }
+        getImage(url, cb, (tr, err) => console.log(`ERROR ${err}`));
+        
+        
+        
+    }, []);
+
+    const position = Animated.subtract(index * itemHeight, y);
+    const isDisappearing = -itemHeight;
+    const isTop = 0;
+    const isBottom = totalHeight - itemHeight;
+    const isAppearing = totalHeight;
+    const translateY = Animated.add(
+        Animated.add(
+        y,
+        y.interpolate({
+            inputRange: [0, 0.00001 + index * itemHeight],
+            outputRange: [0, -index * itemHeight],
+            extrapolateRight: "clamp",
+        })
+        ),
+        position.interpolate({
+        inputRange: [isBottom, isAppearing],
+        outputRange: [0, -itemHeight / 4],
+        extrapolate: "clamp",
+        })
+    );
+    const scale = position.interpolate({
+        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
+        outputRange: [0.5, 1, 1, 0.5],
+        extrapolate: "clamp",
+    });
+    const opacity = position.interpolate({
+        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
+        outputRange: [0.5, 1, 1, 0.5],
+    });
+
+
     return (
-        <View style={styles.container}>
+        <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateY }, { scale }] }]}>
 
             <OurText style={styles.title}>{name}</OurText>
             <View style={styles.card}>
@@ -111,8 +168,7 @@ const ProductsItem = (props) =>
                 <Modal isVisible={isModalVisible}>
                     <Image
                         style={styles.picture}
-                        source={{uri: imageUrl ? `${address}wp-content/uploads/` + imageUrl
-                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+                        source={{uri: image}}
                     />
                     <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
                      <OurText style={styles.text_button}>Close</OurText>
@@ -163,7 +219,7 @@ const ProductsItem = (props) =>
                     <View>
                         <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
                     </View>
-        </View>
+        </Animated.View>
             
 
     );

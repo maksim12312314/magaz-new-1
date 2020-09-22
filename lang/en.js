@@ -10,6 +10,7 @@ const en = {
         cancel: "Cancel",
         ok: "Ok",
 
+        deliveryDetailsTitle: "Delivery Details",
         completedOrdersTitle: "Completed Orders",
         orderFormName: "Name:",
         orderFormPhoneNum: "Phone number:",

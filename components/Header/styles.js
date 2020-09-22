@@ -36,6 +36,28 @@ const styles = StyleSheet.create({
     iconCart: {
         width: 49.5,
         height: 40.5,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
     },
+    badge: {
+        width: 28,
+        height: 28,
+        top: 19,
+        left: -15,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    badgeText: {
+        color: "#fff",
+        textShadowColor: "#000",
+        textShadowRadius: 1,
+        textShadowOffset: {width: .5, height: .5},
+    },
+    priceText: {
+        color: "#fff",
+        textShadowRadius: 1,
+        textShadowOffset: {width: 1, height: 1},
+    }
 });
 export default styles;
