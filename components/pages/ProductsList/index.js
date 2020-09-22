@@ -54,6 +54,13 @@ const ProductsList = (props) =>
                                     file
                                   }
                                 }
+                                galleryImages {
+                                    nodes {
+                                      mediaDetails {
+                                        file
+                                      }
+                                    }
+                                }
                                 ... on VariableProduct {
                                   variations {
                                     nodes {
@@ -108,7 +115,8 @@ const ProductsList = (props) =>
               data={state.products[state.currentCategory.id]}
               renderItem={({item, index}) => {
                 return (
-                    <ProductsItem index={index} id={item.productId} data={item} y={y}/>
+                    <ProductsItem index={index} id={item.productId} data={item} y={y} galleryImg={item.galleryImages?.nodes[1]?.mediaDetails?.file}
+                    imageUrl={item.image?.mediaDetails?.file} name={item.name}/>
                 )
               }
             }
