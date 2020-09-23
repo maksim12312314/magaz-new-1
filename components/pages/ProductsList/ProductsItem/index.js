@@ -8,6 +8,7 @@ import OurText from "../../../OurText";
 import OurImage from "../../../OurImage";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
+import Modal from 'react-native-modal';
 
 import {
     AddToCart,
@@ -29,7 +30,7 @@ const AttrPicker = (props) =>
 
     return (
         <>
-            <OurText style={{color:  "#FFF", fontWeight: "bold"}}>{data.name}</OurText>
+            <OurText style={{color:  "#FFF", fontWeight: "bold", marginTop: 15,}}>{data.name}</OurText>
 
             <PickerModal
                 renderSelectView={(disabled, sel, showModal) =>
@@ -74,12 +75,18 @@ const AttrPickersParent = (props) =>
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data, y, index} = props;
+    const {data, y, index, name, galleryImg, imageUrl} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
     const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
+
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     const position = Animated.subtract(index * itemHeight, y);
     const isDisappearing = -itemHeight;
@@ -115,44 +122,62 @@ const ProductsItem = (props) =>
     return (
         <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateY }, { scale }] }]}>
 
-            <OurText style={styles.title}>{data.name}</OurText>
+            <OurText style={styles.title}>{name}</OurText>
             <View style={styles.card}>
                 <View style={styles.left}>
-                    <OurImage url={url} />
-                </View>
-                    <View style={styles.right}>
-                        <AttrPickersParent data={itemAttributes}/>
-                    </View>
-            </View>
-                <View style={styles.bottom}>
-                    <OurText style={styles.price} params={{
-                        price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
-                    }}>productPrice</OurText>
-                        <TouchableOpacity style={styles.button} onPress={ (e) =>
-                        {
-                            // Обрабатываем нажатие на кнопку "Купить"
-
-                            // Заносим данные
-                            let payload = {
-                                id: data.productId,
-                                name: data.name,
-                                count: 1,
-                                price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
-                                stockQuantity: data.stockQuantity || 99,
-                                selectedVariants: [
-                                    "variantID"
-                                ]
-                            };
-                            // Добавляем в корзину
-                            dispatch(AddToCart(payload, dispatch, t));
-                            dispatch(ComputeTotalPrice());
-                        }}>
-                            <OurText style={styles.text_button} translate={true}>productBuy</OurText>
+                    <OurImage onPress={toggleModal} url={url} />
+                    <Modal isVisible={isModalVisible}>
+                        <OurImage
+                            url={galleryImg}
+                        />
+                        <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
+                            <OurText style={styles.text_button}>Close</OurText>
                         </TouchableOpacity>
+                    </Modal>
                 </View>
-                    <View>
-                        <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
-                    </View>
+                    
+                        <View style={styles.right}>
+                            <AttrPickersParent data={itemAttributes}/>
+                         </View>
+            </View>
+            <View style={styles.left_bottom}>
+                {
+                    galleryImg && galleryImg.length ?
+                        <OurImage
+                        style={styles.picture_bottom}
+                        url={galleryImg}
+                        /> : <></>
+                }
+            </View>
+            <View style={styles.bottom}>
+                <OurText style={styles.price} params={{
+                    price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
+                }}>productPrice</OurText>
+                    <TouchableOpacity style={styles.button} onPress={ (e) =>
+                    {
+                        // Обрабатываем нажатие на кнопку "Купить"
+
+                        // Заносим данные
+                        let payload = {
+                            id: data.productId,
+                            name: data.name,
+                            count: 1,
+                            price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
+                            stockQuantity: data.stockQuantity || 99,
+                            selectedVariants: [
+                                "variantID"
+                            ]
+                        };
+                        // Добавляем в корзину
+                        dispatch(AddToCart(payload, dispatch, t));
+                        dispatch(ComputeTotalPrice());
+                    }}>
+                        <OurText style={styles.text_button} translate={true}>productBuy</OurText>
+                    </TouchableOpacity>
+            </View>
+            <View>
+                <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
+            </View>
         </Animated.View>
             
 
