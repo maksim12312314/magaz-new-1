@@ -9,7 +9,6 @@ const placeholder = require("../../assets/image_placeholder.png");
 const OurImage = (props) => {
     const {url, title, onPress, style} = props;
     const [image, setImage] = useState(Image.resolveAssetSource(placeholder).uri);
-    console.log(`url${url}`)
     const onSuccess = ( tr, result )=> {
         if ( !result.rows.length ) {
             fetch(url)
