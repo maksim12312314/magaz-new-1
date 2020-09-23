@@ -6,7 +6,11 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         paddingVertical: 30,
-        marginHorizontal: 20
+        marginHorizontal: 5,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: "#707070",
+        marginBottom:10,
         
     },
     title: {
@@ -51,13 +55,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     modal_button:{
-        paddingHorizontal: 30,
-        paddingVertical: 5,
-        borderRadius: 15,
-        textAlign: "center",
-        justifyContent: 'center',
-        backgroundColor: '#ffffff',
-        marginHorizontal: 70,
+        width: 40.5,
+        height: 49.5,
+        flex: 1,
+    },
+    modal_picture:{
+        width: 260,
+        height: 260,
+        borderRadius: 36,
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "#707070",
+        marginBottom: 150,
     },
     card:
     {

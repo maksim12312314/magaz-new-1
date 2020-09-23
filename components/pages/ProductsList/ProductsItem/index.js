@@ -9,6 +9,7 @@ import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
 import { addImage, getImage } from "../../../../db_handler";
 import Modal from 'react-native-modal';
+import Svg, {Path} from "react-native-svg";
 
 import {
     AddToCart,
@@ -73,6 +74,8 @@ const AttrPickersParent = (props) =>
     )
 };
 
+
+
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
@@ -88,7 +91,22 @@ const ProductsItem = (props) =>
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
       };
-    
+
+      const GalleryImgArray = (props) =>
+{
+    return (
+        <TouchableOpacity onPress={toggleModal}>
+                 {galleryImg && galleryImg.length ?
+            <Image
+                style={styles.picture_bottom}
+                source={{uri: galleryImg ?  `${address}wp-content/uploads/` + galleryImg
+                :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
+            /> : <></>
+                 }
+        </TouchableOpacity>
+    );
+};
+
     useEffect( () => {
         const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
         :  `${address}wp-content/uploads/woocommerce-placeholder.png`;
@@ -166,13 +184,18 @@ const ProductsItem = (props) =>
                     />
                     </TouchableOpacity>
                 <Modal isVisible={isModalVisible}>
+                <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
+                    <Svg width="49.5" height="40.5" viewBox="0 0 320 512">
+                                        <Path id="chevron-left-solid"
+                                        data-name="chevron left-solid"
+                                        d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"
+                                        fill="#fff"/>
+                                    </Svg>
+                     </TouchableOpacity>
                     <Image
-                        style={styles.picture}
+                        style={styles.modal_picture}
                         source={{uri: image}}
                     />
-                    <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
-                     <OurText style={styles.text_button}>Close</OurText>
-                     </TouchableOpacity>
                     </Modal>
                 </View>
                     
@@ -180,16 +203,9 @@ const ProductsItem = (props) =>
                             <AttrPickersParent data={itemAttributes}/>
                          </View>
             </View>
-            <View style={styles.left_bottom}>
-
-                {galleryImg && galleryImg.length ?
-            <Image
-            style={styles.picture_bottom}
-            source={{uri: galleryImg ?  `${address}wp-content/uploads/` + galleryImg
-            :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
-            /> : <></>
-                }
-                    </View>
+                <View style={styles.left_bottom}>
+                    <GalleryImgArray/>
+                </View>
                 <View style={styles.bottom}>
                     <OurText style={styles.price} params={{
                         price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
