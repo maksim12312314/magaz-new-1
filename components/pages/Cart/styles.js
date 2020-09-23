@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
         minHeight: Dimensions.get("window").height,
     },
     items: {
-        justifyContent: "center",
-        alignItems: "center"
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     itemsBlock: {
         flexDirection: "column",
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
+        marginTop: 8,
         marginBottom: 30,
     },
     button_disabled: {

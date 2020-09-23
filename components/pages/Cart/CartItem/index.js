@@ -8,7 +8,7 @@ import OurText from "../../../OurText";
 /** Компонент товара в корзине */
 const CartItem = (props) =>
 {
-    const {id, name, price, count} = props.data;
+    const {id, name, price, count} = props;
     return (
         <View style={styles.container}>
             <OurText style={styles.item_name}>{name}</OurText>

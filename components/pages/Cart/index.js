@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { stateContext, dispatchContext } from "../../../contexts";
+import { stateContext } from "../../../contexts";
 
-import { ScrollView, TouchableOpacity, View, Text, Dimensions } from "react-native";
+import { View, FlatList, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import CartIcon from "./CartIcon";
 import CartItem from "./CartItem";
@@ -11,28 +11,16 @@ import Header from "../../Header/index";
 import OurText from "../../OurText";
 
 /** Компонент блока товаров  */
-const ItemsBlock = (props)=>{
-
-    const state = useContext(stateContext);
-    
+const ItemsBlock = ({item})=> {    
     return (
-        <View style={styles.itemsBlock}> 
-            { !state.cartItems.length
-                ? <OurText style={{color: "#FFF"}} translate={true}>cartEmpty</OurText>
-                : state.cartItems.map( (v, i) =>
-                {
-                    return <CartItem key={i} data={v}/>
-                }) }
-            
-        </View>
-    )
+        <CartItem id={item.id} name={item.name} price={item.price} count={item.count}/>
+    );
 };
 
 /** Компонент корзины */
 const Cart = (props) =>
 {
     const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
     const {navigation} = props;
 
     return (
@@ -43,28 +31,26 @@ const Cart = (props) =>
                 colors={["#E81C1C", "#E4724F"]}/>
 
                 <Header {...props} title={"cartTitle"} titleFunc={() => { navigation.navigate('DeliveryDetails') }}/>
-                <ScrollView
-                    contentContainerStyle={{
-                        justifyContent: "flex-start", alignItems:"center"
-                    }}
-                    style={styles.container}>
-                        <CartIcon/>
+                <View style={styles.items}>
+                    <CartIcon />
+                    <FlatList
+                        contentContainerStyle={{flexDirection: "column", alignItems:"center", justifyContent: "center"}}
+                        
+                        data={state.cartItems}
+                        renderItem={ItemsBlock}
+                        keyExtractor={(item, index) => String(index)}/>
+                    <CartTotal />
+                    <TouchableOpacity
+                        activeOpacity={ !state.cartItems.length ? 1.0 : 0.2 }
+                        style={!state.cartItems.length ? styles.button_disabled : styles.button_enabled}
+                        onPress={()=>{
+                            if ( state.cartItems.length )
+                                navigation.navigate('DeliveryDetails');
+                        }}>
 
-                        <ItemsBlock/>
-
-                        <CartTotal/>
-
-                </ScrollView>
-                <TouchableOpacity
-                    activeOpacity={ !state.cartItems.length ? 1.0 : 0.2 }
-                    style={!state.cartItems.length ? styles.button_disabled : styles.button_enabled}
-                    onPress={()=>{
-                        if ( state.cartItems.length )
-                            navigation.navigate('DeliveryDetails');
-                    }}>
-
-                    <OurText style={styles.text_button} translate={true}>cartCheckout</OurText>
-                </TouchableOpacity>
+                        <OurText style={styles.text_button} translate={true}>cartCheckout</OurText>
+                    </TouchableOpacity>
+                </View>
         </>
     );
 };
