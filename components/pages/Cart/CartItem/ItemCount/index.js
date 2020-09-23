@@ -59,6 +59,7 @@ const ItemCount = (props) =>
                             text: t("ok"),
                             onPress: () => {
                                 dispatch(DeleteFromCart(id, true));
+                                dispatch(ComputeTotalPrice());
                             },
                         },,
                     ],
