@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import { stateContext, dispatchContext } from "../../../contexts";
-import { View, Text, ScrollView, ActivityIndicator , Animated} from "react-native";
+import { Animated } from "react-native";
 import styles from "./styles";
 import Header from "./../../Header/index";
 import { LinearGradient } from 'expo-linear-gradient';
 import ProductsItem from './ProductsItem/index';
 import config from "../../../config";
-import OurText from "../../OurText";
 
 import {
     SetProductsList,

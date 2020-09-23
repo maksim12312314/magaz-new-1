@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import { ScrollView, View, Text, ActivityIndicator, AsyncStorage } from "react-native";
+import { AsyncStorage } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "../../../contexts";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
 import Header from "../../Header/index";
 import config from "../../../config";
-import OurText from "../../OurText";
 
 import {
     SetCategoriesList,

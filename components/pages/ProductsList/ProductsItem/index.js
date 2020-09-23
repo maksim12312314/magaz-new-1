@@ -1,19 +1,18 @@
 import React, {useContext, useState, useEffect} from "react";
-import { Image, View, TouchableOpacity, Dimensions, Animated } from "react-native";
+import {View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
 import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
+import OurImage from "../../../OurImage";
 import PickerButton from "../../../PickerButton";
 import {useTranslation} from "react-i18next";
-import { addImage, getImage } from "../../../../db_handler";
 
 import {
     AddToCart,
     ComputeTotalPrice,
 } from "../../../../actions";
-import { clockRunning } from "react-native-reanimated";
 const address = config.getCell("StoreAddress");
 
 const totalHeight = Dimensions.get("window").height 
@@ -78,40 +77,9 @@ const ProductsItem = (props) =>
     const {data, y, index} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-    const [image, setImage] = useState();
-    const [selected, setSelected] = useState({});
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
-    
-    useEffect( () => {
-        const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
-        :  `${address}wp-content/uploads/woocommerce-placeholder.png`;
-
-
-        
-
-        const cb = ( tr, result )=> {
-            if ( !result.rows.length ) {
-                fetch(url)
-                .then( res =>  res.blob() )
-                .then( data => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(data);
-                    reader.onload = () => {
-                        setImage(reader.result);
-                        addImage(url, reader.result);
-                    }
-                });
-            } else {
-                setImage(url, result.rows[0]);
-            }
-
-        }
-        getImage(url, cb, (tr, err) => console.log(`ERROR ${err}`));
-        
-        
-        
-    }, []);
+    const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
 
     const position = Animated.subtract(index * itemHeight, y);
     const isDisappearing = -itemHeight;
@@ -150,10 +118,7 @@ const ProductsItem = (props) =>
             <OurText style={styles.title}>{data.name}</OurText>
             <View style={styles.card}>
                 <View style={styles.left}>
-                    <Image
-                        style={styles.picture}
-                        source={{uri: image}}
-                    />
+                    <OurImage url={url} />
                 </View>
                     <View style={styles.right}>
                         <AttrPickersParent data={itemAttributes}/>
