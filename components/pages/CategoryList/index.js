@@ -75,21 +75,22 @@ const CategoryList = (props) =>
 
     return (
         <>
-        <LinearGradient
+            <LinearGradient
                 style={styles.background}
                 locations={[0, 1.0]}
                 colors={['#078998', '#65B7B9']} />
-        {state?.categories?.length ?
-                <Header {...props} showCart={true}/>
-                : error ? <Header {...props} showCart={false}/>
-                    : <></>
+            {
+                state?.categories?.length ?
+                    <Header {...props} showCart={true}/>
+                    : error ? <Header {...props} showCart={false}/>
+                        : <></>
             }
             <FlatList
-            contentContainerStyle={{alignItems:"center", justifyContent: "center"}}
-            numColumns={2}
-            data={state.categories}
-            renderItem={GetCategoryItem}
-            keyExtractor={item => item.productCategoryId}/>
+                contentContainerStyle={{alignItems:"center", justifyContent: "center"}}
+                numColumns={2}
+                data={state.categories}
+                renderItem={GetCategoryItem}
+                keyExtractor={item => String(item.productCategoryId)}/>
         </>
     );
 }
