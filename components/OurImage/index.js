@@ -9,7 +9,7 @@ const placeholder = require("../../assets/image_placeholder.png");
 const OurImage = (props) => {
     const {url, title, onPress, style} = props;
     const [image, setImage] = useState(Image.resolveAssetSource(placeholder).uri);
-    const onSuccess = ( tr, result )=> {
+    const onSuccess = ( tr, result ) => {
         if ( !result.rows.length ) {
             fetch(url)
             .then( res =>  res.blob() )
@@ -22,7 +22,10 @@ const OurImage = (props) => {
                 };
             });
         } else {
-            setImage(url, result.rows[0]);
+            const imageData = result.rows.item(0).imageData;
+
+            if ( imageData )
+                setImage(imageData);
         }
 
     };
