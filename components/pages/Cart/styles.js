@@ -21,6 +21,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: Dimensions.get("window").width,
     },
+    cartIcon: {
+        width: 140,
+        borderBottomWidth: 1,
+        borderColor: "#FFF",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        marginBottom: 8,
+    },
     checkoutButton: {
         width: Dimensions.get("window").width - 16,
         left: 0,
