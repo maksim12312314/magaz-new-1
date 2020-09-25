@@ -3,9 +3,8 @@ import { StyleSheet, Dimensions } from "react-native";
 // CART PAGE STYLES
 
 const styles = StyleSheet.create({
-    container: {
+    cartList: {
         flexDirection: "column",
-        maxHeight: Dimensions.get("window").height,
     },
     gradient: {
         position: 'absolute',
@@ -16,19 +15,18 @@ const styles = StyleSheet.create({
         minHeight: Dimensions.get("window").height,
     },
     items: {
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    itemsBlock: {
+        flex: 1,
         flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: Dimensions.get("window").width,
     },
     button_enabled: {
-        paddingHorizontal: 18,
-        paddingVertical: 4,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: '#ffffff',
+        width: Dimensions.get("window").width - 16,
+        paddingHorizontal: 32,
+        paddingVertical: 8,
+        borderRadius: 14,
+        backgroundColor: '#FFF',
         left: 0,
         right: 0,
         bottom: 0,
@@ -36,19 +34,21 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     button_disabled: {
-        paddingHorizontal: 18,
-        paddingVertical: 4,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
+        width: Dimensions.get("window").width - 16,
+        paddingHorizontal: 32,
+        paddingVertical: 8,
+        borderRadius: 14,
         backgroundColor: '#FFFA',
         left: 0,
         right: 0,
         bottom: 0,
+        marginTop: 8,
         marginBottom: 30,
     },
     text_button: {
         color: "#E4724F",
+        fontSize: 16,
+        textAlign: "center",
     },
 });
 

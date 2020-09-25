@@ -34,8 +34,7 @@ const Cart = (props) =>
                 <View style={styles.items}>
                     <CartIcon />
                     <FlatList
-                        contentContainerStyle={{flexDirection: "column", alignItems:"center", justifyContent: "center"}}
-                        
+                        contentContainerStyle={styles.cartList}
                         data={state.cartItems}
                         renderItem={ItemsBlock}
                         keyExtractor={(item, index) => String(index)}/>
