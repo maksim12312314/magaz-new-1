@@ -12,6 +12,7 @@ import {
 } from "../../../actions";
 
 import { FlatList } from "react-native-gesture-handler";
+import {getProductList, getProductListQuery} from "../../../queries";
 
 const address = config.getCell("StoreAddress");
 
@@ -38,52 +39,10 @@ const ProductsList = (props) =>
         fetch(`${address}graphql`, {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                query: `
-                    {
-                        products(where: {categoryId: ${state.currentCategory.id}}) {
-                            nodes {
-                                productId
-                                name
-                                description
-                                image {
-                                  mediaDetails {
-                                    file
-                                  }
-                                }
-                                galleryImages {
-                                    nodes {
-                                      mediaDetails {
-                                        file
-                                      }
-                                    }
-                                }
-                                ... on VariableProduct {
-                                  variations {
-                                    nodes {
-                                      price
-                                      variationId
-                                      name
-                                    }
-                                  }
-                                  attributes {
-                                    nodes {
-                                      attributeId
-                                      name
-                                      options
-                                    }
-                                  }
-                                }
-                                ... on SimpleProduct {
-                                  price
-                                }
-                              }
-                        }
-                    }
-                `,
-            }),
+
+            body: getProductListQuery(state.currentCategory.id),
             })
             .then(res => {return res.json()})
             .then( (res) => 

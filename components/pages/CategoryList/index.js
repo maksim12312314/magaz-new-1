@@ -11,6 +11,7 @@ import {
     SetCategoriesList,
 } from "../../../actions";
 import { FlatList } from "react-native-gesture-handler";
+import {getCategoryListQuery} from "../../../queries";
 
 const address = config.getCell("StoreAddress");
 
@@ -55,23 +56,7 @@ const CategoryList = (props) =>
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    query: `
-                        {
-                            productCategories(where: {hideEmpty: true}) {
-                                nodes {
-                                  name
-                                  productCategoryId
-                                  image {
-                                    mediaDetails {
-                                      file
-                                    }
-                                  }
-                                }
-                              }
-                        }
-                    `,
-                }),
+                body: getCategoryListQuery(),
                 })
 				.then(res => res.json())
                 .then( ({data}) => 
