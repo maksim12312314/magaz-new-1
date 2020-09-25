@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { View, Text, TouchableOpacity, Dimensions, Alert } from "react-native";
+import { View, Dimensions, Alert } from "react-native";
 import { stateContext, dispatchContext } from "../../../../../contexts";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusCircle, faMinusCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import styles from "./styles";
 import { useTranslation } from "react-i18next";
@@ -52,9 +51,18 @@ const ItemCount = (props) =>
     return (
         <View style={styles.container}>
             <View style={styles.itemControl}>
-                <OurIconButton style={{margin: 1}} icon={faPlusCircle} onPress={plusPressed}/>
-                <OurIconButton style={{margin: 1}} icon={faMinusCircle} onPress={minusPressed}/>
-                <OurIconButton style={{margin: 1}} icon={faTimesCircle} onPress={deletePressed}/>
+                <OurIconButton size={Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05}
+                               style={{margin: 1}}
+                               icon={faPlusCircle}
+                               onPress={plusPressed}/>
+                <OurIconButton size={Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05}
+                               style={{margin: 1}}
+                               icon={faMinusCircle}
+                               onPress={minusPressed}/>
+                <OurIconButton size={Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05}
+                               style={{margin: 1}}
+                               icon={faTimesCircle}
+                               onPress={deletePressed}/>
             </View>
         </View>
     );
