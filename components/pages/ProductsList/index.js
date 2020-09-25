@@ -13,6 +13,7 @@ import {
 
 import { FlatList } from "react-native-gesture-handler";
 import {getProductList, getProductListQuery} from "../../../queries";
+import OurActivityIndicator from "../../OurActivityIndicator";
 
 const address = config.getCell("StoreAddress");
 
@@ -21,7 +22,7 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 /**Список товаров той или иной категории */
 const ProductsList = (props) =>
 {
-  // const { navigation } = props;
+    // const { navigation } = props;
   
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
@@ -30,7 +31,7 @@ const ProductsList = (props) =>
 
     const y = new Animated.Value(0);
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
-      useNativeDriver: true,
+        useNativeDriver: true,
     });
     
     // Получаем данные от сервера
@@ -48,7 +49,7 @@ const ProductsList = (props) =>
             .then( (res) => 
                 {
                     const {data} = res;
-                   
+
                     if ( data.errors )
                         setError(true)
                     else
@@ -65,23 +66,22 @@ const ProductsList = (props) =>
                 style={styles.productList}
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
-                <Header {...props} showCart={true}/>
+            <Header {...props} showCart={true}/>
             {
             state.products && state.products[state.currentCategory.id]?.length ?
-              <AnimatedFlatList
-              scrollEventThrottle={16}
-              data={state.products[state.currentCategory.id]}
-              renderItem={({item, index}) => {
-                return (
-                    <ProductsItem index={index} id={item.productId} data={item} y={y} galleryImg={item.galleryImages?.nodes[1]?.mediaDetails?.file}
-                    imageUrl={item.image?.mediaDetails?.file} name={item.name}/>
-                )
-              }
-            }
-            keyExtractor={item => String(item.productId)}
-            {...{ onScroll }} />
-              :
-              <></>
+                <AnimatedFlatList
+                    scrollEventThrottle={16}
+                    data={state.products[state.currentCategory.id]}
+                    renderItem={ ({item, index}) => {
+                        return (
+                            <ProductsItem index={index} id={item.productId} data={item} y={y} galleryImg={item.galleryImages?.nodes[1]?.mediaDetails?.file}
+                            imageUrl={item.image?.mediaDetails?.file} name={item.name} />
+                        )
+                    }}
+                    keyExtractor={item => String(item.productId)}
+                    {...{ onScroll }} />
+                :
+                <OurActivityIndicator error />
             }
         </>
     );

@@ -1,20 +1,20 @@
 import React from "react";
-import { ActivityIndicator } from "react-native";
-import OurText from "./OurText";
-import View from "react-native-web/src/exports/View";
+import { ActivityIndicator, View } from "react-native";
+import OurText from "../OurText";
+import styles from "./styles";
 
-const ActivityIndicator = (props) => {
-    const { error } = props;
+const OurActivityIndicator = (props) => {
+    const { text, translate } = props;
     return (
-        <View>
+        <View style={styles.container}>
             {
-                !error ?
-                    <ActivityIndicator/>
+                !text ?
+                    <ActivityIndicator style={styles.indicator} color={"#fff"} size={64}/>
                 :
-                    <OurText ></OurText>
+                    <OurText translate>{text}</OurText>
             }
         </View>
     );
 };
 
-export default ActivityIndicator;
+export default OurActivityIndicator;
