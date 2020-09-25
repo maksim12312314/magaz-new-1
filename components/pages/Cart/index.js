@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { stateContext } from "../../../contexts";
 
-import { View, FlatList, TouchableOpacity } from "react-native";
+import {View, FlatList} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import CartIcon from "./CartIcon";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
 import Header from "../../Header/index";
-import OurText from "../../OurText";
+import OurTextButton from "../../OurTextButton";
 
 /** Компонент блока товаров  */
 const ItemsBlock = ({item})=> {    
@@ -21,7 +21,12 @@ const ItemsBlock = ({item})=> {
 const Cart = (props) =>
 {
     const state = useContext(stateContext);
-    const {navigation} = props;
+    const { navigation } = props;
+
+    const toCheckout = (e)=> {
+        if ( state.cartItems.length )
+            navigation.navigate('DeliveryDetails');
+    };
 
     return (
         <>
@@ -39,16 +44,12 @@ const Cart = (props) =>
                         renderItem={ItemsBlock}
                         keyExtractor={(item, index) => String(index)}/>
                     <CartTotal />
-                    <TouchableOpacity
-                        activeOpacity={ !state.cartItems.length ? 1.0 : 0.2 }
-                        style={!state.cartItems.length ? styles.button_disabled : styles.button_enabled}
-                        onPress={()=>{
-                            if ( state.cartItems.length )
-                                navigation.navigate('DeliveryDetails');
-                        }}>
-
-                        <OurText style={styles.text_button} translate={true}>cartCheckout</OurText>
-                    </TouchableOpacity>
+                    <OurTextButton
+                        translate={true}
+                        disabled={!state.cartItems.length}
+                        onPress={toCheckout}
+                        style={styles.checkoutButton}
+                        >cartCheckout</OurTextButton>
                 </View>
         </>
     );

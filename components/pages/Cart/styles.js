@@ -21,34 +21,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: Dimensions.get("window").width,
     },
-    button_enabled: {
+    checkoutButton: {
         width: Dimensions.get("window").width - 16,
-        paddingHorizontal: 32,
-        paddingVertical: 8,
-        borderRadius: 14,
-        backgroundColor: '#FFF',
         left: 0,
         right: 0,
         bottom: 0,
         marginTop: 8,
         marginBottom: 30,
-    },
-    button_disabled: {
-        width: Dimensions.get("window").width - 16,
-        paddingHorizontal: 32,
-        paddingVertical: 8,
-        borderRadius: 14,
-        backgroundColor: '#FFFA',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        marginTop: 8,
-        marginBottom: 30,
-    },
-    text_button: {
-        color: "#E4724F",
-        fontSize: 16,
-        textAlign: "center",
     },
 });
 
