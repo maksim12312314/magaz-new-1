@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { stateContext } from "../../../contexts";
-
-import {View, FlatList} from "react-native";
+import { View, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import CartIcon from "./CartIcon";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
@@ -37,7 +37,9 @@ const Cart = (props) =>
 
                 <Header {...props} title={"cartTitle"} titleFunc={() => { navigation.navigate('DeliveryDetails') }}/>
                 <View style={styles.items}>
-                    <CartIcon />
+                    <View style={styles.cartIcon}>
+                        <FontAwesomeIcon size={42} color={"#fff"} icon={faShoppingBasket}/>
+                    </View>
                     <FlatList
                         contentContainerStyle={styles.cartList}
                         data={state.cartItems}
