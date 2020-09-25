@@ -4,14 +4,14 @@ import OurText from "../OurText";
 import styles from "./styles";
 
 const OurActivityIndicator = (props) => {
-    const { text, translate } = props;
+    const { text, translate, params } = props;
     return (
         <View style={styles.container}>
             {
                 !text ?
                     <ActivityIndicator style={styles.indicator} color={"#fff"} size={64}/>
                 :
-                    <OurText translate>{text}</OurText>
+                    <OurText translate params>{text}</OurText>
             }
         </View>
     );
