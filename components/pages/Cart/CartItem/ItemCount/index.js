@@ -30,7 +30,7 @@ const ItemCount = (props) =>
 {
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-    const {count, id} = props;
+    const {id} = props;
     const { t } = useTranslation();
 
     return (
