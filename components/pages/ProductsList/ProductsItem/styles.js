@@ -94,9 +94,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         marginHorizontal: 70,
     },
-    text_button: {
+    textButton: {
+        paddingHorizontal: 16,
         color: "#078998",
-        
     },
     descriptionText:
     {

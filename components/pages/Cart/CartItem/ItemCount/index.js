@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { View, Dimensions, Alert } from "react-native";
-import { stateContext, dispatchContext } from "../../../../../contexts";
+import { dispatchContext } from "../../../../../contexts";
 import { faPlusCircle, faMinusCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import styles from "./styles";
 import { useTranslation } from "react-i18next";
@@ -33,19 +33,19 @@ const ItemCount = (props) =>
     };
     const deletePressed = (e) => {
         Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
-                {
-                    text: t("cancel"),
-                    style: "cancel"
+            {
+                text: t("cancel"),
+                style: "cancel"
+            },
+            {
+                text: t("ok"),
+                onPress: () => {
+                    dispatch(DeleteFromCart(id, true));
+                    dispatch(ComputeTotalPrice());
                 },
-                {
-                    text: t("ok"),
-                    onPress: () => {
-                        dispatch(DeleteFromCart(id, true));
-                        dispatch(ComputeTotalPrice());
-                    },
-                },
-            ],
-            {cancelable: false});
+            },
+        ],
+        {cancelable: false});
     };
 
     return (

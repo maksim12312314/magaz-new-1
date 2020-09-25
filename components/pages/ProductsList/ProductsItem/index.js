@@ -14,6 +14,7 @@ import {
     AddToCart,
     ComputeTotalPrice,
 } from "../../../../actions";
+import OurTextButton from "../../../OurTextButton";
 const address = config.getCell("StoreAddress");
 
 const totalHeight = Dimensions.get("window").height 
@@ -88,6 +89,25 @@ const ProductsItem = (props) =>
         setModalVisible(!isModalVisible);
     };
 
+    // Обрабатываем нажатие на кнопку "Купить"
+    const buyProduct = (e, data) =>
+    {
+        // Заносим данные
+        let payload = {
+            id: data.productId,
+            name: data.name,
+            count: 1,
+            price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
+            stockQuantity: data.stockQuantity || 99,
+            selectedVariants: [
+                "variantID"
+            ]
+        };
+        // Добавляем в корзину
+        dispatch(AddToCart(payload, dispatch, t));
+        dispatch(ComputeTotalPrice());
+    };
+
     const position = Animated.subtract(index * itemHeight, y);
     const isDisappearing = -itemHeight;
     const isTop = 0;
@@ -153,27 +173,12 @@ const ProductsItem = (props) =>
                 <OurText style={styles.price} params={{
                     price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
                 }}>productPrice</OurText>
-                    <TouchableOpacity style={styles.button} onPress={ (e) =>
-                    {
-                        // Обрабатываем нажатие на кнопку "Купить"
-
-                        // Заносим данные
-                        let payload = {
-                            id: data.productId,
-                            name: data.name,
-                            count: 1,
-                            price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
-                            stockQuantity: data.stockQuantity || 99,
-                            selectedVariants: [
-                                "variantID"
-                            ]
-                        };
-                        // Добавляем в корзину
-                        dispatch(AddToCart(payload, dispatch, t));
-                        dispatch(ComputeTotalPrice());
-                    }}>
-                        <OurText style={styles.text_button} translate={true}>productBuy</OurText>
-                    </TouchableOpacity>
+                <OurTextButton
+                    style={styles.button}
+                    textStyle={styles.textButton}
+                    translate={true}
+                    onPress={(e) => buyProduct(e, data)}
+                >productBuy</OurTextButton>
             </View>
             <View>
                 <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
