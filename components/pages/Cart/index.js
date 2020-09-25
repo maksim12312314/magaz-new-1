@@ -13,7 +13,7 @@ import OurText from "../../OurText";
 /** Компонент блока товаров  */
 const ItemsBlock = ({item})=> {    
     return (
-        <CartItem id={item.id} name={item.name} price={item.price} count={item.count}/>
+        <CartItem id={item.id}/>
     );
 };
 
