@@ -15,25 +15,27 @@ const address = config.getCell("StoreAddress");
 const CategoryItem = (props) =>
 {
     // Получаем имя, url картинки, навигацию и id из props
-    const { name, imageUrl, navigation, id } = props;
+    const { name, imageUrl, navigation, id, cached } = props;
     const dispatch = useContext(dispatchContext);
     const url = imageUrl ? `${address}wp-content/uploads/${imageUrl}` : null;
+
+    // Обрабатываем нажатие на иконку категории
+    const onPress = (e) => {
+        // Устанавливаем id данной категории
+        // для отображения списка товаров
+        dispatch(SetCategoryPageId( {id, name} ));
+
+        // Переходим к списку продуктов
+        navigation.navigate("ProductList");
+    };
 
     return (
         <View style={styles.view}>
             <OurImage
                 url={url}
                 title={name}
-                onPress={(e) => {
-                        // Обрабатываем нажатие на иконку категории
-                        // и устанавливаем id данной категории
-                        // для отображения списка товаров
-                        dispatch(SetCategoryPageId( {id, name} ));
-                        
-                        // Переходим к списку продуктов
-                        navigation.navigate("ProductList");
-                    }
-                }
+                onPress={onPress}
+                disabled={cached}
             />
         </View>
     );

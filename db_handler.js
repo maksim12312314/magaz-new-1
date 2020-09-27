@@ -12,35 +12,38 @@ const executeSql = (sql, args, onSuccess, err) => {
 export const createDBTables = () => {
     executeSql(`CREATE TABLE IF NOT EXISTS CategoryList(
         name TEXT,
-        productCategoryId INTEGER,
+        productCategoryId INTEGER UNIQUE,
         imageLink TEXT)`, []);
     executeSql(`CREATE TABLE IF NOT EXISTS ProductList(
         name TEXT,
-        productId INTEGER,
+        productId INTEGER UNIQUE,
         imageLink TEXT)`, []);
     executeSql(`CREATE TABLE IF NOT EXISTS Images(
-        imageLink TEXT,
+        imageLink TEXT UNIQUE,
         imageData TEXT)`, []);
 };
 
 export const addCategory = (name, productCategoryId, imageLink) => {
-    executeSql(`INSERT INTO CategoryList(
+    executeSql(`INSERT OR REPLACE INTO CategoryList(
     	name,
         productCategoryId,
-        imageLink) VALUES(?, ?)`, [name, productCategoryId, imageLink]);
+        imageLink) VALUES(?, ?, ?)`, [name, productCategoryId, imageLink]);
 };
 export const addProduct = (name, productId, imageLink) => {
-    executeSql(`INSERT INTO CategoryList(
+    executeSql(`INSERT OR REPLACE INTO ProductList(
     	name,
         productId,
         imageLink) VALUES(?, ?, ?)`, [name, productId, imageLink]);
 };
 export const addImage = (imageLink, imageData) => {
-    executeSql(`INSERT INTO Images(
+    executeSql(`INSERT OR REPLACE INTO Images(
     	imageLink,
         imageData) VALUES(?, ?)`, [imageLink, imageData]);
 };
 
 export const getImage = (imageLink, cb, err) => {
-    executeSql(`SELECT imageData FROM Images WHERE imageLink='${imageLink}' LIMIT 1`, [], cb, err)
+    executeSql(`SELECT imageData, imageLink FROM Images WHERE imageLink='${imageLink}' LIMIT 1`, [], cb, err);
+};
+export const getDBCategoryList = (cb, err) => {
+    executeSql(`SELECT * FROM CategoryList LIMIT 30`, [], cb, err);
 };
