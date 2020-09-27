@@ -7,7 +7,7 @@ import styles from "./styles";
 const placeholder = require("../../assets/image_placeholder.png");
 
 const OurImage = (props) => {
-    const {url, title, onPress, style} = props;
+    const {url, title, onPress, style, disabled} = props;
     const [image, setImage] = useState(Image.resolveAssetSource(placeholder).uri);
     const onSuccess = ( tr, result ) => {
         if ( !result.rows.length ) {
@@ -40,7 +40,10 @@ const OurImage = (props) => {
     
 
     return (
-        <TouchableOpacity style={styles.container} activeOpacity={onPress ? 0 : 1} onPress={onPress}>
+        <TouchableOpacity style={styles.container} activeOpacity={onPress && !disabled ? 0 : 1} onPress={(e) => {
+            if (!disabled)
+                onPress(e);
+        }}>
             <Image style={style || styles.image} source={{uri: image}}/>
             {
                 title ?
