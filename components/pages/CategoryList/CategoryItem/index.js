@@ -4,7 +4,6 @@ import styles from "./styles";
 import config from "../../../../config";
 import { dispatchContext } from "../../../../contexts";
 import OurImage from "../../../OurImage";
-//import { TouchableOpacity } from "react-native-gesture-handler";
 
 import {
     SetCategoryPageId,
@@ -39,6 +38,6 @@ const CategoryItem = (props) =>
             />
         </View>
     );
-}
+};
 
 export default CategoryItem;

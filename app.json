@@ -26,8 +26,9 @@
     "ios": {
       "supportsTablet": true
     },
-    "android":{
-      "package":"magaz.new.ours"
-    }
+    "android": {
+      "package": "magaz.new.ours"
+    },
+    "description": ""
   }
 }
