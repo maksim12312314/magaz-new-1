@@ -34,8 +34,7 @@ const reducer = (state, action) => {
      */
     switch (action.type)
     {
-        case SET_CART_ITEMS:
-        {
+        case SET_CART_ITEMS: {
             const newState = {...state};
             
             newState.cartItems = action.payload || [];
@@ -43,8 +42,7 @@ const reducer = (state, action) => {
             return newState;
         }
 
-        case SET_FIELD:
-        {
+        case SET_FIELD: {
             const newState = {...state};
             newState[action.fieldName] = action.payload;
 
@@ -52,20 +50,19 @@ const reducer = (state, action) => {
         }
 
 
-        case SET_DELIVERY_DETAILS_FIELD:
-        {
+        case SET_DELIVERY_DETAILS_FIELD: {
             const newState = {...state};
             newState.deliveryDetails[action.fieldName] = action.payload;
 
             return newState;
         }
 
-        case CHANGE_BUTTON_STATUS:{
+        case CHANGE_BUTTON_STATUS: {
             const newState = {...state};
 
-            if(isAllDeliveryDetailsSet(newState) && !action.buttonEnabled)
+            if ( isAllDeliveryDetailsSet(newState) && !action.buttonEnabled )
                 action.setButtonEnabled(true);
-            else if(!isAllDeliveryDetailsSet(newState) && action.buttonEnabled)
+            else if ( !isAllDeliveryDetailsSet(newState) && action.buttonEnabled )
                 action.setButtonEnabled(false);
 
             return newState;
@@ -74,8 +71,7 @@ const reducer = (state, action) => {
         /**
          * Устанавливает id категории для текущей страницы
          */
-        case SET_CATEGORY_PAGE_ID:
-        {
+        case SET_CATEGORY_PAGE_ID: {
             const newState = {...state};
             newState.currentCategory = action.payload;
             return newState;
@@ -83,18 +79,14 @@ const reducer = (state, action) => {
         /**
          * Заносит товар и его данные в state
          */
-        case ADD_TO_CART:
-        {
+        case ADD_TO_CART: {
             const t = action.t; // Translate
             const newState = {...state};
 
-
-
-            if(state.cartItems.has(action.payload.productId)){
+            if ( state.cartItems.has(action.payload.productId) ) {
                 const item = state.cartItems.get(action.payload.productId);
                 item.count += action.payload.count;
-            }
-            else{
+            } else {
                 state.cartItems.set(action.payload.productId, action.payload);
             }
 
@@ -116,8 +108,7 @@ const reducer = (state, action) => {
         /**
          * Устанавливает список продуктов для текущей страницы
          */
-        case SET_PRODUCTS_LIST:
-        {
+        case SET_PRODUCTS_LIST: {
             const newState = {...state};
 
             newState.products = {...newState.products, [action.id]: action.payload.products.nodes};
@@ -128,8 +119,7 @@ const reducer = (state, action) => {
         /**
          * Устанавливает список категорий для текущей страницы
          */
-        case SET_CATEGORIES_LIST:
-        {
+        case SET_CATEGORIES_LIST: {
             const newState = {...state};
 
             newState.categories = action.payload;
@@ -140,20 +130,16 @@ const reducer = (state, action) => {
         /**
          * Расчитывает общую цену для корзины
          */
-        case COMPUTE_TOTAL_PRICE:
-        {
+        case COMPUTE_TOTAL_PRICE: {
             const newState = {...state};
             newState.cartTotalPrice = 0;
             
-            if(newState.cartItems.size){
-                for( let object of newState.cartItems.values() )
-                    newState.cartTotalPrice += object.price * object.count
+            if ( newState.cartItems.size ) {
+                for ( let object of newState.cartItems.values() )
+                    newState.cartTotalPrice += object.price * object.count;
             }
             else
                 return state;
-            
-            
-            
             
             return newState;
         }
@@ -161,8 +147,7 @@ const reducer = (state, action) => {
         /**
          * Удаляет товар из корзины
          */
-        case DELETE_FROM_CART:
-        {
+        case DELETE_FROM_CART: {
             const newState = {...state};
 
             
@@ -176,14 +161,14 @@ const reducer = (state, action) => {
         /**
          * Минусует 1 товар из корзины
          */
-        case MINUS:
-        {
+        case MINUS: {
             const t = action.t;
             const newState = {...state};
 
-            if(state.cartItems.has(action.payload)){
+            if ( state.cartItems.has(action.payload) ) {
                 const item = state.cartItems.get(action.payload);
-                if( item.count === 1 ){
+
+                if ( item.count === 1 ) {
                     Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
                         {
                             text: t("cancel"),
@@ -199,28 +184,24 @@ const reducer = (state, action) => {
                     ],
                     {cancelable: false});
 
-                }
-                else{
+                } else {
                     item.count = Math.clamp(item.count - 1, 0, item.stockQuantity || 99);
                     addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
-
                 }
             }
             else
                 return state;
 
             return newState;
-
-            
         }
+
         /**
          * Плюсует 1 товар в корзину
          */
-        case PLUS:
-        {
+        case PLUS: {
             const newState = {...state};
 
-            if(newState.cartItems.has(action.payload)){
+            if ( newState.cartItems.has(action.payload) ) {
                 const item = newState.cartItems.get(action.payload);
                 item.count = Math.clamp(item.count + 1, 1, item.stockQuantity || 99);
                 addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
@@ -229,8 +210,6 @@ const reducer = (state, action) => {
                 return state;
             
             return newState;
-
-            
         }
 
         default:
