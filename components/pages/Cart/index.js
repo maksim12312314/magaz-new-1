@@ -27,7 +27,6 @@ const Cart = (props) =>
         if ( state.cartItems.length )
             navigation.navigate('DeliveryDetails');
     };
-    
 
     return (
         <>
