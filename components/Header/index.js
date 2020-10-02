@@ -58,14 +58,14 @@ const Header = (props) =>
                         <View style={styles.iconCart}>
                             <OurIconButton icon={faShoppingBasket} size={50} onPress={goToCart}>
                                 {
-                                    state?.cartItems?.length ?
+                                    state?.cartItems?.size ?
                                         <Badge success style={styles.badge}>
                                             <OurText style={styles.badgeText}>
                                                 {
-                                                    state?.cartItems?.length ?
+                                                    state?.cartItems?.size ?
                                                         (() => {
-                                                            if ( state.cartItems.length < 10 )
-                                                                return state.cartItems.length;
+                                                            if ( state.cartItems.size < 10 )
+                                                                return state.cartItems.size;
                                                             else
                                                                 return "9+";
                                                         })()

@@ -13,7 +13,7 @@ import OurTextButton from "../../OurTextButton";
 /** Компонент блока товаров  */
 const ItemsBlock = ({item})=> {    
     return (
-        <CartItem productId={item.productId}/>
+        <CartItem productId={item.productId} count={item.count}/>
     );
 };
 
@@ -27,7 +27,7 @@ const Cart = (props) =>
         if ( state.cartItems.length )
             navigation.navigate('DeliveryDetails');
     };
-    console.log("STATE CART", state.cartItems)
+    
 
     return (
         <>
@@ -43,13 +43,13 @@ const Cart = (props) =>
                     </View>
                     <FlatList
                         contentContainerStyle={styles.cartList}
-                        data={state.cartItems}
+                        data={Array.from(state.cartItems.values())}
                         renderItem={ItemsBlock}
                         keyExtractor={(item, index) => String(index)}/>
                     <CartTotal />
                     <OurTextButton
                         translate={true}
-                        disabled={!state.cartItems.length}
+                        disabled={!state.cartItems.size}
                         onPress={toDeliveryDetails}
                         style={styles.checkoutButton}
                         >cartCheckout</OurTextButton>

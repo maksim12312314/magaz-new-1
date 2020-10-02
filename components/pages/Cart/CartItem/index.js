@@ -6,11 +6,10 @@ import styles from "./styles";
 import OurText from "../../../OurText";
 
 const findProductById = (productId, state) => {
-    for (let i=0; i<=state.cartItems.length; i++) {
-        if ( state.cartItems[i].productId === productId )
-            return state.cartItems[i];
-    }
-    return null;
+    if(state.cartItems.has(productId))
+        return state.cartItems.get(productId);
+    else
+        return null;
 };
 
 /** Компонент товара в корзине */
@@ -41,4 +40,14 @@ const CartItem = (props) =>
     );
 };
 
-export default CartItem; 
+const areEqual = (prevProps, newProps)=>{
+
+
+    return ( prevProps.productId == newProps.productId ) && ( prevProps.count == newProps.count );
+
+
+}
+
+
+
+export default React.memo(CartItem, areEqual); 

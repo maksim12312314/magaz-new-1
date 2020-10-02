@@ -37,6 +37,7 @@ const reducer = (state, action) => {
         case SET_CART_ITEMS:
         {
             const newState = {...state};
+            
             newState.cartItems = action.payload || [];
 
             return newState;
@@ -87,36 +88,17 @@ const reducer = (state, action) => {
             const t = action.t; // Translate
             const newState = {...state};
 
-            /*const containing = newState.cartItems.reduce( (a,e,i,m)=>{
 
-                if (e.id == action.payload.id)
-                    return i;
 
-            }, newState.cartItems.length )*/ // Говнокод)
-
-            let containing, num;
-
-            for ( let i in newState.cartItems )
-            {
-                if ( newState.cartItems[i].productId === action.payload.productId )
-                {
-                    containing = true;
-                    num = i;
-                }
+            if(state.cartItems.has(action.payload.productId)){
+                const item = state.cartItems.get(action.payload.productId);
+                item.count += action.payload.count;
+            }
+            else{
+                state.cartItems.set(action.payload.productId, action.payload);
             }
 
-            if ( action.payload )
-            {
-                if ( !containing )
-                {
-                    newState.cartItems.push(action.payload);
-                }
-                else
-                {
-                    if ( newState.cartItems[num] )
-                        newState.cartItems[num].count += action.payload.count;
-                }
-            }
+            
             addProductToCart(action.payload.name,
                 action.payload.productId,
                 action.payload.imageLink,
@@ -162,11 +144,17 @@ const reducer = (state, action) => {
         {
             const newState = {...state};
             newState.cartTotalPrice = 0;
-
-            state.cartItems.map( (v) =>
-            {
-                newState.cartTotalPrice += v.price * v.count;
-            });
+            
+            if(newState.cartItems.size){
+                for( let object of newState.cartItems.values() )
+                    newState.cartTotalPrice += object.price * object.count
+            }
+            else
+                return state;
+            
+            
+            
+            
             return newState;
         }
 
@@ -177,12 +165,9 @@ const reducer = (state, action) => {
         {
             const newState = {...state};
 
-            const itemWithoutDeleted = state.cartItems.filter((v, i) =>
-            {
-                if ( v.productId !== action.payload )
-                    return true;
-            });
-            newState.cartItems = itemWithoutDeleted;
+            
+            newState.cartItems.delete(action.payload);
+                        
 
             deleteProductFromCart(action.payload);
             return newState;
@@ -195,15 +180,11 @@ const reducer = (state, action) => {
         {
             const t = action.t;
             const newState = {...state};
-            const elem = state.cartItems.filter( (v, i) =>
-            {
-                if ( v.productId === action.payload )
-                    return true;
-            });
 
-            if ( elem[0].count === 1 )
-            {
-                Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
+            if(state.cartItems.has(action.payload)){
+                const item = state.cartItems.get(action.payload);
+                if( item.count === 1 ){
+                    Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
                         {
                             text: t("cancel"),
                             onPress: () => {/*action.dispatch({type: "plus", payload: action.payload})*/},
@@ -217,34 +198,39 @@ const reducer = (state, action) => {
                         }
                     ],
                     {cancelable: false});
+
+                }
+                else{
+                    item.count = Math.clamp(item.count - 1, 0, item.stockQuantity || 99);
+                    addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
+
+                }
             }
             else
-            {
-                elem[0].count = Math.clamp(--elem[0].count, 0, elem[0].stockQuantity || 99);
-                newState.cartItems[newState.cartItems.indexOf(elem[0])] = elem[0];
-
-                addProductToCart(elem[0].name, elem[0].productId, elem[0].imageLink, elem[0].count, elem[0].price, elem[0].selectedVariants, elem[0].stockQuantity);
-            }
+                return state;
 
             return newState;
+
+            
         }
         /**
          * Плюсует 1 товар в корзину
          */
         case PLUS:
         {
-            const elem = state.cartItems.filter( (v, i) =>
-            {
-                if ( v.productId === action.payload )
-                    return true;
-            });
             const newState = {...state};
-            elem[0].count = Math.clamp(++elem[0].count, 1, elem[0].stockQuantity || 99);
 
-            newState.cartItems[newState.cartItems.indexOf(elem[0])] = elem[0];
-            addProductToCart(elem[0].name, elem[0].productId, elem[0].imageLink, elem[0].count, elem[0].price, elem[0].selectedVariants, elem[0].stockQuantity);
-
+            if(newState.cartItems.has(action.payload)){
+                const item = newState.cartItems.get(action.payload);
+                item.count = Math.clamp(item.count + 1, 1, item.stockQuantity || 99);
+                addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
+            }
+            else 
+                return state;
+            
             return newState;
+
+            
         }
 
         default:
