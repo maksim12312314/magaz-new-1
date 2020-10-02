@@ -13,7 +13,7 @@ import OurTextButton from "../../OurTextButton";
 /** Компонент блока товаров  */
 const ItemsBlock = ({item})=> {    
     return (
-        <CartItem id={item.id}/>
+        <CartItem productId={item.productId}/>
     );
 };
 
@@ -23,10 +23,11 @@ const Cart = (props) =>
     const state = useContext(stateContext);
     const { navigation } = props;
 
-    const toCheckout = (e)=> {
+    const toDeliveryDetails = (e)=> {
         if ( state.cartItems.length )
             navigation.navigate('DeliveryDetails');
     };
+    console.log("STATE CART", state.cartItems)
 
     return (
         <>
@@ -35,7 +36,7 @@ const Cart = (props) =>
                 locations={[0, 1.0]}
                 colors={["#E81C1C", "#E4724F"]}/>
 
-                <Header {...props} title={"cartTitle"} titleFunc={() => { navigation.navigate('DeliveryDetails') }}/>
+                <Header {...props} title={"cartTitle"} titleFunc={toDeliveryDetails}/>
                 <View style={styles.items}>
                     <View style={styles.cartIcon}>
                         <FontAwesomeIcon size={42} color={"#fff"} icon={faShoppingBasket}/>
@@ -49,7 +50,7 @@ const Cart = (props) =>
                     <OurTextButton
                         translate={true}
                         disabled={!state.cartItems.length}
-                        onPress={toCheckout}
+                        onPress={toDeliveryDetails}
                         style={styles.checkoutButton}
                         >cartCheckout</OurTextButton>
                 </View>

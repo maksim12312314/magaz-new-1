@@ -18,17 +18,17 @@ import {
 const ItemCount = (props) =>
 {
     const dispatch = useContext(dispatchContext);
-    const {id} = props;
+    const { productId } = props;
     const { t } = useTranslation();
 
     const plusPressed = (e) => {
         // Добавляем 1 товар
-        dispatch(Plus(id));
+        dispatch(Plus(productId));
         dispatch(ComputeTotalPrice());
     };
     const minusPressed = (e) => {
         // Вычитаем 1 товар
-        dispatch(Minus(id, dispatch, t));
+        dispatch(Minus(productId, dispatch, t));
         dispatch(ComputeTotalPrice());
     };
     const deletePressed = (e) => {
@@ -40,7 +40,7 @@ const ItemCount = (props) =>
             {
                 text: t("ok"),
                 onPress: () => {
-                    dispatch(DeleteFromCart(id, true));
+                    dispatch(DeleteFromCart(productId, true));
                     dispatch(ComputeTotalPrice());
                 },
             },

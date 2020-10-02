@@ -1,16 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { View, TouchableOpacity, AsyncStorage } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Badge } from 'native-base';
 import { stateContext, dispatchContext } from "../../contexts";
 import OurText from "../OurText";
 import styles from "./styles.js";
 import { faChevronLeft, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
-
-import {
-    SetCartItems,
-    ComputeTotalPrice,
-} from "../../actions";
 import OurIconButton from "../OurIconButton";
+
 /** Шапочка приложения с навигацией*/
 const Header = (props) =>
 {
@@ -33,26 +29,6 @@ const Header = (props) =>
     const goToCart = (e) => {
         navigation.navigate("Cart");
     };
-
-    useEffect( () =>
-    {
-        AsyncStorage.getItem("cartItems").then( (val) => {
-            let json = {
-                cart: [],
-            };
-            try {
-                json = JSON.parse(val);
-            }
-            catch (e) {}
-
-            if(json){
-                dispatch(SetCartItems(json));
-                dispatch(ComputeTotalPrice());
-            }
-            
-        });
-       
-    }, []);
 
     return (
         <>

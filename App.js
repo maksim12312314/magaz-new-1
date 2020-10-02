@@ -1,13 +1,14 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import { stateContext, dispatchContext } from "./contexts";
 import { AppRegistry } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import AppStackNavigator from "./navigation";
 import { name } from "./app.json";
 import * as hehe from './utils';
-import { createDBTables } from "./db_handler";
+import { createDBTables, getCart } from "./db_handler";
 import reducer from "./reducer";
 import "./i18n";
+import { ComputeTotalPrice, SetCartItems } from "./actions";
 
 /**Контейнер приложения */
 const AppContainer = createAppContainer(AppStackNavigator);
@@ -22,10 +23,22 @@ const initialState = {
 const App = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
-	createDBTables();
+	useEffect( () => {
+		createDBTables();
 
-	// Сюда запихиваем свою страницу
-	// после чего можно работать над ней
+		/*
+        * Подгружаем данные корзины из базы данных
+        * */
+		getCart((tr, result) => {
+			const data = result.rows["_array"] || [];
+			dispatch(SetCartItems(data));
+			dispatch(ComputeTotalPrice());
+		},
+		(err) => {
+			console.log("WELL SHIT", err)
+		});
+	}, []);
+
 	return (
 		<stateContext.Provider value={state}>
 			<dispatchContext.Provider value={dispatch}>

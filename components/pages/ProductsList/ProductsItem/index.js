@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from "react";
-import {View, TouchableOpacity, Dimensions, Animated } from "react-native";
+import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
@@ -7,7 +7,7 @@ import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
 import OurImage from "../../../OurImage";
 import PickerButton from "../../../PickerButton";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Modal from 'react-native-modal';
 
 import {
@@ -90,18 +90,18 @@ const ProductsItem = (props) =>
     };
 
     // Обрабатываем нажатие на кнопку "Купить"
-    const buyProduct = (e, data) =>
-    {
+    const buyProduct = (e, data) => {
         // Заносим данные
         let payload = {
-            id: data.productId,
+            productId: data.productId,
             name: data.name,
             count: 1,
             price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
             stockQuantity: data.stockQuantity || 99,
             selectedVariants: [
-                "variantID"
-            ]
+                "variantID",
+            ],
+            imageLink: data.image?.mediaDetails?.file,
         };
         // Добавляем в корзину
         dispatch(AddToCart(payload, dispatch, t));

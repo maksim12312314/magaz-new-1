@@ -8,6 +8,7 @@ import {
 } from "./types";
 import { Alert, AsyncStorage, ToastAndroid } from "react-native";
 import { ComputeTotalPrice, DeleteFromCart } from "./actions";
+import { addProductToCart, deleteProductFromCart } from "./db_handler";
 
 const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -36,7 +37,7 @@ const reducer = (state, action) => {
         case SET_CART_ITEMS:
         {
             const newState = {...state};
-            newState.cartItems = action?.payload?.cart || [];
+            newState.cartItems = action.payload || [];
 
             return newState;
         }
@@ -97,7 +98,7 @@ const reducer = (state, action) => {
 
             for ( let i in newState.cartItems )
             {
-                if ( newState.cartItems[i].id === action.payload.id )
+                if ( newState.cartItems[i].productId === action.payload.productId )
                 {
                     containing = true;
                     num = i;
@@ -116,11 +117,13 @@ const reducer = (state, action) => {
                         newState.cartItems[num].count += action.payload.count;
                 }
             }
-
-            ( async () =>
-            {
-                AsyncStorage.setItem("cartItems", JSON.stringify({cart:newState.cartItems}));
-            })();
+            addProductToCart(action.payload.name,
+                action.payload.productId,
+                action.payload.imageLink,
+                action.payload.count,
+                action.payload.price,
+                action.payload.selectedVariants,
+                action.payload.stockQuantity);
 
             action.dispatch(ComputeTotalPrice());
             showToastMessage(t("productAddedMessage", {product: action.payload.name}));
@@ -176,15 +179,12 @@ const reducer = (state, action) => {
 
             const itemWithoutDeleted = state.cartItems.filter((v, i) =>
             {
-                if ( v.id !== action.payload )
+                if ( v.productId !== action.payload )
                     return true;
             });
             newState.cartItems = itemWithoutDeleted;
 
-            ( async () =>
-            {
-                AsyncStorage.setItem("cartItems", JSON.stringify({cart:newState.cartItems}));
-            })();
+            deleteProductFromCart(action.payload);
             return newState;
         }
 
@@ -197,7 +197,7 @@ const reducer = (state, action) => {
             const newState = {...state};
             const elem = state.cartItems.filter( (v, i) =>
             {
-                if ( v.id === action.payload )
+                if ( v.productId === action.payload )
                     return true;
             });
 
@@ -222,6 +222,8 @@ const reducer = (state, action) => {
             {
                 elem[0].count = Math.clamp(--elem[0].count, 0, elem[0].stockQuantity || 99);
                 newState.cartItems[newState.cartItems.indexOf(elem[0])] = elem[0];
+
+                addProductToCart(elem[0].name, elem[0].productId, elem[0].imageLink, elem[0].count, elem[0].price, elem[0].selectedVariants, elem[0].stockQuantity);
             }
 
             return newState;
@@ -233,17 +235,14 @@ const reducer = (state, action) => {
         {
             const elem = state.cartItems.filter( (v, i) =>
             {
-                if ( v.id === action.payload )
+                if ( v.productId === action.payload )
                     return true;
             });
             const newState = {...state};
             elem[0].count = Math.clamp(++elem[0].count, 1, elem[0].stockQuantity || 99);
 
             newState.cartItems[newState.cartItems.indexOf(elem[0])] = elem[0];
-            ( async () =>
-            {
-                AsyncStorage.setItem("cartItems", JSON.stringify({cart:newState.cartItems}));
-            })();
+            addProductToCart(elem[0].name, elem[0].productId, elem[0].imageLink, elem[0].count, elem[0].price, elem[0].selectedVariants, elem[0].stockQuantity);
 
             return newState;
         }

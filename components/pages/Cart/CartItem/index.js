@@ -5,9 +5,9 @@ import ItemCount from "./ItemCount";
 import styles from "./styles";
 import OurText from "../../../OurText";
 
-const findProductById = (id, state) => {
+const findProductById = (productId, state) => {
     for (let i=0; i<=state.cartItems.length; i++) {
-        if ( state.cartItems[i].id === id )
+        if ( state.cartItems[i].productId === productId )
             return state.cartItems[i];
     }
     return null;
@@ -16,12 +16,12 @@ const findProductById = (id, state) => {
 /** Компонент товара в корзине */
 const CartItem = (props) =>
 {
-    const { id } = props;
+    const { productId } = props;
     const state = useContext(stateContext);
     const [product, setProduct] = useState();
 
     useEffect( () => {
-        setProduct(findProductById(id, state));
+        setProduct(findProductById(productId, state));
     });
 
     return (
@@ -32,7 +32,7 @@ const CartItem = (props) =>
                 <OurText style={styles.item_count} params={{count: product.count}}>cartPcs</OurText>
                 <View style={styles.right}>
                     <OurText style={styles.item_price}>{product.price * product.count}$</OurText>
-                    <ItemCount id={id}/>
+                    <ItemCount productId={productId}/>
                 </View>
             </View>
             : <></>
