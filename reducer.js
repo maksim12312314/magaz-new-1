@@ -135,11 +135,17 @@ const reducer = (state, action) => {
             newState.cartTotalPrice = 0;
             
             if ( newState.cartItems.size ) {
-                for ( let object of newState.cartItems.values() )
-                    newState.cartTotalPrice += object.price * object.count;
+                newState.cartItems.forEach( (value) => {
+
+                    newState.cartTotalPrice += value.itemsTotalPrice;
+
+                });
+                // for( let object of newState.cartItems.values() )
+                //     newState.cartTotalPrice += object.itemsTotalPrice;
+            } else {
+                newState.cartTotalPrice = 0;
+                return newState;
             }
-            else
-                return state;
             
             return newState;
         }
@@ -186,6 +192,7 @@ const reducer = (state, action) => {
 
                 } else {
                     item.count = Math.clamp(item.count - 1, 0, item.stockQuantity || 99);
+                    item.itemsTotalPrice = item.count * item.price;
                     addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
                 }
             }
@@ -204,6 +211,7 @@ const reducer = (state, action) => {
             if ( newState.cartItems.has(action.payload) ) {
                 const item = newState.cartItems.get(action.payload);
                 item.count = Math.clamp(item.count + 1, 1, item.stockQuantity || 99);
+                item.itemsTotalPrice = item.count * item.price;
                 addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
             }
             else 

@@ -5,9 +5,10 @@ import ItemCount from "./ItemCount";
 import styles from "./styles";
 import OurText from "../../../OurText";
 
-const findProductById = (productId, state) => {
-    if ( state.cartItems.has(productId) )
-        return state.cartItems.get(productId);
+
+const findProductById = (productId, cartItems) => {
+    if ( cartItems.has(productId) )
+        return cartItems.get(productId);
     else
         return null;
 };
@@ -17,11 +18,13 @@ const CartItem = (props) =>
 {
     const { productId } = props;
     const state = useContext(stateContext);
-    const [product, setProduct] = useState();
+    const [product, setProduct] = useState(findProductById(productId, state.cartItems));
+
+  
 
     useEffect( () => {
-        setProduct(findProductById(productId, state));
-    }, []);
+        setProduct(findProductById(productId, state.cartItems));
+    }, [product.count]);
 
     return (
         <>
@@ -40,8 +43,4 @@ const CartItem = (props) =>
     );
 };
 
-const areEqual = (prevProps, newProps) => {
-    return ( prevProps.productId == newProps.productId ) && ( prevProps.count == newProps.count );
-}
-
-export default React.memo(CartItem, areEqual);
+export default React.memo(CartItem); 
