@@ -21,7 +21,7 @@ const CartItem = (props) =>
 
     useEffect( () => {
         setProduct(findProductById(productId, state));
-    });
+    }, []);
 
     return (
         <>
