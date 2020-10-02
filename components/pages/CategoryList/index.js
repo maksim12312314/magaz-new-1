@@ -17,6 +17,7 @@ import { addCategory, getDBCategoryList } from "../../../db_handler";
 const address = config.getCell("StoreAddress");
 
 /**Список категорий товаров*/
+// TODO abort fetch in case of change of page
 const CategoryList = (props) =>
 {
     const { navigation } = props;
@@ -34,6 +35,9 @@ const CategoryList = (props) =>
 	const [error, setError] = useState(false);
 
 	const onMount = () => {
+
+        // let controller = new AbortController();
+
         if ( !state?.categories?.length ) {
             getDBCategoryList( (tr, result) => {
                 let data = [];
@@ -56,7 +60,9 @@ const CategoryList = (props) =>
                 setLoading(false);
             });
 
+            
             fetch(`${address}graphql`, {
+                // signal: controller.signal,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -73,6 +79,10 @@ const CategoryList = (props) =>
             })
             .catch(err => setError(true));
         }
+
+        // if(controller)
+        //     return ()=>controller.abort()
+
     };
 
     useEffect( onMount, []);
@@ -99,7 +109,7 @@ const CategoryList = (props) =>
                         numColumns={2}
                         data={state.categories}
                         renderItem={GetCategoryItem}
-                        keyExtractor={item => String(item.productCategoryId)}/>
+                        keyExtractor={(item, key) => String(key)}/>
             }
         </>
     );

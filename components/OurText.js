@@ -12,4 +12,4 @@ const OurText = (props) =>
     );
 };
 
-export default OurText;
+export default React.memo(OurText);

@@ -68,4 +68,4 @@ const ItemCount = (props) =>
     );
 }
 
-export default ItemCount; 
+export default React.memo(ItemCount); 

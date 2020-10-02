@@ -91,12 +91,18 @@ const ProductsItem = (props) =>
 
     // Обрабатываем нажатие на кнопку "Купить"
     const buyProduct = (e, data) => {
+        
+        const count = 1;
+        const price = data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0;
+        const itemsTotalPrice = count * price;
+        
         // Заносим данные
         let payload = {
             productId: data.productId,
             name: data.name,
-            count: 1,
-            price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
+            count: count,
+            price: price,
+            itemsTotalPrice: count * price,
             stockQuantity: data.stockQuantity || 99,
             selectedVariants: [
                 "variantID",
