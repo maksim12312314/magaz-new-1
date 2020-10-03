@@ -20,29 +20,11 @@ const address = config.getCell("StoreAddress");
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 
-
-
-
-
-/**Список товаров той или иной категории */
-const ProductsList = (props) =>
-{
-    // const { navigation } = props;
-  
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-    const [error, setError] = useState(false);
-
-    const {currentCategory} = props.route.params;
-    
-
-    
-
+const LocallyAnimatedFlatList = ({data})=>{
     const y = new Animated.Value(0);
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
         useNativeDriver: true,
     });
-    
 
     const renderProductItem = ({item, index})=>{
 
@@ -53,6 +35,32 @@ const ProductsList = (props) =>
     
     }
 
+    return (
+        <AnimatedFlatList
+        scrollEventThrottle={16}
+        data={data}
+        renderItem={ renderProductItem }
+        keyExtractor={item => String(item.productId)}
+        {...{ onScroll }} />
+    )
+
+}
+
+const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
+
+/**Список товаров той или иной категории */
+const ProductsList = (props) =>
+{
+    // const { navigation } = props;
+  
+    
+    const dispatch = useContext(dispatchContext);
+    const [error, setError] = useState(false);
+    const [data, setData] = useState();
+
+    console.log(`IN PRODUCTS LIST with ${JSON.stringify(props.route.params)} `)
+
+    const {currentCategory} = props.route.params;
 
     // Получаем данные от сервера
     useEffect( () =>
@@ -76,6 +84,7 @@ const ProductsList = (props) =>
                     else
                         // Устанавливаем полученные данные
                         dispatch(SetProductsList(data, currentCategory.id));
+                        setData([...data.products.nodes]);
                 })
             // Иначе показываем ошибку
             .catch(err => {setError(true)})
@@ -89,15 +98,11 @@ const ProductsList = (props) =>
                 colors={['#2454e5', '#499eda']} />
             {/* <Header {...props} showCart={true}/> */}
             {
-            state.products && state.products[currentCategory.id]?.length ?
-                <AnimatedFlatList
-                    scrollEventThrottle={16}
-                    data={state.products[currentCategory.id]}
-                    renderItem={ renderProductItem }
-                    keyExtractor={item => String(item.productId)}
-                    {...{ onScroll }} />
+                data ?
+                    <MemoedLocallyAnimatedFlatList data={data}/> 
+               
                 :
-                <OurActivityIndicator error />
+                    <OurActivityIndicator error />
             }
         </>
     );
