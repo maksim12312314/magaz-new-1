@@ -19,6 +19,11 @@ const address = config.getCell("StoreAddress");
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
+
+
+
+
+
 /**Список товаров той или иной категории */
 const ProductsList = (props) =>
 {
@@ -28,22 +33,38 @@ const ProductsList = (props) =>
     const dispatch = useContext(dispatchContext);
     const [error, setError] = useState(false);
 
+    const {currentCategory} = props.route.params;
+    
+
+    console.log(`Rendering ProductsList ${JSON.stringify(state.products[currentCategory.id])}`);
 
     const y = new Animated.Value(0);
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
         useNativeDriver: true,
     });
     
+
+    const renderProductItem = ({item, index})=>{
+
+        return (
+            <ProductsItem index={index} id={item.productId} data={item} y={y} galleryImg={item.galleryImages?.nodes[1]?.mediaDetails?.file}
+            imageUrl={item.image?.mediaDetails?.file} name={item.name} />
+        )
+    
+    }
+
+
     // Получаем данные от сервера
     useEffect( () =>
     {
+        console.log(`ProductsList fetching `);
         fetch(`${address}graphql`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
 
-            body: getProductListQuery(state.currentCategory.id),
+            body: getProductListQuery(currentCategory.id),
             })
             .then(res => {return res.json()})
             .then( (res) => 
@@ -54,11 +75,11 @@ const ProductsList = (props) =>
                         setError(true)
                     else
                         // Устанавливаем полученные данные
-                        dispatch(SetProductsList(data, state.currentCategory.id));
+                        dispatch(SetProductsList(data, currentCategory.id));
                 })
             // Иначе показываем ошибку
             .catch(err => {setError(true)})
-    }, [state.currentCategory]);
+    }, [currentCategory]);
 
     return (
         <>
@@ -66,18 +87,13 @@ const ProductsList = (props) =>
                 style={styles.productList}
                 locations={[0, 1.0]}
                 colors={['#2454e5', '#499eda']} />
-            <Header {...props} showCart={true}/>
+            {/* <Header {...props} showCart={true}/> */}
             {
-            state.products && state.products[state.currentCategory.id]?.length ?
+            state.products && state.products[currentCategory.id]?.length ?
                 <AnimatedFlatList
                     scrollEventThrottle={16}
-                    data={state.products[state.currentCategory.id]}
-                    renderItem={ ({item, index}) => {
-                        return (
-                            <ProductsItem index={index} id={item.productId} data={item} y={y} galleryImg={item.galleryImages?.nodes[1]?.mediaDetails?.file}
-                            imageUrl={item.image?.mediaDetails?.file} name={item.name} />
-                        )
-                    }}
+                    data={state.products[currentCategory.id]}
+                    renderItem={ renderProductItem }
                     keyExtractor={item => String(item.productId)}
                     {...{ onScroll }} />
                 :
@@ -87,4 +103,4 @@ const ProductsList = (props) =>
     );
 };
 
-export default ProductsList;
+export default React.memo(ProductsList);

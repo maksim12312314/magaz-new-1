@@ -6,7 +6,7 @@ import ProductList from "./components/pages/ProductsList";
 import DeliveryDetails from "./components/Delivery";
 import Editor from "./components/Orders/editor";
 import Orders from "./components/Orders";
-
+import Header from "./components/Header";
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -18,7 +18,7 @@ const AppStackNavigator = ()=>{
             initialRouteName="CategoryList"
             backBehavior="history"
             mode='modal'
-            headerMode='none'
+            headerMode='screen'
             defaultNavigationOptions={
             {tabBarVisible: true}}
         
@@ -26,6 +26,7 @@ const AppStackNavigator = ()=>{
             <Screen 
                 name="CategoryList"
                 component={CategoryList}
+                options={{headerShown:false}}
             />
             <Screen 
                 name="Cart"
@@ -34,6 +35,11 @@ const AppStackNavigator = ()=>{
             <Screen 
                 name="ProductList"
                 component={ProductList}
+                options={{
+                    header: (props)=><Header {...props} showCart={true}/>
+                    
+
+                }}
             />
             <Screen 
                 name="DeliveryDetails"
