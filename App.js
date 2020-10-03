@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from "react";
 import { stateContext, dispatchContext } from "./contexts";
 import { AppRegistry } from 'react-native';
-import { createAppContainer } from "react-navigation";
+import { NavigationContainer } from '@react-navigation/native';
 import AppStackNavigator from "./navigation";
 import { name } from "./app.json";
 import * as hehe from './utils';
@@ -11,7 +11,13 @@ import "./i18n";
 import { ComputeTotalPrice, SetCartItems } from "./actions";
 
 /**Контейнер приложения */
-const AppContainer = createAppContainer(AppStackNavigator);
+const AppContainer = ()=>{
+	return (
+		<NavigationContainer>
+			<AppStackNavigator/>
+		</NavigationContainer>
+		);
+}
 
 const initialState = {
 	cartItems: new Map(),

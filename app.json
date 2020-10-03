@@ -3,7 +3,7 @@
     "name": "magaz-new",
     "slug": "magaz-new",
     "privacy": "public",
-    "sdkVersion": "38.0.0",
+    "sdkVersion": "39.0.0",
     "platforms": [
       "ios",
       "android",
