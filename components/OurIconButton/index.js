@@ -15,4 +15,4 @@ const OurIconButton = (props) =>
     )
 };
 
-export default OurIconButton;
+export default React.memo(OurIconButton);

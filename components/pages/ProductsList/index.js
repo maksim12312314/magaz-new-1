@@ -36,7 +36,7 @@ const ProductsList = (props) =>
     const {currentCategory} = props.route.params;
     
 
-    console.log(`Rendering ProductsList ${JSON.stringify(state.products[currentCategory.id])}`);
+    
 
     const y = new Animated.Value(0);
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {

@@ -14,12 +14,16 @@ import {
 } from "../../../../../actions";
 
 
+const size = Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05;
+
 /** Компонент, который отображает количество товаров в корзине */
 const ItemCount = (props) =>
 {
     const dispatch = useContext(dispatchContext);
     const { productId } = props;
     const { t } = useTranslation();
+
+    
 
     const plusPressed = (e) => {
         // Добавляем 1 товар
@@ -51,15 +55,15 @@ const ItemCount = (props) =>
     return (
         <View style={styles.container}>
             <View style={styles.itemControl}>
-                <OurIconButton size={Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05}
+                <OurIconButton size={size}
                                style={{margin: 1}}
                                icon={faPlusCircle}
                                onPress={plusPressed}/>
-                <OurIconButton size={Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05}
+                <OurIconButton size={size}
                                style={{margin: 1}}
                                icon={faMinusCircle}
                                onPress={minusPressed}/>
-                <OurIconButton size={Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05}
+                <OurIconButton size={size}
                                style={{margin: 1}}
                                icon={faTimesCircle}
                                onPress={deletePressed}/>

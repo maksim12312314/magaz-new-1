@@ -25,6 +25,7 @@ const CategoryItem = (props) =>
         // dispatch(SetCategoryPageId( {id, name} ));
 
         // Переходим к списку продуктов
+        
         navigation.navigate("ProductList", {currentCategory:{id, name} });
     };
 

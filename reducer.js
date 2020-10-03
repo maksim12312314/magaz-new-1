@@ -145,6 +145,7 @@ const reducer = (state, action) => {
             const newState = {...state};
             newState.cartTotalPrice = 0;
             
+            console.log(`COMPUTE TOTAL PRICE`);
 
             if(newState.cartItems.size){
                 newState.cartItems.forEach( (value)=>{
