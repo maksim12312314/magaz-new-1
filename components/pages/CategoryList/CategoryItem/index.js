@@ -22,10 +22,10 @@ const CategoryItem = (props) =>
     const onPress = (e) => {
         // Устанавливаем id данной категории
         // для отображения списка товаров
-        dispatch(SetCategoryPageId( {id, name} ));
+        // dispatch(SetCategoryPageId( {id, name} ));
 
         // Переходим к списку продуктов
-        navigation.navigate("ProductList");
+        navigation.navigate("ProductList", {currentCategory:{id, name} });
     };
 
     return (
