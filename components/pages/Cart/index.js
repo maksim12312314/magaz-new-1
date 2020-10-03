@@ -44,7 +44,7 @@ const Cart = (props) =>
                         contentContainerStyle={styles.cartList}
                         data={Array.from(state.cartItems.values())}
                         renderItem={ItemsBlock}
-                        keyExtractor={(item, index) => String(index)}/>
+                        keyExtractor={(item) => String(item.productId)}/>
                     <CartTotal />
                     <OurTextButton
                         translate={true}

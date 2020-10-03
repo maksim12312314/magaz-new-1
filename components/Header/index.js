@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import { useRoute, useNavigationState } from "@react-navigation/native";
 import { View, TouchableOpacity } from "react-native";
 import { Badge } from 'native-base';
 import { stateContext, dispatchContext } from "../../contexts";
@@ -6,6 +7,20 @@ import OurText from "../OurText";
 import styles from "./styles.js";
 import { faChevronLeft, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import OurIconButton from "../OurIconButton";
+
+
+const isFirstRouteInParent = ()=>{
+
+    const route = useRoute();
+    const isFirstRouteInParent = useNavigationState(
+        state => state.routes[0].key === route.key
+    );
+
+    return isFirstRouteInParent;
+
+
+}
+
 
 /** Шапочка приложения с навигацией*/
 const Header = (props) =>
@@ -17,7 +32,7 @@ const Header = (props) =>
         navigation,
     } = props;
     const showBack = (typeof(props.showBack) === "boolean")
-        ? props.showBack : !navigation.isFirstRouteInParent();
+        ? props.showBack : !isFirstRouteInParent();
     
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
