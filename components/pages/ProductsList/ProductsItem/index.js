@@ -195,4 +195,4 @@ const ProductsItem = (props) =>
     );
 };
 
-export default ProductsItem;
+export default React.memo(ProductsItem);

@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight + 12,
         marginBottom: 8,
         minWidth: Dimensions.get("window").width,
+        backgroundColor: 'rgba(52, 52, 52, 0)'
     },
     backContainer: {
         width: 40.5,
