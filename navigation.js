@@ -8,7 +8,14 @@ import Editor from "./components/Orders/editor";
 import Orders from "./components/Orders";
 import Header from "./components/Header";
 
-const {Navigator, Screen} = createStackNavigator();
+
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+
+
+
+// const {Navigator, Screen} = createStackNavigator();
+
+const {Navigator, Screen} = createNativeStackNavigator();
 
 
 const AppStackNavigator = ()=>{
