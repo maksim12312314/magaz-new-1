@@ -1,13 +1,13 @@
 import React, {useContext, useState, useEffect} from "react";
-import { Image, View, TouchableOpacity, Dimensions, Animated } from "react-native";
+import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
 import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
+import OurImage from "../../../OurImage";
 import PickerButton from "../../../PickerButton";
-import {useTranslation} from "react-i18next";
-import { addImage, getImage } from "../../../../db_handler";
+import { useTranslation } from "react-i18next";
 import Modal from 'react-native-modal';
 import Svg, {Path} from "react-native-svg";
 
@@ -15,7 +15,7 @@ import {
     AddToCart,
     ComputeTotalPrice,
 } from "../../../../actions";
-import { clockRunning } from "react-native-reanimated";
+import OurTextButton from "../../../OurTextButton";
 const address = config.getCell("StoreAddress");
 
 const totalHeight = Dimensions.get("window").height 
@@ -82,60 +82,40 @@ const ProductsItem = (props) =>
     const {data, y, index, name, galleryImg, imageUrl} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-    const [image, setImage] = useState();
-    const [selected, setSelected] = useState({});
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
+    const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
+
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
-      };
+    };
 
-      const GalleryImgArray = (props) =>
-{
-    return (
-        <TouchableOpacity onPress={toggleModal}>
-                 {galleryImg && galleryImg.length ?
-            <Image
-                style={styles.picture_bottom}
-                source={{uri: galleryImg ?  `${address}wp-content/uploads/` + galleryImg
-                :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
-            /> : <></>
-                 }
-        </TouchableOpacity>
-    );
-};
-
-    useEffect( () => {
-        const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
-        :  `${address}wp-content/uploads/woocommerce-placeholder.png`;
-
-
+    // Обрабатываем нажатие на кнопку "Купить"
+    const buyProduct = (e, data) => {
         
-
-        const cb = ( tr, result )=> {
-            if ( !result.rows.length ) {
-                fetch(url)
-                .then( res =>  res.blob() )
-                .then( data => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(data);
-                    reader.onload = () => {
-                        setImage(reader.result);
-                        addImage(url, reader.result);
-                    }
-                });
-            } else {
-                setImage(url, result.rows[0]);
-            }
-
-        }
-        getImage(url, cb, (tr, err) => console.log(`ERROR ${err}`));
+        const count = 1;
+        const price = data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0;
+        const itemsTotalPrice = count * price;
         
-        
-        
-    }, []);
+        // Заносим данные
+        let payload = {
+            productId: data.productId,
+            name: data.name,
+            count: count,
+            price: price,
+            itemsTotalPrice: count * price,
+            stockQuantity: data.stockQuantity || 99,
+            selectedVariants: [
+                "variantID",
+            ],
+            imageLink: data.image?.mediaDetails?.file,
+        };
+        // Добавляем в корзину
+        dispatch(AddToCart(payload, dispatch, t));
+        dispatch(ComputeTotalPrice());
+    };
 
     const position = Animated.subtract(index * itemHeight, y);
     const isDisappearing = -itemHeight;
@@ -174,28 +154,14 @@ const ProductsItem = (props) =>
             <OurText style={styles.title}>{name}</OurText>
             <View style={styles.card}>
                 <View style={styles.left}>
-                <TouchableOpacity
-                onPress={toggleModal}
-                >
-                <Image
-                        style={styles.picture}
-                        source={{uri: imageUrl ? `${address}wp-content/uploads/` + imageUrl
-                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
-                    />
-                    </TouchableOpacity>
-                <Modal isVisible={isModalVisible}>
-                <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
-                    <Svg width="49.5" height="40.5" viewBox="0 0 320 512">
-                                        <Path id="chevron-left-solid"
-                                        data-name="chevron left-solid"
-                                        d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"
-                                        fill="#fff"/>
-                                    </Svg>
-                     </TouchableOpacity>
-                    <Image
-                        style={styles.modal_picture}
-                        source={{uri: image}}
-                    />
+                    <OurImage onPress={toggleModal} url={url} />
+                    <Modal isVisible={isModalVisible}>
+                        <OurImage
+                            url={galleryImg}
+                        />
+                        <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
+                            <OurText style={styles.text_button}>Close</OurText>
+                        </TouchableOpacity>
                     </Modal>
                 </View>
                     
@@ -203,42 +169,33 @@ const ProductsItem = (props) =>
                             <AttrPickersParent data={itemAttributes}/>
                          </View>
             </View>
-                <View style={styles.left_bottom}>
-                    <GalleryImgArray/>
-                </View>
-                <View style={styles.bottom}>
-                    <OurText style={styles.price} params={{
-                        price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
-                    }}>productPrice</OurText>
-                        <TouchableOpacity style={styles.button} onPress={ (e) =>
-                        {
-                            // Обрабатываем нажатие на кнопку "Купить"
-
-                            // Заносим данные
-                            let payload = {
-                                id: data.productId,
-                                name: data.name,
-                                count: 1,
-                                price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
-                                stockQuantity: data.stockQuantity || 99,
-                                selectedVariants: [
-                                    "variantID"
-                                ]
-                            };
-                            // Добавляем в корзину
-                            dispatch(AddToCart(payload, dispatch, t));
-                            dispatch(ComputeTotalPrice());
-                        }}>
-                            <OurText style={styles.text_button} translate={true}>productBuy</OurText>
-                        </TouchableOpacity>
-                </View>
-                    <View>
-                        <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
-                    </View>
+            <View style={styles.left_bottom}>
+                {
+                    galleryImg && galleryImg.length ?
+                        <OurImage
+                        style={styles.picture_bottom}
+                        url={galleryImg}
+                        /> : <></>
+                }
+            </View>
+            <View style={styles.bottom}>
+                <OurText style={styles.price} params={{
+                    price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
+                }}>productPrice</OurText>
+                <OurTextButton
+                    style={styles.button}
+                    textStyle={styles.textButton}
+                    translate={true}
+                    onPress={(e) => buyProduct(e, data)}
+                >productBuy</OurTextButton>
+            </View>
+            <View>
+                <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
+            </View>
         </Animated.View>
             
 
     );
 };
 
-export default ProductsItem;
+export default React.memo(ProductsItem);

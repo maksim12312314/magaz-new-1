@@ -4,46 +4,66 @@ import config from './config'
 const db = SQLite.openDatabase(config.getCell("DatabaseName"), config.getCell("DatabaseVersion"));
 
 const executeSql = (sql, args, onSuccess, err) => {
-    // console.log("cb2", typeof onSuccess)
     db.transaction( (tr) => {
-        tr.executeSql(sql, args, onSuccess, err)
+        tr.executeSql(sql, args, onSuccess, err);
     });
 };
 
 export const createDBTables = () => {
-    console.log('HELELELelr')
     executeSql(`CREATE TABLE IF NOT EXISTS CategoryList(
         name TEXT,
-        productCategoryId INTEGER,
-        imageLink TEXT)`, [], ()=>{console.log("gg")}, (tr, err)=>{console.log(err)});
-    executeSql(`CREATE TABLE IF NOT EXISTS ProductList(
+        productCategoryId INTEGER UNIQUE,
+        imageLink TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+    executeSql(`CREATE TABLE IF NOT EXISTS Cart(
         name TEXT,
-        productId INTEGER,
-        imageLink TEXT)`, [], ()=>{console.log("gg")}, (tr, err)=>{console.log(err)});
-    executeSql(`CREATE TABLE IF NOT EXISTS Images(
+        productId INTEGER UNIQUE,
         imageLink TEXT,
-        imageData TEXT)`, [], ()=>{console.log("gg")}, (tr, err)=>{console.log(err)});
+        count INTEGER,
+        price INTEGER,
+        selectedVariants TEXT,
+        stockQuantity INTEGER)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+    executeSql(`CREATE TABLE IF NOT EXISTS Images(
+        imageLink TEXT UNIQUE,
+        imageData TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
 };
 
 export const addCategory = (name, productCategoryId, imageLink) => {
-    executeSql(`INSERT INTO CategoryList(
+    executeSql(`INSERT OR REPLACE INTO CategoryList(
     	name,
         productCategoryId,
-        imageLink) VALUES(?, ?)`, [name, productCategoryId, imageLink]);
+        imageLink) VALUES(?, ?, ?)`, [name, productCategoryId, imageLink]);
 };
-export const addProduct = (name, productId, imageLink) => {
-    executeSql(`INSERT INTO CategoryList(
+export const addProductToCart = (name, productId, imageLink, count, price, selectedVariants, stockQuantity) => {
+    try {
+        selectedVariants = JSON.stringify(selectedVariants);
+    } catch {
+        selectedVariants = JSON.stringify([]);
+    }
+    executeSql(`INSERT OR REPLACE INTO Cart(
     	name,
         productId,
-        imageLink) VALUES(?, ?, ?)`, [name, productId, imageLink]);
+        imageLink,
+        count,
+        price,
+        selectedVariants,
+        stockQuantity) VALUES(?, ?, ?, ?, ?, ?, ?)`, [name, productId, imageLink, count, price, selectedVariants, stockQuantity]);
 };
 export const addImage = (imageLink, imageData) => {
-    executeSql(`INSERT INTO Images(
+    executeSql(`INSERT OR REPLACE INTO Images(
     	imageLink,
         imageData) VALUES(?, ?)`, [imageLink, imageData]);
 };
 
+export const deleteProductFromCart = (productId) => {
+    executeSql(`DELETE FROM Cart WHERE productId=?`, [productId], null, (tr, err) => console.log(`ERROR DELETING RECORD ${productId}`, err));
+};
+
 export const getImage = (imageLink, cb, err) => {
-    // console.log("cb", typeof cb)
-    executeSql(`SELECT imageData FROM Images WHERE imageLink='${imageLink}' LIMIT 1`, [], cb, err)
+    executeSql(`SELECT imageData, imageLink FROM Images WHERE imageLink='${imageLink}' LIMIT 1`, [], cb, err);
+};
+export const getCart = (callback, error) => {
+    executeSql(`SELECT * FROM Cart`, [], callback, error);
+};
+export const getDBCategoryList = (cb, err) => {
+    executeSql(`SELECT * FROM CategoryList LIMIT 30`, [], cb, err);
 };

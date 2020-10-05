@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight + 12,
         marginBottom: 8,
         minWidth: Dimensions.get("window").width,
+        backgroundColor: 'rgba(52, 52, 52, 0)'
     },
     backContainer: {
         width: 40.5,
@@ -17,8 +18,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     iconBack: {
-        width: 40.5,
-        height: 49.5,
+        width: 49,
+        height: 49,
         justifyContent: "center",
         alignItems: "flex-end",
     },
@@ -41,9 +42,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     badge: {
+        position: "absolute",
         width: 28,
         height: 28,
-        top: 19,
+        top: 28,
         left: -15,
         alignItems: "center",
         justifyContent: "center",
