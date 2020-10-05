@@ -35,14 +35,17 @@ const App = () => {
 		/*
         * Подгружаем данные корзины из базы данных
         * */
-	// 	getCart((tr, result) => {
-	// 		const data = result.rows["_array"] || [];
-	// 		dispatch(SetCartItems(data));
-	// 		dispatch(ComputeTotalPrice());
-	// 	},
-	// 	(err) => {
-	// 		console.log("WELL SHIT", err)
-	// 	});
+		getCart((tr, result) => {
+			const data = new Map();
+			result.rows["_array"].map( (v, i) => {
+				data.set(v.productId, v);
+			});
+			dispatch(SetCartItems(data));
+			dispatch(ComputeTotalPrice());
+		},
+		(err) => {
+			console.log("WELL SHIT", err)
+		});
 	}, []);
 
 	return (

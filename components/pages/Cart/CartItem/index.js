@@ -5,8 +5,9 @@ import ItemCount from "./ItemCount";
 import styles from "./styles";
 import OurText from "../../../OurText";
 
+
 const findProductById = (productId, cartItems) => {
-    if(cartItems.has(productId))
+    if ( cartItems.has(productId) )
         return cartItems.get(productId);
     else
         return null;
@@ -41,9 +42,5 @@ const CartItem = (props) =>
         </>
     );
 };
-
-
-
-
 
 export default React.memo(CartItem); 
