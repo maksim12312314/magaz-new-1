@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
     },
     view: {
+        margin: 10,
     },
     textView: {
         flex: 1,

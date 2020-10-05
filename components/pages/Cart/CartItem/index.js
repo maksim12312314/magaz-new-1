@@ -1,24 +1,46 @@
-import React, { useContext } from "react";
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { View } from "react-native";
+import { stateContext } from "../../../../contexts";
 import ItemCount from "./ItemCount";
 import styles from "./styles";
 import OurText from "../../../OurText";
 
 
+const findProductById = (productId, cartItems) => {
+    if ( cartItems.has(productId) )
+        return cartItems.get(productId);
+    else
+        return null;
+};
+
 /** Компонент товара в корзине */
 const CartItem = (props) =>
 {
-    const {id, name, price, count} = props.data;
-    return (
-        <View style={styles.container}>
-            <OurText style={styles.item_name}>{name}</OurText>
-            <OurText style={styles.item_count} params={{count}}>cartPcs</OurText>
-            <View style={styles.right}>
-                <OurText style={styles.item_price}>{price*count}$</OurText>
-                <ItemCount id={id} count={count}/>
-            </View>
-        </View>
-    );
-}
+    const { productId } = props;
+    const state = useContext(stateContext);
+    const [product, setProduct] = useState(findProductById(productId, state.cartItems));
 
-export default CartItem; 
+  
+
+    useEffect( () => {
+        setProduct(findProductById(productId, state.cartItems));
+    }, [product.count]);
+
+    return (
+        <>
+        { product ?
+            <View style={styles.container}>
+                <OurText style={styles.item_name}>{product.name}</OurText>
+                <OurText style={styles.item_count} params={{count: product.count}}>cartPcs</OurText>
+                <View style={styles.right}>
+                    <OurText style={styles.item_price}>{product.price * product.count}$</OurText>
+                    <ItemCount productId={productId}/>
+                </View>
+            </View>
+            : <></>
+        }
+        </>
+    );
+};
+
+export default React.memo(CartItem); 

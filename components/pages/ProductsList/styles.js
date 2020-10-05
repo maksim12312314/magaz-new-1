@@ -26,16 +26,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         minHeight: Dimensions.get("window").height,
     },
-    loading: {
-        alignSelf: "center",
-        justifyContent: "center",
-    },
-    error: {
-        fontSize: 18,
-        color: "#fff",
-        textAlign: "center",
-        marginTop: 12,
-    },
 });
 
 export default styles;
