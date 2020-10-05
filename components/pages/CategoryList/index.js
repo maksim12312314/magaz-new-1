@@ -37,6 +37,7 @@ const CategoryList = (props) =>
 	const onMount = () => {
 
         // let controller = new AbortController();
+        console.log(`In category list onMount`)
 
         if ( !state?.categories?.length ) {
             getDBCategoryList( (tr, result) => {
