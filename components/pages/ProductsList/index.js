@@ -3,7 +3,7 @@ import { stateContext, dispatchContext } from "../../../contexts";
 import { Animated } from "react-native";
 import styles from "./styles";
 import Header from "./../../Header/index";
-import LinearGradient from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import ProductsItem from './ProductsItem/index';
 import config from "../../../config";
 

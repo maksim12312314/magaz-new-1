@@ -1,7 +1,7 @@
 import React, {useContext, useLayoutEffect} from "react";
 import { stateContext } from "../../../contexts";
 import { View, FlatList } from "react-native";
-import LinearGradient from "expo-linear-gradient";
+import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 import CartItem from "./CartItem";

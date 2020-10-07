@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
-import LinearGradient from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "../../../contexts";
 import OurActivityIndicator from "../../OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
