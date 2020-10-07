@@ -1,21 +1,14 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+
 import CategoryList from "./components/pages/CategoryList";
 import Cart from "./components/pages/Cart";
 import ProductList from "./components/pages/ProductsList";
 import DeliveryDetails from "./components/Delivery";
 import Editor from "./components/Orders/editor";
 import Orders from "./components/Orders";
-import Header from "./components/Header";
 
-
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-
-
-
-// const {Navigator, Screen} = createStackNavigator();
-
-const {Navigator, Screen} = createNativeStackNavigator();
+const { Navigator, Screen } = createNativeStackNavigator();
 
 /**
  * Стэк навигация
@@ -30,35 +23,25 @@ const AppStackNavigator = () => {
             defaultNavigationOptions={{
                 tabBarVisible: true,
                 headerHideShadow: true,
-            }}
-        
-        >
+            }}>
             <Screen 
                 name="CategoryList"
-                component={CategoryList}
-            />
+                component={CategoryList}/>
             <Screen 
                 name="Cart"
-                component={Cart}
-            />
+                component={Cart}/>
             <Screen 
                 name="ProductList"
-                component={ProductList}
-            />
+                component={ProductList}/>
             <Screen 
                 name="DeliveryDetails"
-                component={DeliveryDetails}
-            />
+                component={DeliveryDetails}/>
             <Screen 
                 name="Editor"
-                component={Editor}
-            />
+                component={Editor}/>
             <Screen 
                 name="Orders"
-                component={Orders}
-            />
-
-
+                component={Orders}/>
         </Navigator>
     );
 };
