@@ -1,5 +1,7 @@
 const ru = {
     translation: {
+        categoryListTitle: "Наш прекрасный Магазин",
+
         cartTitle: "Корзина",
         cartPcs: "{{count}} шт.",
         cartTotal: "Итого: {{total}}{{currency}}",
@@ -9,7 +11,6 @@ const ru = {
         cartEmpty: "Товаров нет.",
         cancel: "Отмена",
         ok: "Ок",
-
         
         deliveryDetailsTitle: "Delivery Details",
         completedOrdersTitle: "Выполненые заказы",

@@ -1,5 +1,7 @@
 const en = {
     translation: {
+        categoryListTitle: "Our pretty magaz",
+
         cartTitle: "Cart",
         cartPcs: "{{count}} pcs.",
         cartTotal: "Total: {{total}}{{currency}}",

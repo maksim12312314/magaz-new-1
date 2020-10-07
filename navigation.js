@@ -17,10 +17,11 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 
-
-const AppStackNavigator = ()=>{
+/**
+ * Стэк навигация
+ */
+const AppStackNavigator = () => {
     return (
-
         <Navigator
             initialRouteName="CategoryList"
             backBehavior="history"
@@ -28,6 +29,7 @@ const AppStackNavigator = ()=>{
             headerMode='screen'
             defaultNavigationOptions={{
                 tabBarVisible: true,
+                headerHideShadow: true,
             }}
         
         >
@@ -58,50 +60,7 @@ const AppStackNavigator = ()=>{
 
 
         </Navigator>
-
-
-    )
-}
-
-
-// /**
-//  * Стэк навигация
-//  */
-// const AppStackNavigator = createStackNavigator({
-//         CategoryList: {
-//             screen: CategoryList,
-//             title: 'Category',
-//         },
-//         Cart: {
-//             screen: Cart,
-//             title: 'Cart',
-//         },
-//         ProductList: {
-//             screen: ProductList,
-//             title: 'ProductList',
-//         },
-//         DeliveryDetails: {
-//             screen: DeliveryDetails,
-//             title: 'DeliveryDetails',
-//         },
-//         Editor: {
-//             screen: Editor,
-//             title: 'Editor',
-//         },
-//         Orders: {
-//             screen: Orders,
-//             title: 'Orders',
-//         },
-//     },
-//     {
-//         initialRouteName : "CategoryList",
-//         backBehavior: "history",
-//         mode: 'modal',
-//         headerMode: 'none',
-//         defaultNavigationOptions: {
-//             tabBarVisible: true,
-//         },
-//     },
-// );
+    );
+};
 
 export default AppStackNavigator;

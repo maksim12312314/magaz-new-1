@@ -7,7 +7,7 @@ import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
-import Header from "../../Header/index";
+import Header, {HeaderBackButton, HeaderCartButton, HeaderTitle} from "../../Header/index";
 import OurTextButton from "../../OurTextButton";
 
 /** Компонент блока товаров  */
@@ -24,17 +24,15 @@ const Cart = (props) =>
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
 
-    useLayoutEffect( ()=>{
-
+    useLayoutEffect( () => {
         navigation.setOptions({
-            headerCenter: (props)=><Header backgroundColor={gradStart} title={"cartTitle"} navigation={navigation} showCart={true} showBack={true}/>,
-            headerLeft: ()=>{},
-            headerRight: ()=>{},
+            headerLeft: (props)=><HeaderBackButton navigation={navigation}/>,
+            headerCenter: (props)=><HeaderTitle navigation={navigation} title={"cartTitle"}/>,
+            headerRight: (props)=>{},
             headerStyle: {
                 backgroundColor: gradStart,
             },
         });
-
     }, [navigation]);
 
     const toDeliveryDetails = (e)=> {

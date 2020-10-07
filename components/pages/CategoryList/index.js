@@ -4,7 +4,6 @@ import { stateContext, dispatchContext } from "../../../contexts";
 import OurActivityIndicator from "../../OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
-import Header from "../../Header/index";
 import config from "../../../config";
 
 import {
@@ -13,6 +12,7 @@ import {
 import { FlatList } from "react-native-gesture-handler";
 import { getCategoryListQuery } from "../../../queries";
 import { addCategory, getDBCategoryList } from "../../../db_handler";
+import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";
 
 const address = config.getCell("StoreAddress");
 
@@ -23,17 +23,15 @@ const CategoryList = (props) =>
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
 
-    useLayoutEffect( ()=>{
-
+    useLayoutEffect( () => {
         navigation.setOptions({
-            headerCenter: (props)=><Header backgroundColor={gradStart} navigation={navigation} showCart={true} showBack={false}/>,
-            headerLeft: ()=>{},
-            headerRight: ()=>{},
+            headerLeft: (props)=><HeaderTitle navigation={navigation} title={"categoryListTitle"}/>,
+            headerCenter: (props)=>{},
+            headerRight: (props)=><HeaderCartButton navigation={navigation}/>,
             headerStyle: {
                 backgroundColor: gradStart,
             },
         });
-
     }, [navigation]);
 
     const GetCategoryItem = ({item}) => {
@@ -111,7 +109,7 @@ const CategoryList = (props) =>
                     <OurActivityIndicator error />
                     :
                     <FlatList
-                        contentContainerStyle={{alignItems: "center", justifyContent: "center"}}
+                        contentContainerStyle={{paddingTop: 12, alignItems: "center", justifyContent: "center"}}
                         numColumns={2}
                         data={state.categories}
                         renderItem={GetCategoryItem}

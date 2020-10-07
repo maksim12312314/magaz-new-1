@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     },
     items: {
         flex: 1,
+        paddingTop: 12,
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",

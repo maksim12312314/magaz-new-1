@@ -2,8 +2,8 @@ import React, {useState, useContext, useEffect, useLayoutEffect} from "react";
 import { stateContext, dispatchContext } from "../../../contexts";
 import { Animated } from "react-native";
 import styles from "./styles";
-import Header from "./../../Header/index";
 import { LinearGradient } from 'expo-linear-gradient';
+import Header, {HeaderBackButton, HeaderCartButton, HeaderTitle} from "./../../Header/index";
 import ProductsItem from './ProductsItem/index';
 import config from "../../../config";
 
@@ -14,6 +14,8 @@ import {
 import { FlatList } from "react-native-gesture-handler";
 import { getProductList, getProductListQuery } from "../../../queries";
 import OurActivityIndicator from "../../OurActivityIndicator";
+import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
+import OurIconButton from "../../OurIconButton";
 
 const address = config.getCell("StoreAddress");
 
@@ -35,12 +37,14 @@ const LocallyAnimatedFlatList = ({data})=>{
 
     return (
         <AnimatedFlatList
-        scrollEventThrottle={16}
-        data={data}
-        renderItem={ renderProductItem }
-        keyExtractor={item => String(item.productId)}
+            contentContainerStyle={{paddingTop: 12}}
+            scrollEventThrottle={1}
+            data={data}
+            renderItem={ renderProductItem }
+            keyExtractor={item => String(item.productId)}
 
-        {...{ onScroll }} />
+            {...{ onScroll }}
+        />
     )
 
 };
@@ -54,11 +58,11 @@ const ProductsList = (props) => {
 
     const [gradStart, gradEnd] = ['#499eda', '#2454e5'];
 
-    useLayoutEffect( ()=>{
+    useLayoutEffect( () => {
         navigation.setOptions({
-            headerCenter: ()=><Header backgroundColor={gradStart} title={currentCategory?.name} navigation={navigation}  showCart={true} showBack={true}/>,
-            headerLeft: ()=>{},
-            headerRight: ()=>{},
+            headerLeft: (props)=><HeaderBackButton navigation={navigation}/>,
+            headerCenter: (props)=><HeaderTitle navigation={navigation} title={currentCategory.name}/>,
+            headerRight: (props)=><HeaderCartButton navigation={navigation}/>,
             headerStyle: {
                 backgroundColor: gradStart,
             },
