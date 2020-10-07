@@ -1,3 +1,8 @@
+
+import { enableScreens } from 'react-native-screens';
+
+enableScreens();
+
 import React, { useReducer, useEffect } from "react";
 import { stateContext, dispatchContext } from "./contexts";
 import { AppRegistry } from 'react-native';

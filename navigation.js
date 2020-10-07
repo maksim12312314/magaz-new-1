@@ -8,7 +8,14 @@ import Editor from "./components/Orders/editor";
 import Orders from "./components/Orders";
 import Header from "./components/Header";
 
-const {Navigator, Screen} = createStackNavigator();
+
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+
+
+
+// const {Navigator, Screen} = createStackNavigator();
+
+const {Navigator, Screen} = createNativeStackNavigator();
 
 
 const AppStackNavigator = ()=>{
@@ -19,14 +26,14 @@ const AppStackNavigator = ()=>{
             backBehavior="history"
             mode='modal'
             headerMode='screen'
-            defaultNavigationOptions={
-            {tabBarVisible: true}}
+            defaultNavigationOptions={{
+                tabBarVisible: true,
+            }}
         
         >
             <Screen 
                 name="CategoryList"
                 component={CategoryList}
-                options={{headerShown:false}}
             />
             <Screen 
                 name="Cart"
@@ -35,11 +42,6 @@ const AppStackNavigator = ()=>{
             <Screen 
                 name="ProductList"
                 component={ProductList}
-                options={{
-                    header: (props)=><Header {...props} showCart={true}/>
-                    
-
-                }}
             />
             <Screen 
                 name="DeliveryDetails"

@@ -3,14 +3,11 @@ import Constants from "expo-constants";
 
 const styles = StyleSheet.create({
     container: {
-        height: 42,
+        height: 74,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginTop: Constants.statusBarHeight + 12,
-        marginBottom: 8,
-        minWidth: Dimensions.get("window").width,
-        backgroundColor: 'rgba(52, 52, 52, 0)'
+        width: Dimensions.get("window").width,
     },
     backContainer: {
         width: 40.5,
@@ -32,7 +29,6 @@ const styles = StyleSheet.create({
     cartContainer: {
         width: 49.5,
         height: 40.5,
-        marginRight: 15,
     },
     iconCart: {
         width: 49.5,

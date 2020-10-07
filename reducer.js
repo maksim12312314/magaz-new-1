@@ -128,7 +128,7 @@ const reducer = (state, action) => {
         }
 
         /**
-         * Расчитывает общую цену для корзины
+         * Расчитывает итог для корзины
          */
         case COMPUTE_TOTAL_PRICE: {
             const newState = {...state};
@@ -138,11 +138,9 @@ const reducer = (state, action) => {
             if ( newState.cartItems.size ) {
                 newState.cartItems.forEach( (value) => {
 
-                    newState.cartTotalPrice += value.itemsTotalPrice;
+                    newState.cartTotalPrice += value.price * value.count;
 
                 });
-                // for( let object of newState.cartItems.values() )
-                //     newState.cartTotalPrice += object.itemsTotalPrice;
             } else {
                 newState.cartTotalPrice = 0;
                 return newState;

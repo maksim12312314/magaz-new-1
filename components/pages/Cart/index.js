@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext, useLayoutEffect} from "react";
 import { stateContext } from "../../../contexts";
 import { View, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -22,6 +22,20 @@ const Cart = (props) =>
 {
     const state = useContext(stateContext);
     const { navigation } = props;
+    const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
+
+    useLayoutEffect( ()=>{
+
+        navigation.setOptions({
+            headerCenter: (props)=><Header backgroundColor={gradStart} title={"cartTitle"} navigation={navigation} showCart={true} showBack={true}/>,
+            headerLeft: ()=>{},
+            headerRight: ()=>{},
+            headerStyle: {
+                backgroundColor: gradStart,
+            },
+        });
+
+    }, [navigation]);
 
     const toDeliveryDetails = (e)=> {
         if ( state.cartItems.length )
@@ -33,9 +47,8 @@ const Cart = (props) =>
             <LinearGradient
                 style={styles.gradient}
                 locations={[0, 1.0]}
-                colors={["#E81C1C", "#E4724F"]}/>
+                colors={[gradStart, gradEnd]}/>
 
-                <Header {...props} title={"cartTitle"} titleFunc={toDeliveryDetails}/>
                 <View style={styles.items}>
                     <View style={styles.cartIcon}>
                         <FontAwesomeIcon size={42} color={"#fff"} icon={faShoppingBasket}/>

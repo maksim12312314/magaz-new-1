@@ -18,7 +18,8 @@ import {
 import OurTextButton from "../../../OurTextButton";
 const address = config.getCell("StoreAddress");
 
-const totalHeight = Dimensions.get("window").height 
+const totalHeight = Dimensions.get("window").height;
+const itemWidth = Dimensions.get("window").width;
 const itemHeight = totalHeight / 2;
 
 
@@ -79,7 +80,7 @@ const AttrPickersParent = (props) =>
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data, y, index, name, galleryImg, imageUrl} = props;
+    const {data, x, y, index, name, galleryImg, imageUrl} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const itemAttributes = data?.attributes?.nodes || [];
@@ -122,7 +123,7 @@ const ProductsItem = (props) =>
     const isTop = 0;
     const isBottom = totalHeight - itemHeight;
     const isAppearing = totalHeight;
-    const translateY = Animated.add(
+    /*const translateY = Animated.add(
         Animated.add(
         y,
         y.interpolate({
@@ -136,6 +137,21 @@ const ProductsItem = (props) =>
         outputRange: [0, -itemHeight / 4],
         extrapolate: "clamp",
         })
+    );*/
+    const translateX = Animated.add(
+        Animated.add(
+        x,
+        x.interpolate({
+            inputRange: [0, 0.00001 + index * itemWidth],
+            outputRange: [0, -index * itemWidth],
+            extrapolateRight: "clamp",
+        })
+        ),
+        position.interpolate({
+        inputRange: [isBottom, isAppearing],
+        outputRange: [0, -itemWidth / 4],
+        extrapolate: "clamp",
+        })
     );
     const scale = position.interpolate({
         inputRange: [isDisappearing, isTop, isBottom, isAppearing],
@@ -144,12 +160,12 @@ const ProductsItem = (props) =>
     });
     const opacity = position.interpolate({
         inputRange: [isDisappearing, isTop, isBottom, isAppearing],
-        outputRange: [0.5, 1, 1, 0.5],
+        outputRange: [0.0, 1, 1, 0.0],
     });
 
 
     return (
-        <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateY }, { scale }] }]}>
+        <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateX }, { scale }] }]}>
 
             <OurText style={styles.title}>{name}</OurText>
             <View style={styles.card}>
