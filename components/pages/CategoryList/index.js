@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
+import LinearGradient from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "../../../contexts";
 import OurActivityIndicator from "../../OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
@@ -21,6 +21,20 @@ const address = config.getCell("StoreAddress");
 const CategoryList = (props) =>
 {
     const { navigation } = props;
+    const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
+
+    useLayoutEffect( ()=>{
+
+        navigation.setOptions({
+            headerCenter: (props)=><Header backgroundColor={gradStart} navigation={navigation} showCart={true} showBack={false}/>,
+            headerLeft: ()=>{},
+            headerRight: ()=>{},
+            headerStyle: {
+                backgroundColor: gradStart,
+            },
+        });
+
+    }, [navigation]);
 
     const GetCategoryItem = ({item}) => {
         return (
@@ -37,7 +51,6 @@ const CategoryList = (props) =>
 	const onMount = () => {
 
         // let controller = new AbortController();
-        console.log(`In category list onMount`)
 
         if ( !state?.categories?.length ) {
             getDBCategoryList( (tr, result) => {
@@ -85,22 +98,14 @@ const CategoryList = (props) =>
         //     return ()=>controller.abort()
 
     };
-
     useEffect( onMount, []);
-
 
     return (
         <>
             <LinearGradient
                 style={styles.background}
                 locations={[0, 1.0]}
-                colors={['#078998', '#65B7B9']} />
-            {
-                state?.categories?.length ?
-                    <Header {...props} showCart={true}/>
-                    : error ? <Header {...props} showCart={false}/>
-                        : <></>
-            }
+                colors={[gradStart, gradEnd]} />
             {
                 ( loading || error) ?
                     <OurActivityIndicator error />

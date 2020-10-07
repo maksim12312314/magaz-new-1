@@ -26,14 +26,14 @@ const AppStackNavigator = ()=>{
             backBehavior="history"
             mode='modal'
             headerMode='screen'
-            defaultNavigationOptions={
-            {tabBarVisible: true}}
+            defaultNavigationOptions={{
+                tabBarVisible: true,
+            }}
         
         >
             <Screen 
                 name="CategoryList"
                 component={CategoryList}
-                options={{headerShown:false}}
             />
             <Screen 
                 name="Cart"
@@ -42,11 +42,6 @@ const AppStackNavigator = ()=>{
             <Screen 
                 name="ProductList"
                 component={ProductList}
-                options={{
-                    header: (props)=><Header {...props} showCart={true}/>
-                    
-
-                }}
             />
             <Screen 
                 name="DeliveryDetails"

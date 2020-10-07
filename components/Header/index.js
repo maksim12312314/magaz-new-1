@@ -9,17 +9,14 @@ import { faChevronLeft, faShoppingBasket } from '@fortawesome/free-solid-svg-ico
 import OurIconButton from "../OurIconButton";
 
 
-const isFirstRouteInParent = ()=>{
-
+const isFirstRouteInParent = () => {
     const route = useRoute();
     const isFirstRouteInParent = useNavigationState(
         state => state.routes[0].key === route.key
     );
 
     return isFirstRouteInParent;
-
-
-}
+};
 
 
 /** Шапочка приложения с навигацией*/
@@ -30,7 +27,9 @@ const Header = (props) =>
         titleFunc,
         showCart,
         navigation,
+        backgroundColor,
     } = props;
+
     const showBack = (typeof(props.showBack) === "boolean")
         ? props.showBack : !isFirstRouteInParent();
     
@@ -47,7 +46,7 @@ const Header = (props) =>
 
     return (
         <>
-            <View style={styles.container}>
+            <View style={[styles.container, {backgroundColor}]}>
                 <View style={styles.backContainer}>
                     {
                         showBack ?
