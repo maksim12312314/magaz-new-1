@@ -23,8 +23,6 @@ const ItemCount = (props) =>
     const { productId } = props;
     const { t } = useTranslation();
 
-    
-
     const plusPressed = (e) => {
         // Добавляем 1 товар
         dispatch(Plus(productId));
@@ -58,11 +56,13 @@ const ItemCount = (props) =>
                 <OurIconButton size={size}
                                style={{margin: 1}}
                                icon={faPlusCircle}
-                               onPress={plusPressed}/>
+                               onPress={plusPressed}
+                               doLongPress={true}/>
                 <OurIconButton size={size}
                                style={{margin: 1}}
                                icon={faMinusCircle}
-                               onPress={minusPressed}/>
+                               onPress={minusPressed}
+                               doLongPress={true}/>
                 <OurIconButton size={size}
                                style={{margin: 1}}
                                icon={faTimesCircle}
