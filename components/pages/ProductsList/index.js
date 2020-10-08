@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect, useLayoutEffect} from "react";
 import { stateContext, dispatchContext } from "../../../contexts";
-import { Animated } from "react-native";
+import { Animated, FlatList } from "react-native";
 import styles from "./styles";
 import { LinearGradient } from 'expo-linear-gradient';
 import Header, {HeaderBackButton, HeaderCartButton, HeaderTitle} from "./../../Header/index";
@@ -11,7 +11,6 @@ import {
     SetProductsList,
 } from "../../../actions";
 
-import { FlatList } from "react-native-gesture-handler";
 import { getProductList, getProductListQuery } from "../../../queries";
 import OurActivityIndicator from "../../OurActivityIndicator";
 import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
@@ -38,7 +37,7 @@ const LocallyAnimatedFlatList = ({data})=>{
     return (
         <AnimatedFlatList
             contentContainerStyle={{paddingTop: 12}}
-            scrollEventThrottle={1}
+            initialNumToRender={2}
             data={data}
             renderItem={ renderProductItem }
             keyExtractor={item => String(item.productId)}

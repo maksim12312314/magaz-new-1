@@ -11,13 +11,13 @@ const OurTextButton = (props) => {
     return (
         <TouchableOpacity
             activeOpacity={ disabled ? 1 : .2 }
-            style={disabled ? {...styles.buttonDisabled, ...style} : {...styles.buttonEnabled, ...style} }
+            style={disabled ? [styles.buttonDisabled, style] : [styles.buttonEnabled, style] }
             onPress={(e) => {
                 if ( !disabled )
                     onPress(e);
             }}>
 
-            <OurText style={{...styles.textButton, ...textStyle}} translate={translate} params={params}>{children || ""}</OurText>
+            <OurText style={[styles.textButton, textStyle]} translate={translate} params={params}>{children || ""}</OurText>
         </TouchableOpacity>
     );
 };

@@ -3,15 +3,17 @@ import { Dimensions, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+const LONG_PRESS_DELAY = 200;
+
 const OurIconButton = (props) => {
-    const { onPress, doLongPress, longPressDelay, icon, size, children } = props;
+    const { onPress, doLongPress, longPressDelay, icon, size, children, style } = props;
 
     let timer = null;
     const onLongPress = (e) => {
         if ( doLongPress ) {
             timer = setInterval(() => {
                 onPress(e);
-            }, longPressDelay || 200 );
+            }, longPressDelay || LONG_PRESS_DELAY );
         }
     };
     const onPressOut = (e) => {
@@ -19,13 +21,12 @@ const OurIconButton = (props) => {
             clearInterval(timer);
     };
 
-    const style = props.style || {};
     return (
-        <TouchableOpacity onPress={onPress} onLongPress={onLongPress} onPressOut={onPressOut} style={ {...styles.button, ...style} }>
+        <TouchableOpacity onPress={onPress} onLongPress={onLongPress} onPressOut={onPressOut} style={ [styles.button, style] }>
             <FontAwesomeIcon size={size} color={"#fff"} icon={icon}/>
             {children}
         </TouchableOpacity>
-    )
+    );
 };
 
 export default React.memo(OurIconButton);

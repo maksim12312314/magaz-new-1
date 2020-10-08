@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { StatusBar } from "react-native";
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import CategoryList from "./components/pages/CategoryList";
@@ -14,6 +15,11 @@ const { Navigator, Screen } = createNativeStackNavigator();
  * Стэк навигация
  */
 const AppStackNavigator = () => {
+
+    useEffect(()=> {
+        StatusBar.setBarStyle("light-content", true);
+    }, []);
+
     return (
         <Navigator
             initialRouteName="CategoryList"

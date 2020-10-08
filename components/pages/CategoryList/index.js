@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import { LinearGradient } from 'expo-linear-gradient';
+import { FlatList } from "react-native";
 import { stateContext, dispatchContext } from "../../../contexts";
 import OurActivityIndicator from "../../OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
@@ -9,7 +10,6 @@ import config from "../../../config";
 import {
     SetCategoriesList,
 } from "../../../actions";
-import { FlatList } from "react-native-gesture-handler";
 import { getCategoryListQuery } from "../../../queries";
 import { addCategory, getDBCategoryList } from "../../../db_handler";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";

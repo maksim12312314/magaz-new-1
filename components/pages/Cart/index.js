@@ -36,8 +36,8 @@ const Cart = (props) =>
     }, [navigation]);
 
     const toDeliveryDetails = (e)=> {
-        if ( state.cartItems.length )
-            navigation.navigate('DeliveryDetails');
+        if ( state.cartItems?.size )
+            navigation.navigate("DeliveryDetails");
     };
 
     return (
