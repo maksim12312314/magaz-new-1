@@ -19,7 +19,7 @@ const LocallyAnimatedFlatList = ({data}) => {
 
     const renderItemsBlock = ({item, index}) => {
         return (
-            <CartItem x={x} y={y} index={index} productId={item.productId} count={item.count}/>
+            <CartItem x={x} y={y} index={index} productId={item.productId} name={item.name} price={item.price} count={item.count}/>
         );
     };
 
