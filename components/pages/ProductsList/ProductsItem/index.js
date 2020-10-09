@@ -78,7 +78,6 @@ const AttrPickersParent = (props) =>
 const ProductsItem = (props) =>
 {
     const {data, x, y, index, name, galleryImg, imageUrl} = props;
-    const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
