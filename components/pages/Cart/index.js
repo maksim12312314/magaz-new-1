@@ -1,25 +1,43 @@
 import React, {useContext, useLayoutEffect} from "react";
 import { stateContext } from "../../../contexts";
-import { View, FlatList } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { View, FlatList, Animated } from "react-native";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
-import Header, {HeaderBackButton, HeaderCartButton, HeaderTitle} from "../../Header/index";
+import { HeaderBackButton, HeaderTitle } from "../../Header/index";
 import OurTextButton from "../../OurTextButton";
 
-/** Компонент блока товаров  */
-const ItemsBlock = ({item})=> {    
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
+const LocallyAnimatedFlatList = ({data}) => {
+    const x = new Animated.Value(0);
+    const y = new Animated.Value(0);
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
+        useNativeDriver: true,
+    });
+
+    const renderItemsBlock = ({item, index}) => {
+        return (
+            <CartItem x={x} y={y} index={index} productId={item.productId} count={item.count}/>
+        );
+    };
+
     return (
-        <CartItem productId={item.productId} count={item.count}/>
-    );
+        <AnimatedFlatList
+            contentContainerStyle={styles.cartList}
+            data={data}
+            renderItem={renderItemsBlock}
+            keyExtractor={(item) => String(item.productId)}
+
+            {...{ onScroll }}
+        />
+    )
 };
 
+const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
+
 /** Компонент корзины */
-const Cart = (props) =>
-{
+const Cart = (props) => {
     const state = useContext(stateContext);
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
@@ -48,11 +66,7 @@ const Cart = (props) =>
                 colors={[gradStart, gradEnd]}/>
 
                 <View style={styles.items}>
-                    <FlatList
-                        contentContainerStyle={styles.cartList}
-                        data={Array.from(state.cartItems.values())}
-                        renderItem={ItemsBlock}
-                        keyExtractor={(item) => String(item.productId)}/>
+                    <MemoedLocallyAnimatedFlatList data={Array.from(state.cartItems.values())}/>
                     <CartTotal />
                     <OurTextButton
                         translate={true}

@@ -65,7 +65,7 @@ const ProductsList = (props) => {
     }, [navigation]);
   
     
-    const dispatch = useContext(dispatchContext);
+    //const dispatch = useContext(dispatchContext);
     const [error, setError] = useState(false);
     const [data, setData] = useState();
 
@@ -87,7 +87,7 @@ const ProductsList = (props) => {
                         setError(true)
                     else
                         // Устанавливаем полученные данные
-                        dispatch(SetProductsList(data, currentCategory.id));
+                        //(SetProductsList(data, currentCategory.id));
                         setData([...data.products.nodes]);
                 })
             // Иначе показываем ошибку
