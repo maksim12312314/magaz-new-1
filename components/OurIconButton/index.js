@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { Dimensions, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -23,7 +23,8 @@ const OurIconButton = (props) => {
 
     return (
         <TouchableOpacity onPress={onPress} onLongPress={onLongPress} onPressOut={onPressOut} style={ [styles.button, style] }>
-            <View style={{backgroundColor: "#fff", height: 40, width: 40}}/>
+            <FontAwesomeIcon size={size} color={"#fff"} icon={icon}/>
+            {children}
         </TouchableOpacity>
     );
 };
