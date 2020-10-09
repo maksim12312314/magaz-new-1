@@ -1,6 +1,7 @@
 import React, {useContext, useLayoutEffect} from "react";
 import { stateContext } from "../../../contexts";
 import { View, FlatList, Animated } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
