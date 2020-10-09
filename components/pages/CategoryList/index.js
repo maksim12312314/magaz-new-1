@@ -5,7 +5,7 @@ import { stateContext, dispatchContext } from "../../../contexts";
 import OurActivityIndicator from "../../OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
-import config from "../../../config";
+import { STORE_ADDRESS } from "../../../config";
 
 import {
     SetCategoriesList,
@@ -13,8 +13,6 @@ import {
 import { getCategoryListQuery } from "../../../queries";
 import { addCategory, getDBCategoryList } from "../../../db_handler";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";
-
-const address = config.getCell("StoreAddress");
 
 /**Список категорий товаров*/
 // TODO abort fetch in case of change of page
@@ -73,7 +71,7 @@ const CategoryList = (props) =>
             });
 
             
-            fetch(`${address}graphql`, {
+            fetch(`${STORE_ADDRESS}graphql`, {
                 // signal: controller.signal,
                 method: 'POST',
                 headers: {

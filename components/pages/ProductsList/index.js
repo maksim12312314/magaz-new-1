@@ -1,26 +1,23 @@
 import React, {useState, useContext, useEffect, useLayoutEffect} from "react";
-import { stateContext, dispatchContext } from "../../../contexts";
+import { dispatchContext } from "../../../contexts";
 import { Animated, FlatList } from "react-native";
 import styles from "./styles";
 import { LinearGradient } from 'expo-linear-gradient';
-import Header, {HeaderBackButton, HeaderCartButton, HeaderTitle} from "./../../Header/index";
+import LinearGradient from 'expo-linear-gradient';
+import {HeaderBackButton, HeaderCartButton, HeaderTitle} from "./../../Header/index";
 import ProductsItem from './ProductsItem/index';
-import config from "../../../config";
+import { STORE_ADDRESS } from "../../../config";
 
 import {
     SetProductsList,
 } from "../../../actions";
 
-import { getProductList, getProductListQuery } from "../../../queries";
+import { getProductListQuery } from "../../../queries";
 import OurActivityIndicator from "../../OurActivityIndicator";
-import {faChevronLeft} from "@fortawesome/free-solid-svg-icons";
-import OurIconButton from "../../OurIconButton";
-
-const address = config.getCell("StoreAddress");
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const LocallyAnimatedFlatList = ({data})=>{
+const LocallyAnimatedFlatList = ({data}) => {
     const x = new Animated.Value(0);
     const y = new Animated.Value(0);
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
@@ -45,7 +42,6 @@ const LocallyAnimatedFlatList = ({data})=>{
             {...{ onScroll }}
         />
     )
-
 };
 
 const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
@@ -75,7 +71,7 @@ const ProductsList = (props) => {
 
     // Получаем данные от сервера
     useEffect( () => {
-        fetch(`${address}graphql`, {
+        fetch(`${STORE_ADDRESS}graphql`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -106,8 +102,7 @@ const ProductsList = (props) => {
                 colors={[gradStart, gradEnd]} />
             {
                 data ?
-                    <MemoedLocallyAnimatedFlatList data={data}/> 
-               
+                    <MemoedLocallyAnimatedFlatList data={data}/>
                 :
                     <OurActivityIndicator error />
             }

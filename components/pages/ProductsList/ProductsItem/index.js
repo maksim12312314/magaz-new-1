@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from "react";
 import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
-import config from "../../../../config";
-import { stateContext, dispatchContext } from "../../../../contexts";
+import { STORE_ADDRESS } from "../../../../config";
+import { dispatchContext } from "../../../../contexts";
 import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
 import OurImage from "../../../OurImage";
@@ -15,7 +15,6 @@ import {
     ComputeTotalPrice,
 } from "../../../../actions";
 import OurTextButton from "../../../OurTextButton";
-const address = config.getCell("StoreAddress");
 
 const totalHeight = Dimensions.get("window").height;
 const itemWidth = Dimensions.get("window").width;
@@ -81,7 +80,7 @@ const ProductsItem = (props) =>
     const dispatch = useContext(dispatchContext);
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
-    const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
+    const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
 
     const [isModalVisible, setModalVisible] = useState(false);
 

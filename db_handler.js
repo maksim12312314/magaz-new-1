@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
-import config from './config'
+import { DATABASE_NAME, DATABASE_VERSION } from './config';
 
-const db = SQLite.openDatabase(config.getCell("DatabaseName"), config.getCell("DatabaseVersion"));
+const db = SQLite.openDatabase(DATABASE_NAME, DATABASE_VERSION);
 
 const executeSql = (sql, args, onSuccess, err) => {
     db.transaction( (tr) => {
