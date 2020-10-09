@@ -48,9 +48,6 @@ const Cart = (props) =>
                 colors={[gradStart, gradEnd]}/>
 
                 <View style={styles.items}>
-                    <View style={styles.cartIcon}>
-                        <FontAwesomeIcon size={42} color={"#fff"} icon={faShoppingBasket}/>
-                    </View>
                     <FlatList
                         contentContainerStyle={styles.cartList}
                         data={Array.from(state.cartItems.values())}
