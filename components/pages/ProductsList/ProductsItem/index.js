@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from "react";
-import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
+import { View, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import config from "../../../../config";
 import { stateContext, dispatchContext } from "../../../../contexts";
@@ -10,7 +10,7 @@ import PickerButton from "../../../PickerButton";
 import { useTranslation } from "react-i18next";
 import Modal from 'react-native-modal';
 import Svg, {Path} from "react-native-svg";
-
+import ViewPager from '@react-native-community/viewpager';
 import {
     AddToCart,
     ComputeTotalPrice,
@@ -80,13 +80,13 @@ const AttrPickersParent = (props) =>
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data, x, y, index, name, galleryImg, imageUrl} = props;
+    const {data, x, y, index, name, imageUrl} = props;
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
     const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
-
+    const urlGalleryImg = data?.galleryImages?.nodes [1]?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.galleryImages?.nodes [1]?.mediaDetails?.file}` : null;
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
@@ -163,7 +163,6 @@ const ProductsItem = (props) =>
         outputRange: [0.0, 1, 1, 0.0],
     });
 
-
     return (
         <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateX }, { scale }] }]}>
 
@@ -171,14 +170,26 @@ const ProductsItem = (props) =>
             <View style={styles.card}>
                 <View style={styles.left}>
                     <OurImage onPress={toggleModal} url={url} />
-                    <Modal isVisible={isModalVisible}>
+                    <Modal isVisible={isModalVisible}>      
+                    <ViewPager style={styles.viewPager} initialPage={0}> 
+                    {
+                    data?.galleryImages?.nodes?.map((v, i)=>
+                    <View style={styles.modal_picture}>
+                        
                         <OurImage
-                            url={galleryImg}
+                            url={`${address}wp-content/uploads/${v.mediaDetails?.file}`}
+                            style={styles.modal_picture_gallery}
                         />
-                        <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
-                            <OurText style={styles.text_button}>Close</OurText>
-                        </TouchableOpacity>
+                    </View>
+                        )}
+                            </ViewPager>
+                            <OurTextButton
+                                style={styles.modal_button}
+                                textStyle={styles.textButton}
+                                onPress={toggleModal}
+                            >Close</OurTextButton>
                     </Modal>
+                    
                 </View>
                     
                         <View style={styles.right}>
@@ -187,12 +198,15 @@ const ProductsItem = (props) =>
             </View>
             <View style={styles.left_bottom}>
                 {
-                    galleryImg && galleryImg.length ?
-                        <OurImage
-                        style={styles.picture_bottom}
-                        url={galleryImg}
-                        /> : <></>
-                }
+                    data?.galleryImages?.nodes?.map((v, i)=>
+                        <View style={styles.picture_gallert}>
+                            <OurImage
+                            style={styles.picture_bottom}
+                            url={`${address}wp-content/uploads/${v.mediaDetails?.file}`}
+                            onPress={toggleModal}
+                            />
+                        </View>
+                    )}
             </View>
             <View style={styles.bottom}>
                 <OurText style={styles.price} params={{
