@@ -25,6 +25,7 @@ const useFetch = (url,
     const fetchData = useCallback(async () => {
         try {
             setLoading(true);
+            setAbortController(new AbortController());
             onMount(setLoading, setError, abortController);
 
             const response = await fetch(url, {...options, signal: abortController.signal});
