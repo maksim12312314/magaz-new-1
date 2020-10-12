@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
 import { LinearGradient } from 'expo-linear-gradient';
+import React, { useContext, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
 import { stateContext, dispatchContext } from "../../../contexts";
 import OurActivityIndicator from "../../OurActivityIndicator";
@@ -12,7 +12,8 @@ import {
 } from "../../../actions";
 import { getCategoryListQuery } from "../../../queries";
 import { addCategory, getDBCategoryList } from "../../../db_handler";
-import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";
+import { HeaderTitle, HeaderCartButton } from "../../Header";
+import useFetch from "../../../network_handler";
 
 /**Список категорий товаров*/
 // TODO abort fetch in case of change of page
@@ -40,18 +41,12 @@ const CategoryList = (props) =>
 
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-    
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(false);
 
-	const onMount = () => {
-
-        // let controller = new AbortController();
-
+    const onMount = (setLoading, setError, abortController) => {
         if ( !state?.categories?.length ) {
-            getDBCategoryList( (tr, result) => {
+            getDBCategoryList((tr, result) => {
                 let data = [];
-                for (let i=0; i<=result.rows.length; i++) {
+                for (let i = 0; i <= result.rows.length; i++) {
                     const row = result.rows.item(i);
 
                     if (row)
@@ -69,32 +64,28 @@ const CategoryList = (props) =>
                 dispatch(SetCategoriesList(data));
                 setLoading(false);
             });
-
-            
-            fetch(`${STORE_ADDRESS}graphql`, {
-                // signal: controller.signal,
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: getCategoryListQuery(),
-            })
-            .then(res => res.json())
-            .then( ({data}) => {
-                data?.productCategories?.nodes?.map( (v, i) => {
-                    addCategory(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
-                });
-                dispatch(SetCategoriesList(data?.productCategories?.nodes));
-                setLoading(false);
-            })
-            .catch(err => setError(true));
         }
-
-        // if(controller)
-        //     return ()=>controller.abort()
-
     };
-    useEffect( onMount, []);
+    const onSuccess = ({data}) => {
+        data?.productCategories?.nodes?.map( (v, i) => {
+            addCategory(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
+        });
+        dispatch(SetCategoriesList(data?.productCategories?.nodes));
+    };
+
+	const [
+	    data,
+        loading,
+        error,
+        fetchData,
+        abortController
+    ] = useFetch(`${STORE_ADDRESS}graphql`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: getCategoryListQuery(),
+    }, undefined, onMount, onSuccess);
 
     return (
         <>
@@ -110,6 +101,8 @@ const CategoryList = (props) =>
                         contentContainerStyle={{paddingTop: 12, alignItems: "center", justifyContent: "center"}}
                         numColumns={2}
                         data={state.categories}
+                        refreshing={loading}
+                        onRefresh={() => {fetchData()}}
                         renderItem={GetCategoryItem}
                         keyExtractor={(item, key) => String(key)}/>
             }

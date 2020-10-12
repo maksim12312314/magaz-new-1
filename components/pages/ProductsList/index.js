@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect, useLayoutEffect } from "react";
-import { dispatchContext } from "../../../contexts";
+import React, { useLayoutEffect } from "react";
 import { Animated, FlatList } from "react-native";
 import styles from "./styles";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -13,10 +12,11 @@ import {
 
 import { getProductListQuery } from "../../../queries";
 import OurActivityIndicator from "../../OurActivityIndicator";
+import useFetch from "../../../network_handler";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const LocallyAnimatedFlatList = ({data}) => {
+const LocallyAnimatedFlatList = ({data, refreshing, onRefresh}) => {
     const x = new Animated.Value(0);
     const y = new Animated.Value(0);
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
@@ -35,6 +35,8 @@ const LocallyAnimatedFlatList = ({data}) => {
             contentContainerStyle={{paddingTop: 12}}
             initialNumToRender={2}
             data={data}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
             renderItem={ renderProductItem }
             keyExtractor={item => String(item.productId)}
 
@@ -62,36 +64,20 @@ const ProductsList = (props) => {
             },
         });
     }, [navigation]);
-  
-    
-    //const dispatch = useContext(dispatchContext);
-    const [error, setError] = useState(false);
-    const [data, setData] = useState();
 
-    // Получаем данные от сервера
-    useEffect( () => {
-        fetch(`${STORE_ADDRESS}graphql`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: getProductListQuery(currentCategory.id),
-            })
-            .then(res => {return res.json()})
-            .then( (res) => 
-                {
-                    const {data} = res;
-
-                    if ( data.errors )
-                        setError(true)
-                    else
-                        // Устанавливаем полученные данные
-                        //(SetProductsList(data, currentCategory.id));
-                        setData([...data.products.nodes]);
-                })
-            // Иначе показываем ошибку
-            .catch(err => {setError(true)})
-    }, [currentCategory]);
+    const [
+        data,
+        loading,
+        error,
+        fetchData,
+        abortController
+    ] = useFetch(`${STORE_ADDRESS}graphql`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: getProductListQuery(currentCategory.id),
+    });
 
     return (
         <>
@@ -100,10 +86,10 @@ const ProductsList = (props) => {
                 locations={[0, 1.0]}
                 colors={[gradStart, gradEnd]} />
             {
-                data ?
-                    <MemoedLocallyAnimatedFlatList data={data}/>
-                :
+                ( loading || error) ?
                     <OurActivityIndicator error />
+                :
+                    <MemoedLocallyAnimatedFlatList data={data.data.products.nodes} refreshing={loading} onRefresh={()=>{fetchData()}}/>
             }
         </>
     );
