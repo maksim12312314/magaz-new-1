@@ -1,12 +1,13 @@
 import React from "react";
-import { Dimensions, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 const LONG_PRESS_DELAY = 200;
 
 const OurIconButton = (props) => {
-    const { onPress, doLongPress, longPressDelay, icon, size, children, style } = props;
+    const { onPress, doLongPress, longPressDelay, icon, width, height, children, style } = props;
+    const image = Image.resolveAssetSource(icon);
 
     let timer = null;
     const onLongPress = (e) => {
@@ -20,10 +21,9 @@ const OurIconButton = (props) => {
         if ( timer )
             clearInterval(timer);
     };
-
     return (
         <TouchableOpacity onPress={onPress} onLongPress={onLongPress} onPressOut={onPressOut} style={ [styles.button, style] }>
-            <FontAwesomeIcon size={size} color={"#fff"} icon={icon}/>
+            <Image style={{width: width|| height, height: height || width, resizeMode: "contain"}} source={{uri: Image.resolveAssetSource(icon).uri}}/>
             {children}
         </TouchableOpacity>
     );

@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import { View, Dimensions, Alert } from "react-native";
 import { dispatchContext } from "../../../../../contexts";
-import { faPlusCircle, faMinusCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import plusCircle from "../../../../../assets/icons/plus-circle-solid.png";
+import minusCircle from "../../../../../assets/icons/minus-circle-solid.png";
+import timesCircle from "../../../../../assets/icons/times-circle-solid.png";
 import styles from "./styles";
 import { useTranslation } from "react-i18next";
 import OurIconButton from "../../../../OurIconButton";
@@ -53,19 +55,19 @@ const ItemCount = (props) =>
     return (
         <View style={styles.container}>
             <View style={styles.itemControl}>
-                <OurIconButton size={size}
+                <OurIconButton width={size}
                                style={{margin: 1}}
-                               icon={faPlusCircle}
+                               icon={plusCircle}
                                onPress={plusPressed}
                                doLongPress={true}/>
-                <OurIconButton size={size}
+                <OurIconButton width={size}
                                style={{margin: 1}}
-                               icon={faMinusCircle}
+                               icon={minusCircle}
                                onPress={minusPressed}
                                doLongPress={true}/>
-                <OurIconButton size={size}
+                <OurIconButton width={size}
                                style={{margin: 1}}
-                               icon={faTimesCircle}
+                               icon={timesCircle}
                                onPress={deletePressed}/>
             </View>
         </View>

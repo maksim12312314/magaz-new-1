@@ -4,7 +4,7 @@ import { addImage, getImage } from "../../db_handler";
 import OurText from "../OurText";
 import styles from "./styles";
 
-const placeholder = require("../../assets/image_placeholder.png");
+import placeholder from "../../assets/image_placeholder.png";
 
 const OurImage = (props) => {
     const {url, title, onPress, style, disabled} = props;
