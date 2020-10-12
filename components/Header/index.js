@@ -5,8 +5,7 @@ import { Badge } from 'native-base';
 import { stateContext, dispatchContext } from "../../contexts";
 import OurText from "../OurText";
 import styles from "./styles.js";
-import chevronLeft from "../../assets/icons/chevron-left-solid.png";
-import shoppingBasket from "../../assets/icons/shopping-basket-solid.png";
+import { faChevronLeft, faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import OurIconButton from "../OurIconButton";
 
 
@@ -29,7 +28,7 @@ export const HeaderBackButton = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.backContainer}>
-                <OurIconButton icon={chevronLeft} height={49} onPress={goBack}/>
+                <OurIconButton icon={faChevronLeft} size={49} onPress={goBack}/>
             </View>
         </View>
     );
@@ -66,7 +65,7 @@ export const HeaderCartButton = (props) => {
         <View style={styles.container}>
             <View style={styles.cartContainer}>
                 <View style={styles.iconCart}>
-                    <OurIconButton icon={shoppingBasket} width={50} onPress={goToCart}>
+                    <OurIconButton icon={faShoppingBasket} size={50} onPress={goToCart}>
                         {
                             state?.cartItems?.size ?
                                 <Badge success style={styles.badge}>
