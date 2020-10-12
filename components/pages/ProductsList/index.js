@@ -1,14 +1,10 @@
-import React, { useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { Animated, FlatList } from "react-native";
 import styles from "./styles";
 import { LinearGradient } from 'expo-linear-gradient';
 import { HeaderBackButton, HeaderCartButton, HeaderTitle } from "./../../Header/index";
 import ProductsItem from './ProductsItem/index';
 import { STORE_ADDRESS } from "../../../config";
-
-import {
-    SetProductsList,
-} from "../../../actions";
 
 import { getProductListQuery } from "../../../queries";
 import OurActivityIndicator from "../../OurActivityIndicator";
@@ -17,8 +13,8 @@ import useFetch from "../../../network_handler";
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const LocallyAnimatedFlatList = ({data, refreshing, onRefresh}) => {
-    const x = new Animated.Value(0);
-    const y = new Animated.Value(0);
+    const [x, setX] = useState(new Animated.Value(0));
+    const [y, setY] = useState(new Animated.Value(0));
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
         useNativeDriver: true,
     });

@@ -1,4 +1,4 @@
-import React, {useContext, useLayoutEffect} from "react";
+import React, {useState, useContext, useLayoutEffect} from "react";
 import { stateContext } from "../../../contexts";
 import { View, FlatList, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,8 +11,8 @@ import OurTextButton from "../../OurTextButton";
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const LocallyAnimatedFlatList = ({data}) => {
-    const x = new Animated.Value(0);
-    const y = new Animated.Value(0);
+    const [x, setX] = useState(new Animated.Value(0));
+    const [y, setY] = useState(new Animated.Value(0));
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
         useNativeDriver: true,
     });
