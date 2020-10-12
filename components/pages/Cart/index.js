@@ -74,6 +74,7 @@ const Cart = (props) => {
                         disabled={!state.cartItems.size}
                         onPress={toDeliveryDetails}
                         style={styles.checkoutButton}
+                        textStyle={{color: gradEnd}}
                         >cartCheckout</OurTextButton>
                 </View>
         </>

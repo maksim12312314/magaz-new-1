@@ -86,10 +86,10 @@ const ProductsList = (props) => {
                 locations={[0, 1.0]}
                 colors={[gradStart, gradEnd]} />
             {
-                ( loading || error) ?
-                    <OurActivityIndicator error />
+                ( loading || error || abortController.signal.aborted ) ?
+                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={fetchData} buttonTextColor={gradStart}/>
                 :
-                    <MemoedLocallyAnimatedFlatList data={data.data.products.nodes} refreshing={loading} onRefresh={()=>{fetchData()}}/>
+                    <MemoedLocallyAnimatedFlatList data={data?.data?.products?.nodes} refreshing={loading} onRefresh={()=>{fetchData()}}/>
             }
         </>
     );

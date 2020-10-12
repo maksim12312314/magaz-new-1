@@ -94,8 +94,8 @@ const CategoryList = (props) =>
                 locations={[0, 1.0]}
                 colors={[gradStart, gradEnd]} />
             {
-                ( loading || error) ?
-                    <OurActivityIndicator error />
+                ( loading || error || abortController.signal.aborted ) ?
+                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={fetchData} buttonTextColor={gradStart}/>
                     :
                     <FlatList
                         contentContainerStyle={{paddingTop: 12, alignItems: "center", justifyContent: "center"}}

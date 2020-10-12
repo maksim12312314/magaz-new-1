@@ -2,6 +2,9 @@ const en = {
     translation: {
         categoryListTitle: "Our pretty magaz",
 
+        activityAborted: "Action canceled.",
+        activityAbortedRefresh: "Refresh",
+
         cartTitle: "Cart",
         cartPcs: "{{count}} pcs.",
         cartTotal: "Total: {{total}}{{currency}}",
