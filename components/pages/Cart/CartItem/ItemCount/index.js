@@ -12,7 +12,6 @@ import {
     Plus,
     Minus,
     DeleteFromCart,
-    ComputeTotalPrice,
 } from "../../../../../actions";
 
 
@@ -28,12 +27,10 @@ const ItemCount = (props) =>
     const plusPressed = (e) => {
         // Добавляем 1 товар
         dispatch(Plus(productId));
-        dispatch(ComputeTotalPrice());
     };
     const minusPressed = (e) => {
         // Вычитаем 1 товар
         dispatch(Minus(productId, dispatch, t));
-        dispatch(ComputeTotalPrice());
     };
     const deletePressed = (e) => {
         Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
@@ -45,7 +42,6 @@ const ItemCount = (props) =>
                 text: t("ok"),
                 onPress: () => {
                     dispatch(DeleteFromCart(productId, true));
-                    dispatch(ComputeTotalPrice());
                 },
             },
         ],

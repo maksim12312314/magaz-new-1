@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState } from "react";
 import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
 import { STORE_ADDRESS } from "../../../../config";
@@ -10,10 +10,7 @@ import PickerButton from "../../../PickerButton";
 import { useTranslation } from "react-i18next";
 import Modal from 'react-native-modal';
 
-import {
-    AddToCart,
-    ComputeTotalPrice,
-} from "../../../../actions";
+import { AddToCart } from "../../../../actions";
 import OurTextButton from "../../../OurTextButton";
 import { ListAnimation } from "../../../../Animations";
 
@@ -108,7 +105,6 @@ const ProductsItem = (props) =>
         };
         // Добавляем в корзину
         dispatch(AddToCart(payload, dispatch, t));
-        dispatch(ComputeTotalPrice());
     };
 
     const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight, itemWidth, index);
