@@ -62,11 +62,9 @@ const styles = StyleSheet.create({
         height: 49.5,
     },
     modal_picture:{
-        borderRadius: 36,
-        borderWidth: 1,
-        borderColor: "#707070",
         alignItems: 'center',
         marginBottom:10,
+        justifyContent: "center",
     },
     modal_picture_gallery: {
         width: 240.5,
@@ -115,6 +113,16 @@ const styles = StyleSheet.create({
     textButton: {
         paddingHorizontal: 16,
         color: "#078998",
+    },
+    modalButton: {
+        color: "#078998",
+        textAlign: "center",
+        justifyContent: 'center',
+        paddingHorizontal: 30,
+        paddingVertical: 5,
+        borderRadius: 15,
+        marginHorizontal: 70,
+        backgroundColor: '#ffffff',
     },
     descriptionText:
     {

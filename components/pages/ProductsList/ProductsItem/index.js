@@ -170,26 +170,25 @@ const ProductsItem = (props) =>
             <View style={styles.card}>
                 <View style={styles.left}>
                     <OurImage onPress={toggleModal} url={url} />
-                    <Modal isVisible={isModalVisible}>      
-                    <ViewPager style={styles.viewPager} initialPage={0}> 
-                    {
-                    data?.galleryImages?.nodes?.map((v, i)=>
-                    <View style={styles.modal_picture}>
-                        
-                        <OurImage
-                            url={`${address}wp-content/uploads/${v.mediaDetails?.file}`}
-                            style={styles.modal_picture_gallery}
-                        />
-                    </View>
-                        )}
+                        <Modal isVisible={isModalVisible}>      
+                            <ViewPager style={styles.viewPager} initialPage={0}> 
+                            {
+                            data?.galleryImages?.nodes?.map((v, i)=>
+                            <View style={styles.modal_picture}>
+                                
+                                <OurImage
+                                    url={`${address}wp-content/uploads/${v.mediaDetails?.file}`}
+                                    style={styles.modal_picture_gallery}
+                                />
+                            </View>
+                                )}
                             </ViewPager>
-                            <OurTextButton
-                                style={styles.modal_button}
-                                textStyle={styles.textButton}
-                                onPress={toggleModal}
-                            >Close</OurTextButton>
-                    </Modal>
-                    
+                                <OurTextButton
+                                    style={styles.modalButton}
+                                    textStyle={styles.textButton}
+                                    onPress={toggleModal}
+                                >Close</OurTextButton>
+                        </Modal>
                 </View>
                     
                         <View style={styles.right}>
