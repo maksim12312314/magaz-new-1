@@ -198,7 +198,7 @@ const ProductsItem = (props) =>
             <View style={styles.left_bottom}>
                 {
                     data?.galleryImages?.nodes?.map((v, i)=>
-                        <View style={styles.picture_gallert}>
+                        <View style={styles.picture_gallery}>
                             <OurImage
                             style={styles.picture_bottom}
                             url={`${address}wp-content/uploads/${v.mediaDetails?.file}`}

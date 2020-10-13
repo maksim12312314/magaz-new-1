@@ -7,9 +7,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingVertical: 30,
         marginHorizontal: 5,
-        borderRadius: 12,
-        borderWidth: 1,
-        borderColor: "#707070",
         marginBottom:10,
         
     },
@@ -53,13 +50,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#707070",
     },
-    picture_gallert: {
+    picture_gallery: {
         width: 60,
         height: 50,
-    },
-    modal_button:{
-        width: 40.5,
-        height: 49.5,
     },
     modal_picture:{
         alignItems: 'center',
