@@ -4,7 +4,6 @@ const ru = {
 
         activityAborted: "Действие отменено.",
         activityAbortedRefresh: "Обновить",
-        
         cartTitle: "Корзина",
         cartPcs: "{{count}} шт.",
         cartTotal: "Итого: {{total}}{{currency}}",
@@ -14,10 +13,9 @@ const ru = {
         cartEmpty: "Товаров нет.",
         cancel: "Отмена",
         ok: "Ок",
-
-        completedOrdersTitle: "Заказы",
-        delivery: "Детали доставки",
-        editor:"Редактор",
+        
+        deliveryDetailsTitle: "Delivery Details",
+        completedOrdersTitle: "Выполненые заказы",
 
         orderFormName: "Имя:",
         orderFormPhoneNum: "Телефон:",

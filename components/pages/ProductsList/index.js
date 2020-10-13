@@ -1,113 +1,94 @@
-import React, { useState, useContext, useEffect } from "react";
-import { stateContext, dispatchContext } from "../../../contexts";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import React, { useState, useLayoutEffect } from "react";
+import { Animated, FlatList } from "react-native";
 import styles from "./styles";
-import Header from "./../../Header/index";
 import { LinearGradient } from 'expo-linear-gradient';
+import { HeaderBackButton, HeaderCartButton, HeaderTitle } from "./../../Header/index";
 import ProductsItem from './ProductsItem/index';
-import config from "../../../config";
-import OurText from "../../OurText";
+import { STORE_ADDRESS } from "../../../config";
 
-import {
-    SetProductsList,
-} from "../../../actions";
+import { getProductListQuery } from "../../../queries";
+import OurActivityIndicator from "../../OurActivityIndicator";
+import useFetch from "../../../network_handler";
 
-import { FlatList } from "react-native-gesture-handler";
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-const address = config.getCell("StoreAddress");
+const LocallyAnimatedFlatList = ({data, refreshing, onRefresh}) => {
+    const [x, setX] = useState(new Animated.Value(0));
+    const [y, setY] = useState(new Animated.Value(0));
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
+        useNativeDriver: true,
+    });
 
-/**Список товаров той или иной категории */
-const ProductsList = (props) =>
-{
-  // const { navigation } = props;
-  const GetProductsItem = ({item}) => {
+    const renderProductItem = ({item, index})=>{
+        return (
+            <ProductsItem index={index} id={item.productId} data={item} x={x} y={y} galleryImg={item.galleryImages?.nodes[1]?.mediaDetails?.file}
+            imageUrl={item.image?.mediaDetails?.file} name={item.name} />
+        )
+    };
+
     return (
-        <ProductsItem id={item.productId} data={item}/>
+        <AnimatedFlatList
+            contentContainerStyle={{paddingTop: 12}}
+            initialNumToRender={2}
+            data={data}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            renderItem={ renderProductItem }
+            keyExtractor={item => String(item.productId)}
+
+            {...{ onScroll }}
+        />
     )
 };
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-    const [error, setError] = useState(false);
-    
-    // Получаем данные от сервера
-    useEffect( () =>
-    {
-        fetch(`${address}graphql`, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
+
+const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
+
+/**Список товаров той или иной категории */
+const ProductsList = (props) => {
+    const { navigation } = props;
+    const { currentCategory } = props.route.params;
+
+    const [gradStart, gradEnd] = ['#499eda', '#2454e5'];
+
+    useLayoutEffect( () => {
+        navigation.setOptions({
+            headerLeft: (props)=><HeaderBackButton navigation={navigation}/>,
+            headerCenter: (props)=><HeaderTitle navigation={navigation} title={currentCategory.name}/>,
+            headerRight: (props)=><HeaderCartButton navigation={navigation}/>,
+            headerStyle: {
+                backgroundColor: gradStart,
             },
-            body: JSON.stringify({
-                query: `
-                    {
-                        products(where: {categoryId: ${state.currentCategory.id}}) {
-                            nodes {
-                                productId
-                                name
-                                description
-                                image {
-                                  mediaDetails {
-                                    file
-                                  }
-                                }
-                                ... on VariableProduct {
-                                  variations {
-                                    nodes {
-                                      price
-                                      variationId
-                                      name
-                                    }
-                                  }
-                                  attributes {
-                                    nodes {
-                                      attributeId
-                                      name
-                                      options
-                                    }
-                                  }
-                                }
-                                ... on SimpleProduct {
-                                  price
-                                }
-                              }
-                        }
-                    }
-                `,
-            }),
-            })
-            .then(res => {return res.json()})
-            .then( (res) => 
-                {
-                    const {data} = res
-                   
-                    if ( data.errors )
-                        setError(true)
-                    else
-                        // Устанавливаем полученные данные
-                        dispatch(SetProductsList(data, state.currentCategory.id));
-                        console.log( data);
-                })
-            // Иначе показываем ошибку
-            .catch(err => {setError(true)})
-    }, [state.currentCategory]);
+        });
+    }, [navigation]);
+
+    const [
+        data,
+        loading,
+        error,
+        fetchData,
+        abortController
+    ] = useFetch(`${STORE_ADDRESS}graphql`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: getProductListQuery(currentCategory.id),
+    });
 
     return (
         <>
             <LinearGradient
-                style={styles.productslist}
+                style={styles.productList}
                 locations={[0, 1.0]}
-                colors={['#2454e5', '#499eda']} />
-                <Header {...props} showCart={true}/>
-            { state.products && state.products[state.currentCategory.id].length ?
-            <FlatList
-            data={state.products[state.currentCategory.id]}
-            renderItem={GetProductsItem}
-            keyExtractor={item => item.productId}/>
-              :
-              <></>
+                colors={[gradStart, gradEnd]} />
+            {
+                ( loading || error || abortController.signal.aborted ) ?
+                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={fetchData} buttonTextColor={gradStart}/>
+                :
+                    <MemoedLocallyAnimatedFlatList data={data?.data?.products?.nodes} refreshing={loading} onRefresh={()=>{fetchData()}}/>
             }
         </>
     );
-}
+};
 
-export default ProductsList;
+export default React.memo(ProductsList);

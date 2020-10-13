@@ -3,18 +3,17 @@
     "name": "magaz-new",
     "slug": "magaz-new",
     "privacy": "public",
-    "sdkVersion": "38.0.0",
+    "sdkVersion": "39.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -26,8 +25,9 @@
     "ios": {
       "supportsTablet": true
     },
-    "android":{
-      "package":"magaz.new.ours"
-    }
+    "android": {
+      "package": "com.code26.magaz_new"
+    },
+    "description": ""
   }
 }

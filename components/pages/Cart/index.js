@@ -1,70 +1,82 @@
-import React, { useContext } from "react";
-import { stateContext, dispatchContext } from "../../../contexts";
-
-import { ScrollView, TouchableOpacity, View, Text, Dimensions } from "react-native";
+import React, {useState, useContext, useLayoutEffect} from "react";
+import { stateContext } from "../../../contexts";
+import { View, FlatList, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import CartIcon from "./CartIcon";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
-import Header from "../../Header/index";
-import OurText from "../../OurText";
+import { HeaderBackButton, HeaderTitle } from "../../Header/index";
+import OurTextButton from "../../OurTextButton";
 
-/** Компонент блока товаров  */
-const ItemsBlock = (props)=>{
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
-    const state = useContext(stateContext);
-    
+const LocallyAnimatedFlatList = ({data}) => {
+    const [x, setX] = useState(new Animated.Value(0));
+    const [y, setY] = useState(new Animated.Value(0));
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
+        useNativeDriver: true,
+    });
+
+    const renderItemsBlock = ({item, index}) => {
+        return (
+            <CartItem x={x} y={y} index={index} productId={item.productId} name={item.name} price={item.price} count={item.count}/>
+        );
+    };
+
     return (
-        <View style={styles.itemsBlock}> 
-            { !state.cartItems.length
-                ? <OurText style={{color: "#FFF"}} translate={true}>cartEmpty</OurText>
-                : state.cartItems.map( (v, i) =>
-                {
-                    return <CartItem key={i} data={v}/>
-                }) }
-            
-        </View>
+        <AnimatedFlatList
+            contentContainerStyle={styles.cartList}
+            data={data}
+            renderItem={renderItemsBlock}
+            keyExtractor={(item) => String(item.productId)}
+
+            {...{ onScroll }}
+        />
     )
 };
 
+const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
+
 /** Компонент корзины */
-const Cart = (props) =>
-{
+const Cart = (props) => {
     const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-    const {navigation} = props;
+    const { navigation } = props;
+    const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
+
+    useLayoutEffect( () => {
+        navigation.setOptions({
+            headerLeft: (props)=><HeaderBackButton navigation={navigation}/>,
+            headerCenter: (props)=><HeaderTitle navigation={navigation} title={"cartTitle"}/>,
+            headerRight: (props)=>{},
+            headerStyle: {
+                backgroundColor: gradStart,
+            },
+        });
+    }, [navigation]);
+
+    const toDeliveryDetails = (e)=> {
+        if ( state.cartItems?.size )
+            navigation.navigate("DeliveryDetails");
+    };
 
     return (
         <>
             <LinearGradient
                 style={styles.gradient}
                 locations={[0, 1.0]}
-                colors={["#E81C1C", "#E4724F"]}/>
+                colors={[gradStart, gradEnd]}/>
 
-                <Header {...props} title={"cartTitle"} titleFunc={() => { navigation.navigate('DeliveryDetails') }}/>
-                <ScrollView
-                    contentContainerStyle={{
-                        justifyContent: "flex-start", alignItems:"center"
-                    }}
-                    style={styles.container}>
-                        <CartIcon/>
-
-                        <ItemsBlock/>
-
-                        <CartTotal/>
-
-                </ScrollView>
-                <TouchableOpacity
-                    activeOpacity={ !state.cartItems.length ? 1.0 : 0.2 }
-                    style={!state.cartItems.length ? styles.button_disabled : styles.button_enabled}
-                    onPress={()=>{
-                        if ( state.cartItems.length )
-                            navigation.navigate('DeliveryDetails');
-                    }}>
-
-                    <OurText style={styles.text_button} translate={true}>cartCheckout</OurText>
-                </TouchableOpacity>
+                <View style={styles.items}>
+                    <MemoedLocallyAnimatedFlatList data={Array.from(state.cartItems.values())}/>
+                    <CartTotal />
+                    <OurTextButton
+                        translate={true}
+                        disabled={!state.cartItems.size}
+                        onPress={toDeliveryDetails}
+                        style={styles.checkoutButton}
+                        textStyle={{color: gradEnd}}
+                        >cartCheckout</OurTextButton>
+                </View>
         </>
     );
 };

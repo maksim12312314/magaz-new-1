@@ -2,7 +2,7 @@ import React, {useState, useContext} from "react";
 import { LayoutAnimation, Platform, UIManager,FlatList, View, StyleSheet, TextInput, Text, Dimensions, Button, TouchableOpacity, ScrollView } from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import { stateContext, dispatchContext } from "../../contexts";
-import { NavigationActions } from "react-navigation";
+
 import Header from "./../Header/index";
 import OurText from "../OurText";
 import {useTranslation} from "react-i18next";

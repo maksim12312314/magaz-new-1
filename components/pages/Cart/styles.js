@@ -3,9 +3,8 @@ import { StyleSheet, Dimensions } from "react-native";
 // CART PAGE STYLES
 
 const styles = StyleSheet.create({
-    container: {
+    cartList: {
         flexDirection: "column",
-        maxHeight: Dimensions.get("window").height,
     },
     gradient: {
         position: 'absolute',
@@ -16,38 +15,27 @@ const styles = StyleSheet.create({
         minHeight: Dimensions.get("window").height,
     },
     items: {
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    itemsBlock: {
+        flex: 1,
         flexDirection: "column",
-    },
-    button_enabled: {
-        paddingHorizontal: 18,
-        paddingVertical: 4,
-        justifyContent: "center",
         alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: '#ffffff',
+        justifyContent: "space-between",
+        width: Dimensions.get("window").width,
+    },
+    cartIcon: {
+        width: 140,
+        borderBottomWidth: 1,
+        borderColor: "#FFF",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        marginBottom: 8,
+    },
+    checkoutButton: {
+        width: Dimensions.get("window").width - 16,
         left: 0,
         right: 0,
         bottom: 0,
+        marginTop: 8,
         marginBottom: 30,
-    },
-    button_disabled: {
-        paddingHorizontal: 18,
-        paddingVertical: 4,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: '#FFFA',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        marginBottom: 30,
-    },
-    text_button: {
-        color: "#E4724F",
     },
 });
 

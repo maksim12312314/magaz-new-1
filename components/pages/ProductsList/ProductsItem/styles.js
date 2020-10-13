@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         paddingVertical: 30,
-        marginHorizontal: 20,
+        marginHorizontal: 20
+        
     },
     title: {
         fontSize: 26,
@@ -26,14 +27,37 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         marginRight: 30,
-        marginTop: 20,
+        marginTop: 15,
+        marginBottom: 20,
     },
     left:
     {
         flex: 1,
-        marginTop: 20,
+        marginTop: 40,
+        marginBottom: 20,
         marginLeft: 0,
         marginHorizontal: 0,
+    },
+    left_bottom: {
+        flexDirection: "row",
+    },
+    picture_bottom:{
+        width: 50,
+        height: 50,
+        borderRadius: 20,
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "#707070",
+        marginHorizontal: 5,
+    },
+    modal_button:{
+        paddingHorizontal: 30,
+        paddingVertical: 5,
+        borderRadius: 15,
+        textAlign: "center",
+        justifyContent: 'center',
+        backgroundColor: '#ffffff',
+        marginHorizontal: 70,
     },
     card:
     {
@@ -70,9 +94,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         marginHorizontal: 70,
     },
-    text_button: {
+    textButton: {
+        paddingHorizontal: 16,
         color: "#078998",
-        
     },
     descriptionText:
     {

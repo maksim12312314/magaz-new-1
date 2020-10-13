@@ -4,7 +4,6 @@ const en = {
 
         activityAborted: "Action canceled.",
         activityAbortedRefresh: "Refresh",
-        
         cartTitle: "Cart",
         cartPcs: "{{count}} pcs.",
         cartTotal: "Total: {{total}}{{currency}}",
@@ -14,7 +13,8 @@ const en = {
         cartEmpty: "So empty(",
         cancel: "Cancel",
         ok: "Ok",
-        
+
+        deliveryDetailsTitle: "Delivery Details",
         completedOrdersTitle: "Completed Orders",
         delivery: "Delivery Details",
         editor:"Editor",

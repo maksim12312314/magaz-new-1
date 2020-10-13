@@ -5,11 +5,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-    button: {
-        margin: 1,
-        width: Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05,
-        height: Math.max(Dimensions.get("window").width, Dimensions.get("window").height) * .05,
-    },
     itemControl: {
         flexDirection: "row",
     },

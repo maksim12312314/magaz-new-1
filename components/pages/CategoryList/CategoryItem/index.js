@@ -1,47 +1,40 @@
-import React, { useContext, useEffect } from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import React, { useContext } from "react";
+import { View } from "react-native";
 import styles from "./styles";
-import config from "../../../../config";
-import { dispatchContext, stateContext } from "../../../../contexts";
-import OurText from "../../../OurText";
-//import { TouchableOpacity } from "react-native-gesture-handler";
+import { STORE_ADDRESS } from "../../../../config";
+import { dispatchContext } from "../../../../contexts";
+import OurImage from "../../../OurImage";
 
-import {
-    SetCategoryPageId,
-} from "../../../../actions";
-const address = config.getCell("StoreAddress");
 
 /**Компонент категории */
 const CategoryItem = (props) =>
 {
     // Получаем имя, url картинки, навигацию и id из props
-    const { name, imageUrl, navigation, id } = props;
+    const { name, imageUrl, navigation, id, cached } = props;
     const dispatch = useContext(dispatchContext);
+    const url = imageUrl ? `${STORE_ADDRESS}wp-content/uploads/${imageUrl}` : null;
+
+    // Обрабатываем нажатие на иконку категории
+    const onPress = (e) => {
+        // Устанавливаем id данной категории
+        // для отображения списка товаров
+        // dispatch(SetCategoryPageId( {id, name} ));
+
+        // Переходим к списку продуктов
+        
+        navigation.navigate("ProductList", {currentCategory:{id, name} });
+    };
 
     return (
         <View style={styles.view}>
-            <TouchableOpacity style={styles.container} onPress={(e) =>
-            {
-                // Обрабатываем нажатие на иконку категории
-                // и устанавливаем id данной категории
-                // для отображения списка товаров
-                dispatch(SetCategoryPageId( {id, name} ));
-                
-                // Переходим к списку продуктов
-                navigation.navigate("ProductList");
-                
-            }}>
-                <Image
-                    style={styles.picture}
-                    source={{
-                        uri: imageUrl ? `${address}wp-content/uploads/` + imageUrl
-                                    :  `${address}wp-content/uploads/woocommerce-placeholder.png`
-                    }}
-                />
-                <View style={styles.textView}><OurText style={styles.title}>{name}</OurText></View>
-            </TouchableOpacity>
+            <OurImage
+                url={url}
+                title={name}
+                onPress={onPress}
+                disabled={cached}
+            />
         </View>
     );
-}
+};
 
 export default CategoryItem;
