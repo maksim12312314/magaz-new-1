@@ -5,6 +5,7 @@ import { stateContext, dispatchContext } from "../../contexts";
 
 import Header from "./../Header/index";
 import OurText from "../OurText";
+import {useTranslation} from "react-i18next";
 
 if (
     Platform.OS === 'android' &&
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     },
     main: {
         flex: 1,
-        justifyContent: "center",
+//        justifyContent: "center",
         alignItems: "center",
        
 
@@ -67,40 +68,39 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         alignItems: "flex-start",
         width: 300,
+       
     },
     header: {
         marginBottom: 20,
         bottom: 60,
     },
     Buttons: {
-       top: 90,
+    //    top: 90,
+       flex:1,
+       justifyContent: "flex-end",
+    //    flexDirection: "row",
+    },
+    Buttons_style: {
+        flexDirection: "row",
     },
     button_back: {
-        paddingHorizontal: 4,
-        paddingVertical: 6,
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: '#ffffff',
-        left: -110,
-        width: Dimensions.get("window").width,
-        marginBottom: 15,
-        top: 40,
-        width: 150,
-
-    },
-    button_go: {
-       
-        paddingHorizontal: 4,
-        paddingVertical: 6,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
         backgroundColor: '#ffffff',
-        //position: "absolute",
-        left: 110,
+        height:40,
+        marginBottom: 10,
+        width:150,
+        marginRight:25,
+    },
+    button_go: {
+        width:150,
+        height:40,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 10,
+        backgroundColor: '#ffffff',
         marginBottom:10,
-        top: -6,
-        width: 150,
     },    
     text_button: {
         color: "#961EC4",
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     text_info: {
-        
+        marginBottom: 10,
         color: "#fff",
     }
 });
@@ -145,15 +145,16 @@ const Editor = (props) =>
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const { navigation } = props;
+    const {t} = useTranslation()
 
     return (
         <>
         <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#931DC4", "#F33BC8"]}/>
-        <Header {...props} showCart={true}/>
+        <Header {...props} title={t("editor")} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
-                <OurText style={styles.textDelivery}>Редактор заказов</OurText>
-                <View style={styles.line}></View>
+                {/* <OurText style={styles.textDelivery}>Редактор заказов</OurText>
+                <View style={styles.line}></View> */}
 		    </View>
             <View style={styles.data}>
                 <OurText style={styles.text_info}>Имя: {state.deliveryDetails["name"]}</OurText>
@@ -164,12 +165,14 @@ const Editor = (props) =>
                 <OurText style={styles.text_info}>Когда привезти: {state.deliveryDetails["when"]}</OurText>      
             </View>
             <View style={styles.Buttons}>
+                <View style={styles.Buttons_style}>
                    <TouchableOpacity style={styles.button_back} onPress={()=>{navigation.navigate('DeliveryDetails')}}>
                         <OurText style={styles.text_button}>Редактировать</OurText>
                    </TouchableOpacity>
                    <TouchableOpacity style={styles.button_go} onPress={()=>{navigation.navigate('Orders')}}>
-                         <OurText style={styles.text_button}>разместить заказ</OurText>
+                         <OurText style={styles.text_button}>Разместить заказ</OurText>
                    </TouchableOpacity>
+                </View>
             </View>
         </View>    
         </>       
