@@ -6,8 +6,7 @@
     "sdkVersion": "39.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,7 +26,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "magaz_new.ours"
+      "package": "com.code26.magaz_new"
     },
     "description": ""
   }

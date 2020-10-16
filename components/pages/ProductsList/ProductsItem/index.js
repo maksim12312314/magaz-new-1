@@ -1,29 +1,22 @@
-import React, {useContext, useState, useEffect} from "react";
-import { View, Dimensions, Animated } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
 import styles from "./styles";
-import config from "../../../../config";
-import { stateContext, dispatchContext } from "../../../../contexts";
+import { STORE_ADDRESS } from "../../../../config";
+import { dispatchContext } from "../../../../contexts";
 import PickerModal from 'react-native-picker-modal-view';
 import OurText from "../../../OurText";
 import OurImage from "../../../OurImage";
 import PickerButton from "../../../PickerButton";
 import { useTranslation } from "react-i18next";
 import Modal from 'react-native-modal';
-import Svg, {Path} from "react-native-svg";
 import ViewPager from '@react-native-community/viewpager';
-import {
-    AddToCart,
-    ComputeTotalPrice,
-} from "../../../../actions";
+import { AddToCart } from "../../../../actions";
 import OurTextButton from "../../../OurTextButton";
-const address = config.getCell("StoreAddress");
+import { ListAnimation } from "../../../../Animations";
 
 const totalHeight = Dimensions.get("window").height;
 const itemWidth = Dimensions.get("window").width;
 const itemHeight = totalHeight / 2;
-
-
-
 
 const AttrPicker = (props) =>
 {
@@ -80,13 +73,12 @@ const AttrPickersParent = (props) =>
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
-    const {data, x, y, index, name, imageUrl} = props;
-    const state = useContext(stateContext);
+    const {data, x, y, index, name, galleryImg, imageUrl} = props;
     const dispatch = useContext(dispatchContext);
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
-    const url = data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
-    const urlGalleryImg = data?.galleryImages?.nodes [1]?.mediaDetails?.file ? `${address}wp-content/uploads/${data?.galleryImages?.nodes [1]?.mediaDetails?.file}` : null;
+    const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
+
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
@@ -115,53 +107,9 @@ const ProductsItem = (props) =>
         };
         // Добавляем в корзину
         dispatch(AddToCart(payload, dispatch, t));
-        dispatch(ComputeTotalPrice());
     };
 
-    const position = Animated.subtract(index * itemHeight, y);
-    const isDisappearing = -itemHeight;
-    const isTop = 0;
-    const isBottom = totalHeight - itemHeight;
-    const isAppearing = totalHeight;
-    /*const translateY = Animated.add(
-        Animated.add(
-        y,
-        y.interpolate({
-            inputRange: [0, 0.00001 + index * itemHeight],
-            outputRange: [0, -index * itemHeight],
-            extrapolateRight: "clamp",
-        })
-        ),
-        position.interpolate({
-        inputRange: [isBottom, isAppearing],
-        outputRange: [0, -itemHeight / 4],
-        extrapolate: "clamp",
-        })
-    );*/
-    const translateX = Animated.add(
-        Animated.add(
-        x,
-        x.interpolate({
-            inputRange: [0, 0.00001 + index * itemWidth],
-            outputRange: [0, -index * itemWidth],
-            extrapolateRight: "clamp",
-        })
-        ),
-        position.interpolate({
-        inputRange: [isBottom, isAppearing],
-        outputRange: [0, -itemWidth / 4],
-        extrapolate: "clamp",
-        })
-    );
-    const scale = position.interpolate({
-        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
-        outputRange: [0.5, 1, 1, 0.5],
-        extrapolate: "clamp",
-    });
-    const opacity = position.interpolate({
-        inputRange: [isDisappearing, isTop, isBottom, isAppearing],
-        outputRange: [0.0, 1, 1, 0.0],
-    });
+    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight, itemWidth, index);
 
     return (
         <Animated.View style={[styles.container, {height: itemHeight}, { opacity, transform: [{ translateX }, { scale }] }]}>
@@ -172,16 +120,22 @@ const ProductsItem = (props) =>
                     <OurImage onPress={toggleModal} url={url} />
                         <Modal isVisible={isModalVisible}>      
                             <ViewPager style={styles.viewPager} initialPage={0}> 
-                            {
-                            data?.galleryImages?.nodes?.map((v, i)=>
-                            <View style={styles.modal_picture}>
-                                
                                 <OurImage
-                                    url={`${address}wp-content/uploads/${v.mediaDetails?.file}`}
+                                    onPress={toggleModal}
+                                    url={url} 
                                     style={styles.modal_picture_gallery}
-                                />
-                            </View>
-                                )}
+                                    disabled={true}
+                                    />
+                                    {
+                                    data?.galleryImages?.nodes?.map((v, i)=>
+                                    <View style={styles.modal_picture}>
+                                        <OurImage
+                                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                                            style={styles.modal_picture_gallery}
+                                            disabled={true}
+                                        />
+                                    </View>
+                                        )}
                             </ViewPager>
                                 <OurTextButton
                                     style={styles.modalButton}
@@ -190,7 +144,6 @@ const ProductsItem = (props) =>
                                 >Close</OurTextButton>
                         </Modal>
                 </View>
-                    
                         <View style={styles.right}>
                             <AttrPickersParent data={itemAttributes}/>
                          </View>
@@ -201,7 +154,7 @@ const ProductsItem = (props) =>
                         <View style={styles.picture_gallery}>
                             <OurImage
                             style={styles.picture_bottom}
-                            url={`${address}wp-content/uploads/${v.mediaDetails?.file}`}
+                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
                             onPress={toggleModal}
                             />
                         </View>
