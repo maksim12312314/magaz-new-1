@@ -18,6 +18,82 @@ const isFirstRouteInParent = () => {
     return isFirstRouteInParent;
 };
 
+export const HeaderBackButton = (props) => {
+    const { navigation } = props;
+
+    const goBack = (e) => {
+        navigation.goBack();
+    };
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.backContainer}>
+                <OurIconButton icon={faChevronLeft} size={49} onPress={goBack}/>
+            </View>
+        </View>
+    );
+};
+
+export const HeaderTitle = (props) => {
+    const { title, onPress } = props;
+
+    const doPress = (e)=>{
+        if ( onPress )
+            onPress(e);
+    };
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.titleContainer}>
+                <TouchableOpacity activeOpacity={ onPress ? 0.2 : 1 } onPress={doPress}>
+                    <OurText style={styles.title} translate={true}>{title}</OurText>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+};
+
+export const HeaderCartButton = (props) => {
+    const { navigation } =  props;
+    const state = useContext(stateContext);
+
+    const goToCart = (e) => {
+        navigation.navigate("Cart");
+    };
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.cartContainer}>
+                <View style={styles.iconCart}>
+                    <OurIconButton icon={faShoppingBasket} size={50} onPress={goToCart}>
+                        {
+                            state?.cartItems?.size ?
+                                <Badge success style={styles.badge}>
+                                    <OurText style={styles.badgeText}>
+                                        {
+                                            state?.cartItems?.size ?
+                                                (() => {
+                                                    if ( state.cartItems.size < 10 )
+                                                        return state.cartItems.size;
+                                                    else
+                                                        return "9+";
+                                                })()
+                                                : <></>
+                                        }
+                                    </OurText>
+                                </Badge>
+                                : <></>
+                        }
+                    </OurIconButton>
+                    <OurText style={styles.priceText}>
+                        {state.cartTotalPrice}$
+                    </OurText>
+                </View>
+            </View>
+        </View>
+    );
+};
+
 
 /** Шапочка приложения с навигацией*/
 const Header = (props) =>

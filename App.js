@@ -28,7 +28,14 @@ const initialState = {
 	cartItems: new Map(),
 	cartTotalPrice: 0,
 	currentCategory: -1,
-	deliveryDetails: {},
+	deliveryDetails: {
+		name:"",
+		phone:"",
+		address:"",
+		floor:"",
+		notes:"",
+		when:""
+	},
 };
 
 const App = () => {

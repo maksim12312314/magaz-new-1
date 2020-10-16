@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFA',
     },
     textButton: {
-        color: "#E4724F",
         fontSize: 16,
         textAlign: "center",
     },

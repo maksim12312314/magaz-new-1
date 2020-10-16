@@ -17,6 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { stateContext, dispatchContext } from "../../contexts";
 import Header from "../Header";
 import OurText from "../OurText";
+import {useTranslation} from "react-i18next";
 
 
 import {
@@ -88,7 +89,8 @@ const styles = StyleSheet.create({
     data: {
         justifyContent: "flex-start",
         alignItems: "flex-start",
-        width: 233,
+        width: 233,    
+        paddingTop:130,
     },
     header: {
         marginBottom: 20,
@@ -154,6 +156,9 @@ const TextField = (props)=>{
 
 }
 
+
+
+
 const PlaceOrderButton = (props) =>
 {
     const {navigation, buttonEnabled, setButtonEnabled} = props;
@@ -161,7 +166,7 @@ const PlaceOrderButton = (props) =>
     return (
         <TouchableOpacity activeOpacity={buttonEnabled ? 0.2 : 1} style={buttonEnabled ? styles.button_enabled : styles.button_disabled} onPress={()=>{
             if (buttonEnabled)
-                navigation.navigate('Editor');
+                navigation.navigate('Editor')
         }
         }>            
                 <OurText style={styles.text_button}>Оформить заказ</OurText>
@@ -174,18 +179,21 @@ const DeliveryDetails = (props) =>
 {
     const {navigation} = props;
 
-    const [buttonEnabled, setButtonEnabled] = useState(true);
-
-    const [enabled, setEnabled] = useState(false);
+    const [buttonEnabled, setButtonEnabled] = useState(false);
     
+    const {t} = useTranslation()
+    const dispatch = useContext(dispatchContext);
+    useEffect(() => {
+        dispatch(ChangeButtonStatus(buttonEnabled, setButtonEnabled ));
+    });
     return (
         <>
         <LinearGradient style={styles.grad} locations={[0, 1.0]} colors={["#1DC44F", "#3BF3AE"]}/>
-        <Header {...props} title={true} showCart={true}/>
+        <Header {...props} title={t('delivery')} showCart={true}/>
         <View style={styles.main}>
             <View style={styles.header}>
-                <OurText style={styles.textDelivery}>Детали доставки</OurText>
-                <View style={styles.line}></View>
+                {/* <OurText style={styles.textDelivery}>Детали доставки</OurText> */}
+                {/* <View style={styles.line}></View> */}
 		    </View>
             <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={192} style={styles.data}>
                 <TextField buttonEnabled={buttonEnabled} setButtonEnabled={setButtonEnabled} fieldName="name" text="Имя"/>
@@ -198,9 +206,10 @@ const DeliveryDetails = (props) =>
             
             
         </View>
+        <PlaceOrderButton buttonEnabled={buttonEnabled} setButtonEnabled={setButtonEnabled} navigation={navigation} />
+    
 
-        <PlaceOrderButton buttonEnabled={buttonEnabled} setButtonEnabled={setButtonEnabled} navigation={navigation}/>
-        
+
         </>
     );
 }

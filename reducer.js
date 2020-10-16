@@ -6,8 +6,8 @@ import {
     SET_DELIVERY_DETAILS_FIELD,
     SET_FIELD, SET_PRODUCTS_LIST
 } from "./types";
-import { Alert, AsyncStorage, ToastAndroid } from "react-native";
-import { ComputeTotalPrice, DeleteFromCart } from "./actions";
+import { Alert, ToastAndroid } from "react-native";
+import { DeleteFromCart } from "./actions";
 import { addProductToCart, deleteProductFromCart } from "./db_handler";
 
 const showToastMessage = (message) => {
@@ -90,6 +90,14 @@ const reducer = (state, action) => {
                 state.cartItems.set(action.payload.productId, action.payload);
             }
 
+            // Расчитываем итоговую цену
+            newState.cartTotalPrice = 0;
+            if ( newState.cartItems.size ) {
+                newState.cartItems.forEach( (value) => {
+                    newState.cartTotalPrice += value.price * value.count;
+                });
+            }
+
             
             addProductToCart(action.payload.name,
                 action.payload.productId,
@@ -99,7 +107,6 @@ const reducer = (state, action) => {
                 action.payload.selectedVariants,
                 action.payload.stockQuantity);
 
-            action.dispatch(ComputeTotalPrice());
             showToastMessage(t("productAddedMessage", {product: action.payload.name}));
 
             return newState;
@@ -130,6 +137,7 @@ const reducer = (state, action) => {
         /**
          * Расчитывает итог для корзины
          */
+        // Не рекомендуется к использованию.
         case COMPUTE_TOTAL_PRICE: {
             const newState = {...state};
             newState.cartTotalPrice = 0;
@@ -137,9 +145,7 @@ const reducer = (state, action) => {
 
             if ( newState.cartItems.size ) {
                 newState.cartItems.forEach( (value) => {
-
                     newState.cartTotalPrice += value.price * value.count;
-
                 });
             } else {
                 newState.cartTotalPrice = 0;
@@ -157,7 +163,14 @@ const reducer = (state, action) => {
 
             
             newState.cartItems.delete(action.payload);
-                        
+
+            // Расчитываем итоговую цену
+            newState.cartTotalPrice = 0;
+            if ( newState.cartItems.size ) {
+                newState.cartItems.forEach( (value) => {
+                    newState.cartTotalPrice += value.price * value.count;
+                });
+            }
 
             deleteProductFromCart(action.payload);
             return newState;
@@ -191,7 +204,15 @@ const reducer = (state, action) => {
 
                 } else {
                     item.count = Math.clamp(item.count - 1, 0, item.stockQuantity || 99);
-                    item.itemsTotalPrice = item.count * item.price;
+
+                    // Расчитываем итоговую цену
+                    newState.cartTotalPrice = 0;
+                    if ( newState.cartItems.size ) {
+                        newState.cartItems.forEach( (value) => {
+                            newState.cartTotalPrice += value.price * value.count;
+                        });
+                    }
+
                     addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
                 }
             }
@@ -210,7 +231,15 @@ const reducer = (state, action) => {
             if ( newState.cartItems.has(action.payload) ) {
                 const item = newState.cartItems.get(action.payload);
                 item.count = Math.clamp(item.count + 1, 1, item.stockQuantity || 99);
-                item.itemsTotalPrice = item.count * item.price;
+
+                // Расчитываем итоговую цену
+                newState.cartTotalPrice = 0;
+                if ( newState.cartItems.size ) {
+                    newState.cartItems.forEach( (value) => {
+                        newState.cartTotalPrice += value.price * value.count;
+                    });
+                }
+
                 addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
             }
             else 

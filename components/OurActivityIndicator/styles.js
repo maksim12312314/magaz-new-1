@@ -14,6 +14,17 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         justifyContent: "center",
     },
+    text: {
+        color: "#fff",
+        fontSize: 24,
+        textAlign: "center",
+    },
+    abortText: {
+        color: "#fff",
+        fontSize: 24,
+        textAlign: "center",
+        marginBottom: 12,
+    }
 });
 
 export default styles;
