@@ -9,7 +9,7 @@ import OurImage from "../../../OurImage";
 import PickerButton from "../../../PickerButton";
 import { useTranslation } from "react-i18next";
 import Modal from 'react-native-modal';
-
+import ViewPager from '@react-native-community/viewpager';
 import { AddToCart } from "../../../../actions";
 import OurTextButton from "../../../OurTextButton";
 import { ListAnimation } from "../../../../Animations";
@@ -68,6 +68,8 @@ const AttrPickersParent = (props) =>
     )
 };
 
+
+
 /** Список товаров той или иной категории */
 const ProductsItem = (props) =>
 {
@@ -116,28 +118,67 @@ const ProductsItem = (props) =>
             <View style={styles.card}>
                 <View style={styles.left}>
                     <OurImage onPress={toggleModal} url={url} />
-                    <Modal isVisible={isModalVisible}>
-                        <OurImage
-                            url={galleryImg}
-                        />
-                        <TouchableOpacity style={styles.modal_button} onPress={toggleModal}>
-                            <OurText style={styles.text_button}>Close</OurText>
-                        </TouchableOpacity>
-                    </Modal>
+                        <Modal isVisible={isModalVisible}>      
+                            <ViewPager style={styles.viewPager} initialPage={0}> 
+<<<<<<< HEAD
+                                <View style={styles.modal_picture}>
+                                    <OurImage 
+                                        style={styles.modal_picture_gallery}
+                                        disabled={true}
+                                        url={url} 
+                                        />
+                                </View>
+                            {
+                            data?.galleryImages?.nodes?.map((v, i)=>
+                            <View style={styles.modal_picture}>
+                                <OurImage
+                                    url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                                    style={styles.modal_picture_gallery}
+                                    disabled={true}
+                                />
+                            </View>
+                                )}
+=======
+                                <OurImage
+                                    onPress={toggleModal}
+                                    url={url} 
+                                    style={styles.modal_picture_gallery}
+                                    disabled={true}
+                                    />
+                                    {
+                                    data?.galleryImages?.nodes?.map((v, i)=>
+                                    <View style={styles.modal_picture}>
+                                        <OurImage
+                                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                                            style={styles.modal_picture_gallery}
+                                            disabled={true}
+                                        />
+                                    </View>
+                                        )}
+>>>>>>> pBinarySoul-master
+                            </ViewPager>
+                                <OurTextButton
+                                    style={styles.modalButton}
+                                    textStyle={styles.textButton}
+                                    onPress={toggleModal}
+                                >Close</OurTextButton>
+                        </Modal>
                 </View>
-                    
                         <View style={styles.right}>
                             <AttrPickersParent data={itemAttributes}/>
                          </View>
             </View>
             <View style={styles.left_bottom}>
                 {
-                    galleryImg && galleryImg.length ?
-                        <OurImage
-                        style={styles.picture_bottom}
-                        url={galleryImg}
-                        /> : <></>
-                }
+                    data?.galleryImages?.nodes?.map((v, i)=>
+                        <View style={styles.picture_gallery}>
+                            <OurImage
+                            style={styles.picture_bottom}
+                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                            onPress={toggleModal}
+                            />
+                        </View>
+                    )}
             </View>
             <View style={styles.bottom}>
                 <OurText style={styles.price} params={{

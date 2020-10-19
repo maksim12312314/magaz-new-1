@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         paddingVertical: 30,
-        marginHorizontal: 20
+        marginHorizontal: 5,
+        marginBottom:10,
         
     },
     title: {
@@ -44,20 +45,28 @@ const styles = StyleSheet.create({
     picture_bottom:{
         width: 50,
         height: 50,
-        borderRadius: 20,
+        borderRadius: 15,
         backgroundColor: "#fff",
         borderWidth: 1,
         borderColor: "#707070",
-        marginHorizontal: 5,
     },
-    modal_button:{
-        paddingHorizontal: 30,
-        paddingVertical: 5,
-        borderRadius: 15,
-        textAlign: "center",
-        justifyContent: 'center',
-        backgroundColor: '#ffffff',
-        marginHorizontal: 70,
+    picture_gallery: {
+        width: 60,
+        height: 50,
+    },
+    modal_picture:{
+        alignItems: 'center',
+        marginBottom:10,
+        justifyContent: "center",
+    },
+    modal_picture_gallery: {
+        width: 240.5,
+        height: 240.5,
+        borderRadius: 36,
+        borderWidth: 1,
+    },
+    viewPager: {
+        flex:1,
     },
     card:
     {
@@ -97,6 +106,16 @@ const styles = StyleSheet.create({
     textButton: {
         paddingHorizontal: 16,
         color: "#078998",
+    },
+    modalButton: {
+        color: "#078998",
+        textAlign: "center",
+        justifyContent: 'center',
+        paddingHorizontal: 30,
+        paddingVertical: 5,
+        borderRadius: 15,
+        marginHorizontal: 70,
+        backgroundColor: '#ffffff',
     },
     descriptionText:
     {
