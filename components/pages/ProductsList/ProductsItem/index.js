@@ -120,7 +120,6 @@ const ProductsItem = (props) =>
                     <OurImage onPress={toggleModal} url={url} />
                         <Modal isVisible={isModalVisible}>      
                             <ViewPager style={styles.viewPager} initialPage={0}> 
-<<<<<<< HEAD
                                 <View style={styles.modal_picture}>
                                     <OurImage 
                                         style={styles.modal_picture_gallery}
@@ -138,24 +137,6 @@ const ProductsItem = (props) =>
                                 />
                             </View>
                                 )}
-=======
-                                <OurImage
-                                    onPress={toggleModal}
-                                    url={url} 
-                                    style={styles.modal_picture_gallery}
-                                    disabled={true}
-                                    />
-                                    {
-                                    data?.galleryImages?.nodes?.map((v, i)=>
-                                    <View style={styles.modal_picture}>
-                                        <OurImage
-                                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
-                                            style={styles.modal_picture_gallery}
-                                            disabled={true}
-                                        />
-                                    </View>
-                                        )}
->>>>>>> pBinarySoul-master
                             </ViewPager>
                                 <OurTextButton
                                     style={styles.modalButton}
