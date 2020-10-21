@@ -129,7 +129,10 @@ const ProductsItem = (props) =>
                                 </View>
                             {
                             data?.galleryImages?.nodes?.map((v, i)=>
-                            <View style={styles.modal_picture}>
+                            <View 
+                            style={styles.modal_picture}
+                            key = {i}
+                            >
                                 <OurImage
                                     url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
                                     style={styles.modal_picture_gallery}
@@ -149,10 +152,14 @@ const ProductsItem = (props) =>
                             <AttrPickersParent data={itemAttributes}/>
                          </View>
             </View>
-            <View style={styles.left_bottom}>
+            
+            <Animated.View style={[styles.left_bottom, {width: itemWidth}, { opacity, transform: [{ translateY }, { scale }] }]}>
                 {
                     data?.galleryImages?.nodes?.map((v, i)=>
-                        <View style={styles.picture_gallery}>
+                        <View 
+                        style={styles.picture_gallery}
+                        key = {i}
+                        >
                             <OurImage
                             style={styles.picture_bottom}
                             url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
@@ -160,7 +167,46 @@ const ProductsItem = (props) =>
                             />
                         </View>
                     )}
-            </View>
+                    {
+                    data?.galleryImages?.nodes?.map((v, i)=>
+                        <View 
+                        style={styles.picture_gallery}
+                        key = {i}
+                        >
+                            <OurImage
+                            style={styles.picture_bottom}
+                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                            onPress={toggleModal}
+                            />
+                        </View>
+                    )}
+                    {
+                    data?.galleryImages?.nodes?.map((v, i)=>
+                        <View 
+                        style={styles.picture_gallery}
+                        key = {i}
+                        >
+                            <OurImage
+                            style={styles.picture_bottom}
+                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                            onPress={toggleModal}
+                            />
+                        </View>
+                    )}
+                    {
+                    data?.galleryImages?.nodes?.map((v, i)=>
+                        <View 
+                        style={styles.picture_gallery}
+                        key = {i}
+                        >
+                            <OurImage
+                            style={styles.picture_bottom}
+                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                            onPress={toggleModal}
+                            />
+                        </View>
+                    )}
+            </Animated.View>
             <View style={styles.bottom}>
                 <OurText style={styles.price} params={{
                     price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
