@@ -13,6 +13,8 @@ import ViewPager from '@react-native-community/viewpager';
 import { AddToCart } from "../../../../actions";
 import OurTextButton from "../../../OurTextButton";
 import { ListAnimation } from "../../../../Animations";
+import GalleryImg from "../../../Gallery";
+
 
 const totalHeight = Dimensions.get("window").height;
 const itemWidth = Dimensions.get("window").width;
@@ -125,17 +127,19 @@ const ProductsItem = (props) =>
                                         style={styles.modal_picture_gallery}
                                         disabled={true}
                                         url={url} 
-                                        />
+                                        />  
                                 </View>
-                            {
-                            data?.galleryImages?.nodes?.map((v, i)=>
-                            <View style={styles.modal_picture}>
-                                <OurImage
-                                    url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
-                                    style={styles.modal_picture_gallery}
-                                    disabled={true}
-                                />
-                            </View>
+                                {
+                                    data?.galleryImages?.nodes?.map((v, i)=>
+                                        <View 
+                                        style={styles.modal_picture}
+                                        key = {i}>
+                                            <OurImage
+                                                url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                                                style={styles.modal_picture_gallery}
+                                                disabled={true}
+                                            />
+                                        </View>
                                 )}
                             </ViewPager>
                                 <OurTextButton
@@ -149,18 +153,11 @@ const ProductsItem = (props) =>
                             <AttrPickersParent data={itemAttributes}/>
                          </View>
             </View>
-            <View style={styles.left_bottom}>
-                {
-                    data?.galleryImages?.nodes?.map((v, i)=>
-                        <View style={styles.picture_gallery}>
-                            <OurImage
-                            style={styles.picture_bottom}
-                            url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
-                            onPress={toggleModal}
-                            />
-                        </View>
-                    )}
-            </View>
+                <View>
+                    <GalleryImg
+                    data={data?.galleryImages?.nodes}
+                    />
+                </View>
             <View style={styles.bottom}>
                 <OurText style={styles.price} params={{
                     price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price

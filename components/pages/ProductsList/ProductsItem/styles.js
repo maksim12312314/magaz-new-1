@@ -34,21 +34,9 @@ const styles = StyleSheet.create({
     left:
     {
         flex: 1,
-        marginTop: 40,
         marginBottom: 20,
         marginLeft: 0,
         marginHorizontal: 0,
-    },
-    left_bottom: {
-        flexDirection: "row",
-    },
-    picture_bottom:{
-        width: 50,
-        height: 50,
-        borderRadius: 15,
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#707070",
     },
     picture_gallery: {
         width: 60,
@@ -56,7 +44,6 @@ const styles = StyleSheet.create({
     },
     modal_picture:{
         alignItems: 'center',
-        marginBottom:10,
         justifyContent: "center",
     },
     modal_picture_gallery: {
