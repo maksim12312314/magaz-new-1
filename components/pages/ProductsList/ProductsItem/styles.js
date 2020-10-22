@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     },
     descriptionText: {
         color: "#ffffff",
-        fontScale: 18,
+        fontSize: 18,
     }
 });
 
