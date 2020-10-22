@@ -169,7 +169,7 @@ const ProductsItem = (props) =>
                     onPress={(e) => buyProduct(e, data)}
                 >productBuy</OurTextButton>
             </View>
-            <View>
+            <View style={styles.descriptionContainer}>
                 <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
             </View>
         </Animated.View>

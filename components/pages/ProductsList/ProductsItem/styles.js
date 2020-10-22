@@ -5,17 +5,17 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         justifyContent: "center",
-        paddingVertical: 30,
+        paddingBottom: 30,
+	paddingHorizontal: 8,
         marginHorizontal: 5,
         marginBottom: 10,
-        backgroundColor: '#0001',
-        borderRadius: 6,
     },
     title: {
         fontSize: 26,
         color: "#fff",
         textAlign: "center",
         marginHorizontal: 30,
+	paddingVertical: 20,
     },
     picture: {
         width: 110,
@@ -100,6 +100,10 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         marginHorizontal: 70,
         backgroundColor: '#ffffff',
+    },
+    descriptionContainer: {
+        maxHeight: 120,
+        overflow: "hidden",
     },
     descriptionText: {
         color: "#ffffff",
