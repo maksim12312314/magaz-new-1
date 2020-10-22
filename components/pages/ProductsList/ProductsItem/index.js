@@ -6,13 +6,12 @@ import { dispatchContext } from "../../../../contexts";
 import OurText from "../../../OurText";
 import OurImage from "../../../OurImage";
 import { useTranslation } from "react-i18next";
-import Modal from 'react-native-modal';
-import ViewPager from '@react-native-community/viewpager';
 import { AddToCart } from "../../../../actions";
 import OurTextButton from "../../../OurTextButton";
 import { ListAnimation } from "../../../../Animations";
 import GalleryImg from "../../../Gallery";
 import OurPicker from "../../../OurPicker";
+import OurImageSlider from "../../../OurImageSlider";
 
 
 const totalHeight = Dimensions.get("window").height;
@@ -76,6 +75,7 @@ const ProductsItem = (props) => {
                         :
                             <></>
                     }
+                    <OurImageSlider isModalVisible={isModalVisible} toggleModal={toggleModal} />
                 </View>
                 <View style={styles.infoBottomContainer}>
                     <OurText style={styles.infoPrice}
