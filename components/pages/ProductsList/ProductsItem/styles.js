@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         color: "#078998",
     },
     descriptionContainer: {
+        paddingTop: 8,
         paddingHorizontal: 8,
         maxHeight: 120,
         overflow: "hidden",
