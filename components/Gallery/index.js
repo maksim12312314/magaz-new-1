@@ -11,13 +11,13 @@ const renderGalleryImg = ({item}) =>
     return (
             <View style={styles.left_bottom}>
                 <OurImage
-                    url={`${STORE_ADDRESS}wp-content/uploads/${item.mediaDetails?.file}`}
                     style={styles.picture_bottom}
+                    url={`${STORE_ADDRESS}wp-content/uploads/${item.mediaDetails?.file}`}
+                    disabled={true}
                     />
             </View>
     );
 };
-
 
 const GalleryImg = (props) =>
 {
