@@ -38,19 +38,6 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         marginHorizontal: 0,
     },
-    left_bottom: {
-        flexDirection: "row",
-        borderWidth: 1,
-        borderColor: "#707070",
-    },
-    picture_bottom:{
-        width: 50,
-        height: 50,
-        borderRadius: 15,
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#707070",
-    },
     picture_gallery: {
         width: 60,
         height: 50,
