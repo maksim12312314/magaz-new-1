@@ -130,7 +130,7 @@ const ProductsItem = (props) =>
                                         />  
                                 </View>
                                 {
-                                    data?.galleryImages?.nodes?.map((v, i)=>
+                                    data?.galleryImages?.nodes?.map((v, i) =>
                                         <View 
                                         style={styles.modal_picture}
                                         key = {i}>
@@ -163,7 +163,7 @@ const ProductsItem = (props) =>
                     price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
                 }}>productPrice</OurText>
                 <OurTextButton
-                    style={styles.button}
+                    style={styles.buyButton}
                     textStyle={styles.textButton}
                     translate={true}
                     onPress={(e) => buyProduct(e, data)}

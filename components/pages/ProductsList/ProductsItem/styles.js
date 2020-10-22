@@ -7,8 +7,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingVertical: 30,
         marginHorizontal: 5,
-        marginBottom:10,
-        
+        marginBottom: 10,
+        backgroundColor: '#0001',
+        borderRadius: 6,
     },
     title: {
         fontSize: 26,
@@ -24,15 +25,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#707070",
     },
-    right:
-    {
+    right: {
         flex: 1,
         marginRight: 30,
         marginTop: 15,
         marginBottom: 20,
     },
-    left:
-    {
+    left: {
         flex: 1,
         marginBottom: 20,
         marginLeft: 0,
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 50,
     },
-    modal_picture:{
+    modal_picture: {
         alignItems: 'center',
         justifyContent: "center",
     },
@@ -55,8 +54,7 @@ const styles = StyleSheet.create({
     viewPager: {
         flex:1,
     },
-    card:
-    {
+    card: {
         minWidth: Dimensions.get("window").width,
         maxHeight: 400,
         flexDirection: "row",
@@ -68,22 +66,21 @@ const styles = StyleSheet.create({
         maxHeight: 400,
         marginTop: 15,
         flexDirection: "row",
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
     },
-    price:
-    {
+    price: {
         fontSize: 16,
         color: "#fff",
-        marginLeft: 20,
+        paddingLeft: 18,
     },
-    picker:
-    {
+    picker: {
         width: 180,
         color: "#fff",
     },
-    button: {
+    buyButton: {
         paddingHorizontal: 30,
         paddingVertical: 5,
+        marginRight: 18,
         borderRadius: 15,
         textAlign: "center",
         justifyContent: 'center',
@@ -104,9 +101,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 70,
         backgroundColor: '#ffffff',
     },
-    descriptionText:
-    {
+    descriptionText: {
         color: "#ffffff",
+        fontScale: 18,
     }
 });
 
