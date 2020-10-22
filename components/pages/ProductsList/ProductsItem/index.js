@@ -67,15 +67,20 @@ const ProductsItem = (props) => {
                 <View style={styles.infoTopContainer}>
                     <OurImage url={url}
                               onPress={toggleModal} />
-                    {
-                        itemAttributes.length !== 0 ?
-                            itemAttributes.map( (attr, i) => {
-                                return <OurPicker data={attr} key={i}/>
-                            })
-                        :
-                            <></>
-                    }
-                    <OurImageSlider isModalVisible={isModalVisible} toggleModal={toggleModal} />
+                    <View style={styles.attributesContainer}>
+                        {
+                            itemAttributes.length !== 0 ?
+                                itemAttributes.map( (attr, i) => {
+                                    return <OurPicker data={attr} key={i}/>
+                                })
+                            :
+                                <></>
+                        }
+                    </View>
+                    <OurImageSlider firstImage={url} data={data?.galleryImages?.nodes} isModalVisible={isModalVisible} toggleModal={toggleModal} />
+                </View>
+                <View style={styles.infoMiddleContainer}>
+                    <GalleryImg data={data?.galleryImages?.nodes}/>
                 </View>
                 <View style={styles.infoBottomContainer}>
                     <OurText style={styles.infoPrice}

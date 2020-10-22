@@ -5,18 +5,12 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         marginHorizontal: 8,
         marginBottom: 12,
-
-        borderWidth: 1,
-        borderColor: "#f00",
     },
 
     titleContainer: {
         alignItems: "center",
         justifyContent: "center",
         paddingVertical: 20,
-
-        borderWidth: 1,
-        borderColor: "#ff0",
     },
     title: {
         color: "#fff",
@@ -26,24 +20,28 @@ const styles = StyleSheet.create({
 
     infoContainer: {
 
-        borderWidth: 1,
-        borderColor: "#0f0",
     },
     infoTopContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    attributesContainer: {
 
-        borderWidth: 1,
-        borderColor: "#0ff",
+    },
+    infoMiddleContainer: {
+        marginVertical: 8,
+    },
+    infoBottomContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     infoPrice: {
         width: 110,
         color: "#fff",
         fontSize: 16,
         textAlign: "center",
-    },
-    infoBottomContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
     },
     buyButton: {
         paddingHorizontal: 80,

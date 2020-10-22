@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
+import { View } from "react-native";
 import PickerModal from 'react-native-picker-modal-view';
-import PickerButton from "../../../PickerButton";
-import OurText from "../../../OurText";
+import PickerButton from "../PickerButton";
+import OurText from "..//OurText";
 import styles from "./styles";
 
 const OurPicker = (props) => {
@@ -11,7 +11,7 @@ const OurPicker = (props) => {
     const [selected, setSelected] = useState(items[0]);
 
     return (
-        <>
+        <View style={styles.pickerContainer}>
             <OurText style={styles.pickerName}>{data.name}</OurText>
 
             <PickerModal
@@ -37,7 +37,7 @@ const OurPicker = (props) => {
                 requireSelection={false}
                 autoSort={false}
             />
-        </>
+        </View>
     )
 };
 
