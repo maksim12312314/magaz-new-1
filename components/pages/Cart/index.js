@@ -44,8 +44,8 @@ const Cart = (props) => {
 
     useLayoutEffect( () => {
         navigation.setOptions({
-            headerLeft: (props) =><HeaderBackButton navigation={navigation}/>,
-            headerCenter: (props) =><HeaderTitle navigation={navigation} title={"cartTitle"}/>,
+            headerLeft: (props) => <HeaderBackButton navigation={navigation}/>,
+            headerCenter: (props) => <HeaderTitle navigation={navigation} title={"cartTitle"}/>,
             headerRight: (props) =>{},
             headerStyle: {
                 backgroundColor: gradStart,
@@ -73,7 +73,7 @@ const Cart = (props) => {
                         : <></>
                     }
                     <MemoedLocallyAnimatedFlatList data={Array.from(state.cartItems.values())}/>
-                    <CartTotal />
+                    <CartTotal total={state.cartTotalPrice} />
                     <OurTextButton
                         translate={true}
                         disabled={!state.cartItems.size}
