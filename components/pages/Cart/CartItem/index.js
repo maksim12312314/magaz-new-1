@@ -5,6 +5,7 @@ import ItemCount from "./ItemCount";
 import styles from "./styles";
 import OurText from "../../../OurText";
 import OurImage from "../../../OurImage";
+import OurImageSlider from "../../../OurImageSlider";
 import { ListAnimation } from "../../../../Animations";
 import { STORE_ADDRESS } from "../../../../config";
 
@@ -17,7 +18,12 @@ const totalHeight = 440;
 
 /** Компонент товара в корзине */
 const CartItem = (props) => {
-    const { x, y, index, productId, name, price, count, imageLink } = props;
+    const { x, y, index, productId, name, price, productQuantity, imageLink } = props;
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
 
     const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
 
@@ -25,12 +31,13 @@ const CartItem = (props) => {
         <Animated.View style={[styles.mainContainer, {height: itemHeight, width:itemWidth}, { opacity, transform: [{ translateX }, { scale }] }]}>
             <View style={styles.topContainer}>
                 <OurText style={styles.itemName}>{name}</OurText>
-                <OurImage style={styles.productImage} url={`${STORE_ADDRESS}wp-content/uploads/${imageLink}`} disabled={true}/>
+                <OurImage style={styles.productImage} url={`${STORE_ADDRESS}wp-content/uploads/${imageLink}`} onPress={toggleModal}/>
+                <OurImageSlider data={[{mediaDetails:{file:imageLink}}]} isModalVisible={isModalVisible} toggleModal={toggleModal} />
             </View>
             <View style={styles.bottomContainer}>
-                <OurText style={styles.itemCount} params={{count: count}}>cartPcs</OurText>
+                <OurText style={styles.itemCount} params={{quantity: productQuantity}}>cartPcs</OurText>
                 <View style={styles.itemCountController}>
-                    <OurText style={styles.itemPrice}>{price * count}$</OurText>
+                    <OurText style={styles.itemPrice}>{price * productQuantity}$</OurText>
                     <ItemCount productId={productId}/>
                 </View>
             </View>

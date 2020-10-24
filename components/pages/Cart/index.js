@@ -6,6 +6,7 @@ import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
 import { HeaderBackButton, HeaderTitle } from "../../Header/index";
+import OurText from "../../OurText";
 import OurTextButton from "../../OurTextButton";
 
 const LocallyAnimatedFlatList = ({data}) => {
@@ -17,7 +18,7 @@ const LocallyAnimatedFlatList = ({data}) => {
 
     const renderItemsBlock = ({item, index}) => {
         return (
-            <CartItem x={x} y={y} index={index} productId={item.productId} name={item.name} price={item.price} count={item.count} imageLink={item.imageLink}/>
+            <CartItem x={x} y={y} index={index} productId={item.productId} name={item.name} price={item.price} productQuantity={item.productQuantity} imageLink={item.imageLink}/>
         );
     };
 
@@ -65,6 +66,12 @@ const Cart = (props) => {
                 colors={[gradStart, gradEnd]}/>
 
                 <View style={styles.items}>
+                    {
+                        state.cartItems?.size === 0 ?
+                            <OurText style={styles.emptyText}
+                                translate={true}>cartEmpty</OurText>
+                        : <></>
+                    }
                     <MemoedLocallyAnimatedFlatList data={Array.from(state.cartItems.values())}/>
                     <CartTotal />
                     <OurTextButton

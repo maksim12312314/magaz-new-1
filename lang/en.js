@@ -6,15 +6,15 @@ const en = {
         activityAbortedRefresh: "Refresh",
 
         cartTitle: "Cart",
-        cartPcs: "Quantity: {{count}} pcs.",
+        cartPcs: "Quantity: {{quantity}} pcs.",
         cartTotal: "Total: {{total}}{{currency}}",
         cartCheckout: "Checkout",
         cartDeleteTitle: "Delete from cart",
         cartDeleteMessage: "Are you sure that you want to delete this item from cart?",
-        cartEmpty: "So empty(",
+        cartEmpty: "There's too empty here(",
 
         cancel: "Cancel",
-	close: "Close",
+        close: "Close",
         ok: "Ok",
 
         deliveryDetailsTitle: "Delivery Details",

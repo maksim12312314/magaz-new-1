@@ -18,7 +18,7 @@ export const createDBTables = () => {
         name TEXT,
         productId INTEGER UNIQUE,
         imageLink TEXT,
-        count INTEGER,
+        productQuantity INTEGER,
         price INTEGER,
         selectedVariants TEXT,
         stockQuantity INTEGER)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
@@ -33,7 +33,7 @@ export const addCategory = (name, productCategoryId, imageLink) => {
         productCategoryId,
         imageLink) VALUES(?, ?, ?)`, [name, productCategoryId, imageLink]);
 };
-export const addProductToCart = (name, productId, imageLink, count, price, selectedVariants, stockQuantity) => {
+export const addProductToCart = (name, productId, imageLink, productQuantity, price, selectedVariants, stockQuantity) => {
     try {
         selectedVariants = JSON.stringify(selectedVariants);
     } catch {
@@ -43,10 +43,10 @@ export const addProductToCart = (name, productId, imageLink, count, price, selec
     	name,
         productId,
         imageLink,
-        count,
+        productQuantity,
         price,
         selectedVariants,
-        stockQuantity) VALUES(?, ?, ?, ?, ?, ?, ?)`, [name, productId, imageLink, count, price, selectedVariants, stockQuantity]);
+        stockQuantity) VALUES(?, ?, ?, ?, ?, ?, ?)`, [name, productId, imageLink, productQuantity, price, selectedVariants, stockQuantity]);
 };
 export const addImage = (imageLink, imageData) => {
     executeSql(`INSERT OR REPLACE INTO Images(

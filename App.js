@@ -1,4 +1,3 @@
-
 import { enableScreens } from 'react-native-screens';
 
 enableScreens();
@@ -13,10 +12,10 @@ import * as hehe from './utils';
 import { createDBTables, getCart } from "./db_handler";
 import reducer from "./reducer";
 import "./i18n";
-import { ComputeTotalPrice, SetCartItems } from "./actions";
+import { ComputeTotalPrice, SetCartProducts } from "./actions";
 
 /**Контейнер приложения */
-const AppContainer = ()=>{
+const AppContainer = () => {
 	return (
 		<NavigationContainer>
 			<AppStackNavigator/>
@@ -27,14 +26,13 @@ const AppContainer = ()=>{
 const initialState = {
 	cartItems: new Map(),
 	cartTotalPrice: 0,
-	currentCategory: -1,
 	deliveryDetails: {
-		name:"",
-		phone:"",
-		address:"",
-		floor:"",
-		notes:"",
-		when:""
+		name: "",
+		phone: "",
+		address: "",
+		floor: "",
+		notes: "",
+		when: ""
 	},
 };
 
@@ -52,7 +50,7 @@ const App = () => {
 			result.rows["_array"].map( (v, i) => {
 				data.set(v.productId, v);
 			});
-			dispatch(SetCartItems(data));
+			dispatch(SetCartProducts(data));
 			dispatch(ComputeTotalPrice());
 		},
 		(err) => {

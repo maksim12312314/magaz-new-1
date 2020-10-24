@@ -1,10 +1,16 @@
 import {
-    ADD_TO_CART,
-    CHANGE_BUTTON_STATUS, COMPUTE_TOTAL_PRICE, DELETE_FROM_CART, MINUS, PLUS,
-    SET_CART_ITEMS, SET_CATEGORIES_LIST,
-    SET_CATEGORY_PAGE_ID,
-    SET_DELIVERY_DETAILS_FIELD,
-    SET_FIELD, SET_PRODUCTS_LIST
+    ACTION_TYPE_SET_FIELD,
+    ACTION_TYPE_SET_DELIVERY_DETAILS_FIELD,
+    ACTION_TYPE_CHANGE_BUTTON_STATUS,
+    ACTION_TYPE_SET_PRODUCT_LIST,
+    ACTION_TYPE_SET_CATEGORY_LIST,
+    ACTION_TYPE_CART_SET_PRODUCTS,
+    ACTION_TYPE_CART_ADD_PRODUCT,
+    ACTION_TYPE_CART_DELETE_PRODUCT,
+    ACTION_TYPE_CART_DECREASE_QUANTITY,
+    ACTION_TYPE_CART_INCREASE_QUANTITY,
+    ACTION_TYPE_CART_CHANGE_QUANTITY,
+    ACTION_TYPE_CART_COMPUTE_TOTAL_PRICE,
 } from "./types";
 import { Alert, ToastAndroid } from "react-native";
 import { DeleteFromCart } from "./actions";
@@ -34,30 +40,21 @@ const reducer = (state, action) => {
      */
     switch (action.type)
     {
-        case SET_CART_ITEMS: {
-            const newState = {...state};
-            
-            newState.cartItems = action.payload || [];
-
-            return newState;
-        }
-
-        case SET_FIELD: {
+        case ACTION_TYPE_SET_FIELD: {
             const newState = {...state};
             newState[action.fieldName] = action.payload;
 
             return newState;
         }
 
-
-        case SET_DELIVERY_DETAILS_FIELD: {
+        case ACTION_TYPE_SET_DELIVERY_DETAILS_FIELD: {
             const newState = {...state};
             newState.deliveryDetails[action.fieldName] = action.payload;
 
             return newState;
         }
 
-        case CHANGE_BUTTON_STATUS: {
+        case ACTION_TYPE_CHANGE_BUTTON_STATUS: {
             const newState = {...state};
 
             if ( isAllDeliveryDetailsSet(newState) && !action.buttonEnabled )
@@ -69,53 +66,9 @@ const reducer = (state, action) => {
         }
 
         /**
-         * Устанавливает id категории для текущей страницы
-         */
-        case SET_CATEGORY_PAGE_ID: {
-            const newState = {...state};
-            newState.currentCategory = action.payload;
-            return newState;
-        }
-        /**
-         * Заносит товар и его данные в state
-         */
-        case ADD_TO_CART: {
-            const t = action.t; // Translate
-            const newState = {...state};
-
-            if ( state.cartItems.has(action.payload.productId) ) {
-                const item = state.cartItems.get(action.payload.productId);
-                item.count += action.payload.count;
-            } else {
-                state.cartItems.set(action.payload.productId, action.payload);
-            }
-
-            // Расчитываем итоговую цену
-            newState.cartTotalPrice = 0;
-            if ( newState.cartItems.size ) {
-                newState.cartItems.forEach( (value) => {
-                    newState.cartTotalPrice += value.price * value.count;
-                });
-            }
-
-            
-            addProductToCart(action.payload.name,
-                action.payload.productId,
-                action.payload.imageLink,
-                action.payload.count,
-                action.payload.price,
-                action.payload.selectedVariants,
-                action.payload.stockQuantity);
-
-            showToastMessage(t("productAddedMessage", {product: action.payload.name}));
-
-            return newState;
-        }
-
-        /**
          * Устанавливает список продуктов для текущей страницы
          */
-        case SET_PRODUCTS_LIST: {
+        case ACTION_TYPE_SET_PRODUCT_LIST: {
             const newState = {...state};
 
             newState.products = {...newState.products, [action.id]: action.payload.products.nodes};
@@ -126,7 +79,7 @@ const reducer = (state, action) => {
         /**
          * Устанавливает список категорий для текущей страницы
          */
-        case SET_CATEGORIES_LIST: {
+        case ACTION_TYPE_SET_CATEGORY_LIST: {
             const newState = {...state};
 
             newState.categories = action.payload;
@@ -135,30 +88,56 @@ const reducer = (state, action) => {
         }
 
         /**
-         * Расчитывает итог для корзины
+         * Загружает данные корзины из базы данных в state
          */
-        // Не рекомендуется к использованию.
-        case COMPUTE_TOTAL_PRICE: {
+        case ACTION_TYPE_CART_SET_PRODUCTS: {
             const newState = {...state};
-            newState.cartTotalPrice = 0;
             
+            newState.cartItems = action.payload || [];
 
+            return newState;
+        }
+
+        /**
+         * Заносит товар и его данные в state
+         */
+        case ACTION_TYPE_CART_ADD_PRODUCT: {
+            const t = action.t; // Translate
+            const newState = {...state};
+
+            if ( state.cartItems.has(action.payload.productId) ) {
+                const item = state.cartItems.get(action.payload.productId);
+                item.productQuantity += action.payload.productQuantity;
+            } else {
+                state.cartItems.set(action.payload.productId, action.payload);
+            }
+
+            // Расчитываем итоговую цену
+            newState.cartTotalPrice = 0;
             if ( newState.cartItems.size ) {
                 newState.cartItems.forEach( (value) => {
-                    newState.cartTotalPrice += value.price * value.count;
+                    newState.cartTotalPrice += value.price * value.productQuantity;
                 });
-            } else {
-                newState.cartTotalPrice = 0;
-                return newState;
             }
+
             
+            addProductToCart(action.payload.name,
+                action.payload.productId,
+                action.payload.imageLink,
+                action.payload.productQuantity,
+                action.payload.price,
+                action.payload.selectedVariants,
+                action.payload.stockQuantity);
+
+            showToastMessage(t("productAddedMessage", {product: action.payload.name}));
+
             return newState;
         }
 
         /**
          * Удаляет товар из корзины
          */
-        case DELETE_FROM_CART: {
+        case ACTION_TYPE_CART_DELETE_PRODUCT: {
             const newState = {...state};
 
             
@@ -168,7 +147,7 @@ const reducer = (state, action) => {
             newState.cartTotalPrice = 0;
             if ( newState.cartItems.size ) {
                 newState.cartItems.forEach( (value) => {
-                    newState.cartTotalPrice += value.price * value.count;
+                    newState.cartTotalPrice += value.price * value.productQuantity;
                 });
             }
 
@@ -179,14 +158,14 @@ const reducer = (state, action) => {
         /**
          * Минусует 1 товар из корзины
          */
-        case MINUS: {
+        case ACTION_TYPE_CART_DECREASE_QUANTITY: {
             const t = action.t;
             const newState = {...state};
 
             if ( state.cartItems.has(action.payload) ) {
                 const item = state.cartItems.get(action.payload);
 
-                if ( item.count === 1 ) {
+                if ( item.productQuantity === 1 ) {
                     Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
                         {
                             text: t("cancel"),
@@ -203,17 +182,17 @@ const reducer = (state, action) => {
                     {cancelable: false});
 
                 } else {
-                    item.count = Math.clamp(item.count - 1, 0, item.stockQuantity || 99);
+                    item.productQuantity = Math.clamp(item.productQuantity - 1, 0, item.stockQuantity || 99);
 
                     // Расчитываем итоговую цену
                     newState.cartTotalPrice = 0;
                     if ( newState.cartItems.size ) {
                         newState.cartItems.forEach( (value) => {
-                            newState.cartTotalPrice += value.price * value.count;
+                            newState.cartTotalPrice += value.price * value.productQuantity;
                         });
                     }
 
-                    addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
+                    addProductToCart(item.name, item.productId, item.imageLink, item.productQuantity, item.price, item.selectedVariants, item.stockQuantity);
                 }
             }
             else
@@ -225,25 +204,46 @@ const reducer = (state, action) => {
         /**
          * Плюсует 1 товар в корзину
          */
-        case PLUS: {
+        case ACTION_TYPE_CART_INCREASE_QUANTITY: {
             const newState = {...state};
 
             if ( newState.cartItems.has(action.payload) ) {
                 const item = newState.cartItems.get(action.payload);
-                item.count = Math.clamp(item.count + 1, 1, item.stockQuantity || 99);
+                item.productQuantity = Math.clamp(item.productQuantity + 1, 1, item.stockQuantity || 99);
 
                 // Расчитываем итоговую цену
                 newState.cartTotalPrice = 0;
                 if ( newState.cartItems.size ) {
                     newState.cartItems.forEach( (value) => {
-                        newState.cartTotalPrice += value.price * value.count;
+                        newState.cartTotalPrice += value.price * value.productQuantity;
                     });
                 }
 
-                addProductToCart(item.name, item.productId, item.imageLink, item.count, item.price, item.selectedVariants, item.stockQuantity);
+                addProductToCart(item.name, item.productId, item.imageLink, item.productQuantity, item.price, item.selectedVariants, item.stockQuantity);
             }
             else 
                 return state;
+            
+            return newState;
+        }
+
+        /**
+         * Расчитывает итог для корзины
+         */
+        // Не рекомендуется к использованию.
+        case ACTION_TYPE_CART_COMPUTE_TOTAL_PRICE: {
+            const newState = {...state};
+            newState.cartTotalPrice = 0;
+            
+
+            if ( newState.cartItems.size ) {
+                newState.cartItems.forEach( (value) => {
+                    newState.cartTotalPrice += value.price * value.productQuantity;
+                });
+            } else {
+                newState.cartTotalPrice = 0;
+                return newState;
+            }
             
             return newState;
         }

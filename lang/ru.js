@@ -6,15 +6,15 @@ const ru = {
         activityAbortedRefresh: "Обновить",
 
         cartTitle: "Корзина",
-        cartPcs: "Количество: {{count}} шт.",
+        cartPcs: "Количество: {{quantity}} шт.",
         cartTotal: "Итого: {{total}}{{currency}}",
         cartCheckout: "Оформить заказ",
         cartDeleteTitle: "Удалить из корзины",
         cartDeleteMessage: "Вы действительно хотите удалить товар из корзины?",
-        cartEmpty: "Товаров нет.",
+        cartEmpty: "Здесь пусто(",
 
         cancel: "Отмена",
-	close: "Закрыть",
+        close: "Закрыть",
         ok: "Ок",
 
         deliveryDetailsTitle: "Детали доставки",

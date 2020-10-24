@@ -8,7 +8,7 @@ import styles from "./styles";
 import { STORE_ADDRESS } from "../../../config";
 
 import {
-    SetCategoriesList,
+    SetCategoryList,
 } from "../../../actions";
 import { getCategoryListQuery } from "../../../queries";
 import { addCategory, getDBCategoryList } from "../../../db_handler";
@@ -61,7 +61,7 @@ const CategoryList = (props) =>
                             cached: true,
                         });
                 }
-                dispatch(SetCategoriesList(data));
+                dispatch(SetCategoryList(data));
                 setLoading(false);
             });
         }
@@ -70,7 +70,7 @@ const CategoryList = (props) =>
         data?.productCategories?.nodes?.map( (v, i) => {
             addCategory(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
         });
-        dispatch(SetCategoriesList(data?.productCategories?.nodes));
+        dispatch(SetCategoryList(data?.productCategories?.nodes));
     };
 
 	const [

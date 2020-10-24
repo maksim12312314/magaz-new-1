@@ -6,7 +6,7 @@ import { dispatchContext } from "../../../../contexts";
 import OurText from "../../../OurText";
 import OurImage from "../../../OurImage";
 import { useTranslation } from "react-i18next";
-import { AddToCart } from "../../../../actions";
+import { AddProductToCart } from "../../../../actions";
 import OurTextButton from "../../../OurTextButton";
 import { ListAnimation } from "../../../../Animations";
 import GalleryImg from "../../../Gallery";
@@ -37,15 +37,14 @@ const ProductsItem = (props) => {
     // Обрабатываем нажатие на кнопку "Купить"
     const buyProduct = (e, data) => {
         
-        const count = 1;
+        const productQuantity = 1;
         const price = data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0;
-        const itemsTotalPrice = count * price;
         
         // Заносим данные
         let payload = {
             productId: data.productId,
             name: data.name,
-            count: count,
+            productQuantity: productQuantity,
             price: price,
             stockQuantity: data.stockQuantity || 99,
             selectedVariants: [
@@ -54,7 +53,7 @@ const ProductsItem = (props) => {
             imageLink: data.image?.mediaDetails?.file,
         };
         // Добавляем в корзину
-        dispatch(AddToCart(payload, dispatch, t));
+        dispatch(AddProductToCart(payload, dispatch, t));
     };
 
     const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
