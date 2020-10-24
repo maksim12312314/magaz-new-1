@@ -17,7 +17,6 @@ const en = {
 
         deliveryDetailsTitle: "Delivery Details",
         completedOrdersTitle: "Completed Orders",
-        delivery: "Delivery Details",
         editor:"Editor",
         orderFormName: "Name:",
         orderFormPhoneNum: "Phone number:",
