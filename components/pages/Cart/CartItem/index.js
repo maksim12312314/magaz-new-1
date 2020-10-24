@@ -9,16 +9,17 @@ import { ListAnimation } from "../../../../Animations";
 import { STORE_ADDRESS } from "../../../../config";
 
 
-const totalHeight = Dimensions.get("window").height - 180;
 const itemWidth = Dimensions.get("window").width;
-const itemHeight = 144;
+const itemHeight = 156;
+const itemHeight2 = 164;
+const totalHeight = 440;
 
 
 /** Компонент товара в корзине */
 const CartItem = (props) => {
     const { x, y, index, productId, name, price, count, imageLink } = props;
 
-    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight, itemWidth, index);
+    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
 
     return (
         <Animated.View style={[styles.mainContainer, {height: itemHeight, width:itemWidth}, { opacity, transform: [{ translateX }, { scale }] }]}>

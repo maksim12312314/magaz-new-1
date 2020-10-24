@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     mainContainer: {
-        marginVertical: 12,
+        marginTop: 12,
     },
     topContainer: {
         flexDirection: "row",

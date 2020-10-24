@@ -8,8 +8,6 @@ import styles from "./styles";
 import { HeaderBackButton, HeaderTitle } from "../../Header/index";
 import OurTextButton from "../../OurTextButton";
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
-
 const LocallyAnimatedFlatList = ({data}) => {
     const [x, setX] = useState(new Animated.Value(0));
     const [y, setY] = useState(new Animated.Value(0));
@@ -24,7 +22,7 @@ const LocallyAnimatedFlatList = ({data}) => {
     };
 
     return (
-        <AnimatedFlatList
+        <Animated.FlatList
             contentContainerStyle={styles.cartList}
             data={data}
             renderItem={renderItemsBlock}
