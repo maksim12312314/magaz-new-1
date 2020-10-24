@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     itemName: {
         color: "#FFF",
         fontSize: 18,
+        maxWidth: 240,
     },
     productImage: {
         width: 96,
