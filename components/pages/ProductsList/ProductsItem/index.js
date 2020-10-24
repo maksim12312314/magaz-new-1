@@ -17,6 +17,7 @@ import OurImageSlider from "../../../OurImageSlider";
 const totalHeight = Dimensions.get("window").height;
 const itemWidth = Dimensions.get("window").width;
 const itemHeight = totalHeight / 2;
+const itemHeight2 = itemHeight + 16;
 
 
 /** Список товаров той или иной категории */
@@ -56,7 +57,7 @@ const ProductsItem = (props) => {
         dispatch(AddToCart(payload, dispatch, t));
     };
 
-    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight, itemWidth, index);
+    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
 
     return (
         <Animated.View style={[styles.mainContainer, {height: itemHeight}, { opacity, transform: [{ translateX }, { scale }] }]}>
