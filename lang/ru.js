@@ -15,8 +15,9 @@ const ru = {
         cancel: "Отмена",
         ok: "Ок",
         
-        deliveryDetailsTitle: "Delivery Details",
+        deliveryDetailsTitle: "Детали доставки",
         completedOrdersTitle: "Выполненые заказы",
+        editor: "Редактор",
 
         orderFormName: "Имя:",
         orderFormPhoneNum: "Телефон:",
