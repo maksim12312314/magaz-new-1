@@ -1,6 +1,6 @@
 const ru = {
     translation: {
-        categoryListTitle: "Наш  Магазин",
+        categoryListTitle: "Наш Магазин",
 
         activityAborted: "Действие отменено.",
         activityAbortedRefresh: "Обновить",
@@ -19,8 +19,8 @@ const ru = {
 
         deliveryDetailsTitle: "Детали доставки",
         completedOrdersTitle: "Выполненые заказы",
+        
         editor: "Редактор",
-
         orderFormName: "Имя:",
         orderFormPhoneNum: "Телефон:",
         orderFormAddress: "Адрес:",

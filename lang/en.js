@@ -19,6 +19,7 @@ const en = {
 
         deliveryDetailsTitle: "Delivery Details",
         completedOrdersTitle: "Completed Orders",
+        
         editor: "Editor",
         orderFormName: "Name:",
         orderFormPhoneNum: "Phone number:",
