@@ -22,12 +22,15 @@ const itemHeight2 = itemHeight + 16;
 
 /** Список товаров той или иной категории */
 const ProductsItem = (props) => {
-    const {data, x, y, index, name, galleryImg, imageUrl} = props;
+    const {data, x, y, index, name, imageUrl} = props;
     const dispatch = useContext(dispatchContext);
     const itemAttributes = data?.attributes?.nodes || [];
     const {t} = useTranslation();
     const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
-
+    const images = [url, ...(data?.galleryImages?.nodes.map((obj) => {
+        return `${STORE_ADDRESS}wp-content/uploads/${obj?.mediaDetails?.file}`
+    }))];
+    console.log("IMAGES", images)
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
@@ -77,7 +80,7 @@ const ProductsItem = (props) => {
                                 <></>
                         }
                     </View>
-                    <OurImageSlider firstImage={url} data={data?.galleryImages?.nodes} isModalVisible={isModalVisible} toggleModal={toggleModal} />
+                    <OurImageSlider data={images} isModalVisible={isModalVisible} toggleModal={toggleModal} />
                 </View>
                 <View style={styles.infoMiddleContainer}>
                     <GalleryImg data={data?.galleryImages?.nodes}/>

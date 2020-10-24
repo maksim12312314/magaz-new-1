@@ -32,7 +32,7 @@ const CartItem = (props) => {
             <View style={styles.topContainer}>
                 <OurText style={styles.itemName}>{name}</OurText>
                 <OurImage style={styles.productImage} url={`${STORE_ADDRESS}wp-content/uploads/${imageLink}`} onPress={toggleModal}/>
-                <OurImageSlider data={[{mediaDetails:{file:imageLink}}]} isModalVisible={isModalVisible} toggleModal={toggleModal} />
+                <OurImageSlider data={[`${STORE_ADDRESS}wp-content/uploads/${imageLink}`]} isModalVisible={isModalVisible} toggleModal={toggleModal} />
             </View>
             <View style={styles.bottomContainer}>
                 <OurText style={styles.itemCount} params={{quantity: productQuantity}}>cartPcs</OurText>

@@ -8,27 +8,18 @@ import OurTextButton from "../OurTextButton";
 import styles from "./styles";
 
 const OurImageSlider = (props) => {
-    const { data, firstImage, isModalVisible, toggleModal } = props;
-
-    useEffect( () => {
-        data.unshift({
-            mediaDetails: {
-                file: firstImage,
-                first: true,
-            }
-        })
-    }, []);
+    const { data, isModalVisible, toggleModal } = props;
 
     return (
         <Modal onBackdropPress={toggleModal} onBackButtonPress={toggleModal} isVisible={isModalVisible}>      
             <ViewPager style={styles.viewPager} showPageIndicator={true}>
                 {
-                    data.map((v, i) =>
+                    data.map((url, i) =>
                         <View 
                         style={styles.modalPicture}
                         key = {i}>
                             <OurImage
-                                url={ v.mediaDetails?.first ? v.mediaDetails?.file :`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                                url={url}
                                 style={styles.modalPictureGallery}
                                 disabled={true}
                             />
@@ -38,7 +29,8 @@ const OurImageSlider = (props) => {
             <OurTextButton
                 style={styles.modalButton}
                 onPress={toggleModal}
-            >Close</OurTextButton>
+                translate={true}
+            >close</OurTextButton>
         </Modal>
     );
 };
