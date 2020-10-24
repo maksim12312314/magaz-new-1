@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     descriptionContainer: {
         paddingTop: 8,
         paddingHorizontal: 8,
-        maxHeight: 120,
+        maxHeight: 96,
         overflow: "hidden",
     },
     descriptionText: {
