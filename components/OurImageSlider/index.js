@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { STORE_ADDRESS } from "../../config";
 import OurImage from "../OurImage";
@@ -10,33 +10,35 @@ import styles from "./styles";
 const OurImageSlider = (props) => {
     const { data, firstImage, isModalVisible, toggleModal } = props;
 
+    useEffect( () => {
+        data.unshift({
+            mediaDetails: {
+                file: firstImage,
+                first: true,
+            }
+        })
+    }, []);
+
     return (
-        <Modal isVisible={isModalVisible}>      
-            <ViewPager style={styles.viewPager} initialPage={0}>
-                <View style={styles.modalPicture}>
-                    <OurImage
-                        url={firstImage}
-                        style={styles.modalPictureGallery}
-                        disabled={true}
-                    />
-                </View>
+        <Modal onBackdropPress={toggleModal} onBackButtonPress={toggleModal} isVisible={isModalVisible}>      
+            <ViewPager style={styles.viewPager} showPageIndicator={true}>
                 {
                     data.map((v, i) =>
                         <View 
                         style={styles.modalPicture}
                         key = {i}>
                             <OurImage
-                                url={`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
+                                url={ v.mediaDetails?.first ? v.mediaDetails?.file :`${STORE_ADDRESS}wp-content/uploads/${v.mediaDetails?.file}`}
                                 style={styles.modalPictureGallery}
                                 disabled={true}
                             />
                         </View>
                 )}
             </ViewPager>
-                <OurTextButton
-                    style={styles.modalButton}
-                    onPress={toggleModal}
-                >Close</OurTextButton>
+            <OurTextButton
+                style={styles.modalButton}
+                onPress={toggleModal}
+            >Close</OurTextButton>
         </Modal>
     );
 };

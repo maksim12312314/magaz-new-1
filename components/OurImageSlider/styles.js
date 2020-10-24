@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
         height: 50,
     },
     modalPicture: {
-        alignItems: 'center',
+        padding: 20,
+        alignItems: "center",
         justifyContent: "center",
     },
     modalPictureGallery: {
