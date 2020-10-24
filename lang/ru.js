@@ -1,20 +1,22 @@
 const ru = {
     translation: {
-        categoryListTitle: "Наш прекрасный Магазин",
+        categoryListTitle: "Наш  Магазин",
 
         activityAborted: "Действие отменено.",
         activityAbortedRefresh: "Обновить",
 
         cartTitle: "Корзина",
-        cartPcs: "{{count}} шт.",
+        cartPcs: "Количество: {{count}} шт.",
         cartTotal: "Итого: {{total}}{{currency}}",
         cartCheckout: "Оформить заказ",
         cartDeleteTitle: "Удалить из корзины",
         cartDeleteMessage: "Вы действительно хотите удалить товар из корзины?",
         cartEmpty: "Товаров нет.",
+
         cancel: "Отмена",
+	close: "Закрыть",
         ok: "Ок",
-        
+
         deliveryDetailsTitle: "Детали доставки",
         completedOrdersTitle: "Выполненые заказы",
         editor: "Редактор",
