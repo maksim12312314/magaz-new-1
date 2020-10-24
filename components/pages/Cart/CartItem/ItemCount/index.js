@@ -50,7 +50,7 @@ const ItemCount = (props) =>
         <View style={styles.container}>
             <View style={styles.itemControl}>
                 <OurIconButton size={size}
-                               style={{margin: 1}}
+                               style={{margin: 1, marginLeft: 0}}
                                icon={faPlusCircle}
                                onPress={plusPressed}
                                doLongPress={true}/>
@@ -60,7 +60,7 @@ const ItemCount = (props) =>
                                onPress={minusPressed}
                                doLongPress={true}/>
                 <OurIconButton size={size}
-                               style={{margin: 1}}
+                               style={{margin: 1, marginRight: 0}}
                                icon={faTimesCircle}
                                onPress={deletePressed}/>
             </View>

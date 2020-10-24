@@ -19,7 +19,7 @@ const LocallyAnimatedFlatList = ({data}) => {
 
     const renderItemsBlock = ({item, index}) => {
         return (
-            <CartItem x={x} y={y} index={index} productId={item.productId} name={item.name} price={item.price} count={item.count}/>
+            <CartItem x={x} y={y} index={index} productId={item.productId} name={item.name} price={item.price} count={item.count} imageLink={item.imageLink}/>
         );
     };
 
@@ -45,16 +45,16 @@ const Cart = (props) => {
 
     useLayoutEffect( () => {
         navigation.setOptions({
-            headerLeft: (props)=><HeaderBackButton navigation={navigation}/>,
-            headerCenter: (props)=><HeaderTitle navigation={navigation} title={"cartTitle"}/>,
-            headerRight: (props)=>{},
+            headerLeft: (props) =><HeaderBackButton navigation={navigation}/>,
+            headerCenter: (props) =><HeaderTitle navigation={navigation} title={"cartTitle"}/>,
+            headerRight: (props) =>{},
             headerStyle: {
                 backgroundColor: gradStart,
             },
         });
     }, [navigation]);
 
-    const toDeliveryDetails = (e)=> {
+    const toDeliveryDetails = (e) => {
         if ( state.cartItems?.size )
             navigation.navigate("DeliveryDetails");
     };
