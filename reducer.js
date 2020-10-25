@@ -13,7 +13,7 @@ import {
     ACTION_TYPE_CART_COMPUTE_TOTAL_PRICE,
 } from "./types";
 import { Alert, ToastAndroid } from "react-native";
-import { DeleteFromCart } from "./actions";
+import { DeleteProductFromCart } from "./actions";
 import { addProductToCart, deleteProductFromCart } from "./db_handler";
 
 const showToastMessage = (message) => {
@@ -92,7 +92,7 @@ const reducer = (state, action) => {
          */
         case ACTION_TYPE_CART_SET_PRODUCTS: {
             const newState = {...state};
-            
+
             newState.cartItems = action.payload || [];
 
             return newState;
@@ -120,7 +120,6 @@ const reducer = (state, action) => {
                 });
             }
 
-            
             addProductToCart(action.payload.name,
                 action.payload.productId,
                 action.payload.imageLink,
@@ -140,7 +139,6 @@ const reducer = (state, action) => {
         case ACTION_TYPE_CART_DELETE_PRODUCT: {
             const newState = {...state};
 
-            
             newState.cartItems.delete(action.payload);
 
             // Расчитываем итоговую цену
@@ -169,13 +167,12 @@ const reducer = (state, action) => {
                     Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
                         {
                             text: t("cancel"),
-                            onPress: () => {/*action.dispatch({type: "plus", payload: action.payload})*/},
                             style: "cancel"
                         },
                         {
                             text: t("ok"),
                             onPress: () => {
-                                action.dispatch(DeleteFromCart(action.payload));
+                                action.dispatch(DeleteProductFromCart(action.payload));
                             }
                         }
                     ],

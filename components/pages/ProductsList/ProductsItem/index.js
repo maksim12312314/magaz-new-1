@@ -30,7 +30,6 @@ const ProductsItem = (props) => {
     const images = [url, ...(data?.galleryImages?.nodes.map((obj) => {
         return `${STORE_ADDRESS}wp-content/uploads/${obj?.mediaDetails?.file}`
     }))];
-    console.log("IMAGES", images)
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
@@ -39,10 +38,10 @@ const ProductsItem = (props) => {
 
     // Обрабатываем нажатие на кнопку "Купить"
     const buyProduct = (e, data) => {
-        
+
         const productQuantity = 1;
         const price = data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0;
-        
+
         // Заносим данные
         let payload = {
             productId: data.productId,
