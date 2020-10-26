@@ -11,12 +11,11 @@ import OurTextField from "../../OurTextField";
 import styles from "./styles";
 
 const DeliveryDetails = (props) => {
-	const state = useContext(stateContext);
-	const dispatch = useContext(dispatchContext);
-	const { navigation } = props;
-	const { t } = useTranslation();
-	const [gradStart, gradEnd] = ["#1DC44F", "#3BF3AE"];
-	const [isButtonLocked, setButtonLocked] = useState(false);
+    const state = useContext(stateContext);
+    const dispatch = useContext(dispatchContext);
+    const { navigation } = props;
+    const { t } = useTranslation();
+    const [gradStart, gradEnd] = ["#1DC44F", "#3BF3AE"];
 
     useLayoutEffect( () => {
         navigation.setOptions({
@@ -30,44 +29,38 @@ const DeliveryDetails = (props) => {
     }, [navigation]);
 
     const validateForm = (value, name) => {
-    	if ( value.trim() !== "" ) {
-    		dispatch(ChangeDeliveryField(name, value));
-    		return true;
-    	}
-    	setButtonLocked(true);
-    };
-    const validateFormEmpty = (value, name) => {
-    	dispatch(ChangeDeliveryField(name, value));
-    	return true;
-    };
-    const validateFormPhone = (value, name) => {
-    	const PHONE_PATTERN = /^((\+7|7|8)+([0-9]){10})$/;
+        const PHONE_PATTERN = /^((\+7|7|8)+([0-9]){10})$/;
 
-    	if ( value.toLowerCase().match(PHONE_PATTERN) ) {
-    		dispatch(ChangeDeliveryField(name, value));
-    		return true;
-    	}
-    	setButtonLocked(true);
+        if ( value.trim() !== "" ||
+                ( name === "phone" && value.toLowerCase().match(PHONE_PATTERN) ) ||
+                name === "floor" || name === "notes" ) {
+            dispatch(ChangeDeliveryField(name, value, true));
+            return true;
+        }
+        dispatch(ChangeDeliveryField(name, value, false));
     };
 
-	return (
-		<>
-		<LinearGradient style={styles.background} locations={[0, 1.0]} colors={["#1DC44F", "#3BF3AE"]}/>
-		<View style={styles.mainContainer}>
-			<KeyboardAvoidingView style={styles.infoContainer}>
-				<ScrollView contentContainerStyle={styles.scrollView}>
-					<OurTextField name={"name"} defValue={state.deliveryDetails.name.value} validate={validateForm} placeholder={t("orderFormName")}/>
-					<OurTextField name={"phone"} defValue={state.deliveryDetails.phone.value} validate={validateFormPhone} placeholder={t("orderFormPhone")}/>
-					<OurTextField name={"address"} defValue={state.deliveryDetails.address.value} validate={validateForm} placeholder={t("orderFormAddress")}/>
-					<OurTextField name={"floor"} defValue={state.deliveryDetails.floor.value} validate={validateFormEmpty} placeholder={t("orderFormFloor")}/>
-					<OurTextField name={"notes"} defValue={state.deliveryDetails.notes.value} validate={validateFormEmpty} placeholder={t("orderFormNotes")}/>
-					<OurTextField name={"time"} defValue={state.deliveryDetails.time.value} validate={validateForm} placeholder={t("orderFormDeliveryTime")}/>
-				</ScrollView>
-			</KeyboardAvoidingView>
-			<OurTextButton disabled={isButtonLocked} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
-		</View>
-		</>
-	);
+    return (
+        <>
+        <LinearGradient style={styles.background} locations={[0, 1.0]} colors={["#1DC44F", "#3BF3AE"]}/>
+        <View style={styles.mainContainer}>
+            <KeyboardAvoidingView style={styles.infoContainer}>
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                {
+                    state.deliveryDetails.map( (field, i ) => {
+                    return <OurTextField name={field.name}
+                                  defValue={field.value}
+                                  onValidate={validateForm}
+                                  placeholder={t(field.placeholder)}
+                                  key={i}/>
+                              })
+                }
+                </ScrollView>
+            </KeyboardAvoidingView>
+            <OurTextButton disabled={!state.allDetailsAreValid} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
+        </View>
+        </>
+    );
 };
 
 export default DeliveryDetails;

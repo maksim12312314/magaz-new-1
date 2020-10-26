@@ -10,13 +10,12 @@ if ( Platform.OS === "android" )
 const VALIDATE_TIME = 1100;
 
 const OurTextField = (props) => {
-    const { name, validateTime, defValue, placeholder, validate } = props;
+    const { name, validateTime, defValue, placeholder, onValidate, onChange } = props;
 
     const [text, setText] = useState(defValue || "");
     const [isFocused, setFocus] = useState(text || false);
     const [isValid, setValid] = useState(true);
-
-    let validateTimer = null;
+    const [validateTimer, setValidateTimer] = useState(null);
 
     const onFocus = () => {
         setFocus(true);
@@ -29,13 +28,19 @@ const OurTextField = (props) => {
         }
     };
     const onChangeText = (value) => {
-        clearTimeout(validateTimer);
+        if ( validateTimer ) {
+            clearTimeout(validateTimer);
+            setValidateTimer(null);
+        }
         setText(value);
+        if ( onChange )
+            onChange(value, name);
 
-        if ( validate ) {
-            validateTimer = setTimeout( () => {
-                setValid(validate(value, name) || false);
+        if ( onValidate ) {
+            const timer = setTimeout( () => {
+                setValid(onValidate(value, name) || false);
             }, validateTime || VALIDATE_TIME);
+            setValidateTimer(timer);
         }
     };
 

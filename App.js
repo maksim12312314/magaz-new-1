@@ -27,14 +27,45 @@ const initialState = {
 	cartItems: new Map(),
 	cartTotalPrice: 0,
 	orders: new Map(),
-	deliveryDetails: {
-		name:    { value: "", valid: false },
-		phone:   { value: "", valid: false },
-		address: { value: "", valid: false },
-		floor:   { value: "", valid: true },
-		notes:   { value: "", valid: true },
-		time:    { value: "", valid: false },
-	},
+	deliveryDetails: [
+		{
+			name: "name",
+			placeholder: "orderFormName",
+			value: "",
+			valid: false,
+		},
+		{
+			name: "phone",
+			placeholder: "orderFormPhone",
+			value: "",
+			valid: false,
+		},
+		{
+			name: "address",
+			placeholder: "orderFormAddress",
+			value: "",
+			valid: false,
+		},
+		{
+			name: "floor",
+			placeholder: "orderFormFloor",
+			value: "",
+			valid: true,
+		},
+		{
+			name: "notes",
+			placeholder: "orderFormNotes",
+			value: "",
+			valid: true,
+		},
+		{
+			name: "time",
+			placeholder: "orderFormDeliveryTime",
+			value: "",
+			valid: false,
+		},
+	],
+	allDetailsAreValid: false,
 };
 
 const App = () => {

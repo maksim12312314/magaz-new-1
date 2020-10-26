@@ -258,10 +258,17 @@ const reducer = (state, action) => {
         case ACTION_TYPE_DELIVERY_CHANGE_FIELD: {
             const newState = {...state};
             const { fieldName } = action;
-            const field = newState.deliveryDetails[fieldName];
+            let valid = true;
 
-            if ( field || field === "" )
-                newState.deliveryDetails[fieldName] = { value: action.payload, valid: true };
+            for ( let i=0; i<=newState.deliveryDetails.length; i++ ) {
+                if ( newState.deliveryDetails[i] && newState.deliveryDetails[i].name === fieldName ) {
+                    newState.deliveryDetails[i] = { ...newState.deliveryDetails[i], value: action.payload, valid: action.valid };
+
+                    if ( !newState.deliveryDetails[i].valid )
+                        valid = false;
+                }
+            }
+            newState.allDetailsAreValid = valid;
 
             return newState;
         }
