@@ -14,6 +14,7 @@ import {
     ACTION_TYPE_CART_COMPUTE_TOTAL_PRICE,
     ACTION_TYPE_ORDERS_SET_LIST,
     ACTION_TYPE_ORDERS_ADD_TO_LIST,
+    ACTION_TYPE_DELIVERY_CHANGE_FIELD,
 } from "./types";
 import {
     addProductToCartDB,
@@ -247,6 +248,20 @@ const reducer = (state, action) => {
             const newState = {...state};
 
             newState.orders.set(action.payload.id, action.payload);
+
+            return newState;
+        }
+
+        /**
+         * Изменяет поле в deliveryDetails
+         */
+        case ACTION_TYPE_DELIVERY_CHANGE_FIELD: {
+            const newState = {...state};
+            const { fieldName } = action;
+            const field = newState.deliveryDetails[fieldName];
+
+            if ( field || field === "" )
+                newState.deliveryDetails[fieldName] = { value: action.payload, valid: true };
 
             return newState;
         }

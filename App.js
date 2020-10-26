@@ -27,6 +27,14 @@ const initialState = {
 	cartItems: new Map(),
 	cartTotalPrice: 0,
 	orders: new Map(),
+	deliveryDetails: {
+		name:    { value: "", valid: false },
+		phone:   { value: "", valid: false },
+		address: { value: "", valid: false },
+		floor:   { value: "", valid: true },
+		notes:   { value: "", valid: true },
+		time:    { value: "", valid: false },
+	},
 };
 
 const App = () => {

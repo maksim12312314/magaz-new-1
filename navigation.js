@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import CategoryList from "./components/pages/CategoryList";
 import Cart from "./components/pages/Cart";
 import ProductList from "./components/pages/ProductsList";
-import DeliveryDetails from "./components/Delivery";
+import DeliveryDetails from "./components/pages/DeliveryDetails";
 import Editor from "./components/Orders/editor";
 import Orders from "./components/Orders";
 

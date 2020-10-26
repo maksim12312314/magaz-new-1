@@ -11,6 +11,7 @@ import {
     ACTION_TYPE_CART_COMPUTE_TOTAL_PRICE,
     ACTION_TYPE_ORDERS_SET_LIST,
     ACTION_TYPE_ORDERS_ADD_TO_LIST,
+    ACTION_TYPE_DELIVERY_CHANGE_FIELD,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -59,4 +60,8 @@ export const SetOrderList = (data) => {
 
 export const AddOrderToList = (data) => {
     return {type: ACTION_TYPE_ORDERS_ADD_TO_LIST, payload: data};
+};
+
+export const ChangeDeliveryField = (fieldName, value) => {
+    return {type: ACTION_TYPE_DELIVERY_CHANGE_FIELD, fieldName, payload: value};
 };
