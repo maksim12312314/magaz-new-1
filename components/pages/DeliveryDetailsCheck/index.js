@@ -1,9 +1,8 @@
-import React, { useState, useContext, useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useTranslation } from "react-i18next";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";
-import { stateContext, dispatchContext } from "../../../contexts";
+import { stateContext } from "../../../contexts";
 
 import OurText from "../../OurText";
 import OurTextButton from "../../OurTextButton";
