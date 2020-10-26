@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     button: {
-        marginHorizontal: 8,
+        paddingHorizontal: 25,
     },
     itemContainer: {
         padding: 8,

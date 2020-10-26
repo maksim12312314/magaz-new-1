@@ -53,7 +53,7 @@ const DeliveryDetailsCheck = (props) => {
             }
             </ScrollView>
             <View style={styles.bottomContainer}>
-                <OurTextButton style={[styles.button, {paddingHorizontal: 45}]} onPress={goToDetailsEdit} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckEdit</OurTextButton>
+                <OurTextButton style={styles.button} onPress={goToDetailsEdit} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckEdit</OurTextButton>
                 <OurTextButton style={styles.button} onPress={goToDetailsEdit} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
             </View>
         </View>
