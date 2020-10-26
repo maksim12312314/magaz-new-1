@@ -1,32 +1,30 @@
+import { Alert, ToastAndroid } from "react-native";
+import { DeleteProductFromCart } from "./actions";
+
 import {
-    ACTION_TYPE_SET_FIELD,
-    ACTION_TYPE_SET_DELIVERY_DETAILS_FIELD,
-    ACTION_TYPE_CHANGE_BUTTON_STATUS,
     ACTION_TYPE_SET_PRODUCT_LIST,
     ACTION_TYPE_SET_CATEGORY_LIST,
     ACTION_TYPE_CART_SET_PRODUCTS,
     ACTION_TYPE_CART_ADD_PRODUCT,
     ACTION_TYPE_CART_DELETE_PRODUCT,
+    ACTION_TYPE_CART_CLEAR,
     ACTION_TYPE_CART_DECREASE_QUANTITY,
     ACTION_TYPE_CART_INCREASE_QUANTITY,
     ACTION_TYPE_CART_CHANGE_QUANTITY,
     ACTION_TYPE_CART_COMPUTE_TOTAL_PRICE,
+    ACTION_TYPE_ORDERS_SET_LIST,
+    ACTION_TYPE_ORDERS_ADD_TO_LIST,
 } from "./types";
-import { Alert, ToastAndroid } from "react-native";
-import { DeleteProductFromCart } from "./actions";
-import { addProductToCart, deleteProductFromCart } from "./db_handler";
+import {
+    addProductToCartDB,
+    deleteProductFromCart,
+    clearCart,
+    addOrderToDB,
+    getDBOrders
+} from "./db_handler";
 
 const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
-};
-
-const isAllDeliveryDetailsSet = (state) => {
-    for ( let key in state.deliveryDetails) {
-
-        if (!state.deliveryDetails[key])
-            return false;
-    }
-    return true;
 };
 
 /**
@@ -38,32 +36,7 @@ const reducer = (state, action) => {
     /**
      * Проверяет тип действия
      */
-    switch (action.type)
-    {
-        case ACTION_TYPE_SET_FIELD: {
-            const newState = {...state};
-            newState[action.fieldName] = action.payload;
-
-            return newState;
-        }
-
-        case ACTION_TYPE_SET_DELIVERY_DETAILS_FIELD: {
-            const newState = {...state};
-            newState.deliveryDetails[action.fieldName] = action.payload;
-
-            return newState;
-        }
-
-        case ACTION_TYPE_CHANGE_BUTTON_STATUS: {
-            const newState = {...state};
-
-            if ( isAllDeliveryDetailsSet(newState) && !action.buttonEnabled )
-                action.setButtonEnabled(true);
-            else if ( !isAllDeliveryDetailsSet(newState) && action.buttonEnabled )
-                action.setButtonEnabled(false);
-
-            return newState;
-        }
+    switch (action.type) {
 
         /**
          * Устанавливает список продуктов для текущей страницы
@@ -120,7 +93,7 @@ const reducer = (state, action) => {
                 });
             }
 
-            addProductToCart(action.payload.name,
+            addProductToCartDB(action.payload.name,
                 action.payload.productId,
                 action.payload.imageLink,
                 action.payload.productQuantity,
@@ -150,6 +123,17 @@ const reducer = (state, action) => {
             }
 
             deleteProductFromCart(action.payload);
+            return newState;
+        }
+
+        case ACTION_TYPE_CART_CLEAR: {
+            const newState = {...state};
+
+            newState.cartItems = new Map();
+            newState.cartTotalPrice = 0;
+
+            clearCart();
+
             return newState;
         }
 
@@ -189,7 +173,7 @@ const reducer = (state, action) => {
                         });
                     }
 
-                    addProductToCart(item.name, item.productId, item.imageLink, item.productQuantity, item.price, item.selectedVariants, item.stockQuantity);
+                    addProductToCartDB(item.name, item.productId, item.imageLink, item.productQuantity, item.price, item.selectedVariants, item.stockQuantity);
                 }
             }
             else
@@ -216,7 +200,7 @@ const reducer = (state, action) => {
                     });
                 }
 
-                addProductToCart(item.name, item.productId, item.imageLink, item.productQuantity, item.price, item.selectedVariants, item.stockQuantity);
+                addProductToCartDB(item.name, item.productId, item.imageLink, item.productQuantity, item.price, item.selectedVariants, item.stockQuantity);
             }
             else 
                 return state;
@@ -242,6 +226,28 @@ const reducer = (state, action) => {
                 return newState;
             }
             
+            return newState;
+        }
+
+        /**
+         * Расчитывает итог для корзины
+         */
+        case ACTION_TYPE_ORDERS_SET_LIST: {
+            const newState = {...state};
+
+            newState.orders = action.payload;
+
+            return newState;
+        }
+
+        /**
+         * Заносит заказ в state и в бд
+         */
+        case ACTION_TYPE_ORDERS_ADD_TO_LIST: {
+            const newState = {...state};
+
+            newState.orders.set(action.payload.id, action.payload);
+
             return newState;
         }
 

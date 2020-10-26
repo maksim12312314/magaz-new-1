@@ -3,16 +3,16 @@ import { enableScreens } from 'react-native-screens';
 enableScreens();
 
 import React, { useReducer, useEffect } from "react";
-import { stateContext, dispatchContext } from "./contexts";
 import { AppRegistry } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppStackNavigator from "./navigation";
 import { name } from "./app.json";
 import * as hehe from './utils';
-import { createDBTables, getCart } from "./db_handler";
 import reducer from "./reducer";
+import { stateContext, dispatchContext } from "./contexts";
+import { createDBTables, getCartFromDB, getOrdersFromDB } from "./db_handler";
+import { ComputeTotalPrice, SetCartProducts, SetOrderList } from "./actions";
 import "./i18n";
-import { ComputeTotalPrice, SetCartProducts } from "./actions";
 
 /**Контейнер приложения */
 const AppContainer = () => {
@@ -20,20 +20,13 @@ const AppContainer = () => {
 		<NavigationContainer>
 			<AppStackNavigator/>
 		</NavigationContainer>
-		);
+	);	
 }
 
 const initialState = {
 	cartItems: new Map(),
 	cartTotalPrice: 0,
-	deliveryDetails: {
-		name: "",
-		phone: "",
-		address: "",
-		floor: "",
-		notes: "",
-		when: ""
-	},
+	orders: new Map(),
 };
 
 const App = () => {
@@ -45,13 +38,33 @@ const App = () => {
 		/*
         * Подгружаем данные корзины из базы данных
         * */
-		getCart((tr, result) => {
+		getCartFromDB((tr, result) => {
 			const data = new Map();
 			result.rows["_array"].map( (v, i) => {
 				data.set(v.productId, v);
 			});
 			dispatch(SetCartProducts(data));
 			dispatch(ComputeTotalPrice());
+		},
+		(err) => {
+			console.log("WELL SHIT", err)
+		});
+
+		/*
+        * Подгружаем данные заказов из базы данных
+        * */
+		getOrdersFromDB((tr, result) => {
+			const data = new Map();
+			result.rows["_array"].map( (v, i) => {
+				const products = [];
+				try {
+					products = JSON.parse(v.products);
+				} catch { /*fuck)*/ }
+
+				const order = { ...v, products };
+				data.set(order.id, order);
+			});
+			dispatch(SetOrderList(data));
 		},
 		(err) => {
 			console.log("WELL SHIT", err)

@@ -25,15 +25,25 @@ export const createDBTables = () => {
     executeSql(`CREATE TABLE IF NOT EXISTS Images(
         imageLink TEXT UNIQUE,
         imageData TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+    executeSql(`CREATE TABLE IF NOT EXISTS Orders(
+        id INTEGER PRIMARY KEY NOT NULL,
+        customerName TEXT,
+        customerPhone TEXT,
+        customerAddress TEXT,
+        customerFloor TEXT,
+        orderNotes TEXT,
+        orderDeliveryTime INTEGER,
+        status INTEGER,
+        products TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
 };
 
-export const addCategory = (name, productCategoryId, imageLink) => {
+export const addCategoryToDB = (name, productCategoryId, imageLink) => {
     executeSql(`INSERT OR REPLACE INTO CategoryList(
     	name,
         productCategoryId,
         imageLink) VALUES(?, ?, ?)`, [name, productCategoryId, imageLink]);
 };
-export const addProductToCart = (name, productId, imageLink, productQuantity, price, selectedVariants, stockQuantity) => {
+export const addProductToCartDB = (name, productId, imageLink, productQuantity, price, selectedVariants, stockQuantity) => {
     try {
         selectedVariants = JSON.stringify(selectedVariants);
     } catch {
@@ -48,22 +58,44 @@ export const addProductToCart = (name, productId, imageLink, productQuantity, pr
         selectedVariants,
         stockQuantity) VALUES(?, ?, ?, ?, ?, ?, ?)`, [name, productId, imageLink, productQuantity, price, selectedVariants, stockQuantity]);
 };
-export const addImage = (imageLink, imageData) => {
+export const addImageToDB = (imageLink, imageData) => {
     executeSql(`INSERT OR REPLACE INTO Images(
     	imageLink,
         imageData) VALUES(?, ?)`, [imageLink, imageData]);
+};
+export const addOrderToDB = (customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products) => {
+    try {
+        products = JSON.stringify(products);
+    } catch {
+        products = JSON.stringify([]);
+    }
+    executeSql(`INSERT INTO Orders(
+        customerName,
+        customerPhone,
+        customerAddress,
+        customerFloor,
+        orderNotes,
+        orderDeliveryTime,
+        status,
+        products) VALUES(?, ?, ?, ?, ?, ?, ?, ?)`, [customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products]);
 };
 
 export const deleteProductFromCart = (productId) => {
     executeSql(`DELETE FROM Cart WHERE productId=?`, [productId], null, (tr, err) => console.log(`ERROR DELETING RECORD ${productId}`, err));
 };
+export const clearCart = () => {
+    executeSql(`TRUNCATE TABLE Cart`, [], null, (tr, err) => console.log(`ERROR CLEARING CART`, err));
+};
 
-export const getImage = (imageLink, cb, err) => {
+export const getImageFromDB = (imageLink, cb, err) => {
     executeSql(`SELECT imageData, imageLink FROM Images WHERE imageLink='${imageLink}' LIMIT 1`, [], cb, err);
 };
-export const getCart = (callback, error) => {
+export const getCartFromDB = (callback, error) => {
     executeSql(`SELECT * FROM Cart`, [], callback, error);
 };
-export const getDBCategoryList = (cb, err) => {
+export const getCategoryListFromDB = (cb, err) => {
     executeSql(`SELECT * FROM CategoryList LIMIT 30`, [], cb, err);
+};
+export const getOrdersFromDB = (cb, err) => {
+    executeSql(`SELECT * FROM Orders LIMIT 30`, [], cb, err);
 };

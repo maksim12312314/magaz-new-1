@@ -11,7 +11,7 @@ import {
     SetCategoryList,
 } from "../../../actions";
 import { getCategoryListQuery } from "../../../queries";
-import { addCategory, getDBCategoryList } from "../../../db_handler";
+import { addCategoryToDB, getCategoryListFromDB } from "../../../db_handler";
 import { HeaderTitle, HeaderCartButton } from "../../Header";
 import useFetch from "../../../network_handler";
 
@@ -44,7 +44,7 @@ const CategoryList = (props) =>
 
     const onMount = (setLoading, setError, abortController) => {
         if ( !state?.categories?.length ) {
-            getDBCategoryList((tr, result) => {
+            getCategoryListFromDB((tr, result) => {
                 let data = [];
                 for (let i = 0; i <= result.rows.length; i++) {
                     const row = result.rows.item(i);
@@ -68,7 +68,7 @@ const CategoryList = (props) =>
     };
     const onSuccess = ({data}) => {
         data?.productCategories?.nodes?.map( (v, i) => {
-            addCategory(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
+            addCategoryToDB(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
         });
         dispatch(SetCategoryList(data?.productCategories?.nodes));
     };
