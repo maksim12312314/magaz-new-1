@@ -23,7 +23,6 @@ const DeliveryDetailsItem = (props) => {
 const DeliveryDetailsCheck = (props) => {
     const state = useContext(stateContext);
     const { navigation } = props;
-    const {t} = useTranslation()
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
