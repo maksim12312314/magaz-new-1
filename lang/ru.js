@@ -17,6 +17,8 @@ const ru = {
         close: "Закрыть",
         ok: "Ок",
 
+        notAvailable: "н/д",
+
         deliveryDetailsTitle: "Детали доставки",
         completedOrdersTitle: "Выполненые заказы",
         

@@ -14,7 +14,7 @@ const DeliveryDetailsItem = (props) => {
     return (
         <View style={styles.itemContainer}>
             <OurText style={styles.fieldText} translate={true}>{field}</OurText>
-            <OurText style={styles.text}>{text}</OurText>
+            <OurText style={styles.text} translate={!text}>{text || "notAvailable"}</OurText>
         </View>
     )
 }

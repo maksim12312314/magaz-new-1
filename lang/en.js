@@ -17,6 +17,8 @@ const en = {
         close: "Close",
         ok: "Ok",
 
+        notAvailable: "n/a",
+
         deliveryDetailsTitle: "Delivery Details",
         completedOrdersTitle: "Completed Orders",
         
