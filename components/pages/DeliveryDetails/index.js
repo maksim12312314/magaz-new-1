@@ -56,12 +56,12 @@ const DeliveryDetails = (props) => {
 		<View style={styles.mainContainer}>
 			<KeyboardAvoidingView style={styles.infoContainer}>
 				<ScrollView contentContainerStyle={styles.scrollView}>
-					<OurTextField name={"name"} defValue={state.deliveryDetails.name} validate={validateForm} placeholder={t("orderFormName")}/>
-					<OurTextField name={"phone"} defValue={state.deliveryDetails.phone} validate={validateFormPhone} placeholder={t("orderFormPhone")}/>
-					<OurTextField name={"address"} defValue={state.deliveryDetails.address} validate={validateForm} placeholder={t("orderFormAddress")}/>
-					<OurTextField name={"floor"} defValue={state.deliveryDetails.floor} validate={validateFormEmpty} placeholder={t("orderFormFloor")}/>
-					<OurTextField name={"notes"} defValue={state.deliveryDetails.notes} validate={validateFormEmpty} placeholder={t("orderFormNotes")}/>
-					<OurTextField name={"time"} defValue={state.deliveryDetails.time} validate={validateForm} placeholder={t("orderFormDeliveryTime")}/>
+					<OurTextField name={"name"} defValue={state.deliveryDetails.name.value} validate={validateForm} placeholder={t("orderFormName")}/>
+					<OurTextField name={"phone"} defValue={state.deliveryDetails.phone.value} validate={validateFormPhone} placeholder={t("orderFormPhone")}/>
+					<OurTextField name={"address"} defValue={state.deliveryDetails.address.value} validate={validateForm} placeholder={t("orderFormAddress")}/>
+					<OurTextField name={"floor"} defValue={state.deliveryDetails.floor.value} validate={validateFormEmpty} placeholder={t("orderFormFloor")}/>
+					<OurTextField name={"notes"} defValue={state.deliveryDetails.notes.value} validate={validateFormEmpty} placeholder={t("orderFormNotes")}/>
+					<OurTextField name={"time"} defValue={state.deliveryDetails.time.value} validate={validateForm} placeholder={t("orderFormDeliveryTime")}/>
 				</ScrollView>
 			</KeyboardAvoidingView>
 			<OurTextButton disabled={isButtonLocked} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>

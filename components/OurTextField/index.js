@@ -10,10 +10,10 @@ if ( Platform.OS === "android" )
 const VALIDATE_TIME = 1100;
 
 const OurTextField = (props) => {
-    const { name, validateTime, defText, placeholder, validate } = props;
+    const { name, validateTime, defValue, placeholder, validate } = props;
 
-    const [text, setText] = useState(defText || "");
-    const [isFocused, setFocus] = useState(false);
+    const [text, setText] = useState(defValue || "");
+    const [isFocused, setFocus] = useState(text || false);
     const [isValid, setValid] = useState(true);
 
     let validateTimer = null;
