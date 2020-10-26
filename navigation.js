@@ -6,7 +6,7 @@ import CategoryList from "./components/pages/CategoryList";
 import Cart from "./components/pages/Cart";
 import ProductList from "./components/pages/ProductsList";
 import DeliveryDetails from "./components/pages/DeliveryDetails";
-import Editor from "./components/Orders/editor";
+import DeliveryDetailsCheck from "./components/pages/DeliveryDetailsCheck";
 import Orders from "./components/Orders";
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -43,8 +43,8 @@ const AppStackNavigator = () => {
                 name="DeliveryDetails"
                 component={DeliveryDetails}/>
             <Screen 
-                name="Editor"
-                component={Editor}/>
+                name="DeliveryDetailsCheck"
+                component={DeliveryDetailsCheck}/>
             <Screen 
                 name="Orders"
                 component={Orders}/>
