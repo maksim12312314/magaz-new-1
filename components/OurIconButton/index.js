@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -7,18 +7,21 @@ const LONG_PRESS_DELAY = 150;
 
 const OurIconButton = (props) => {
     const { onPress, doLongPress, longPressDelay, icon, size, children, style } = props;
-
-    let timer = null;
+    const [timer, setTimer] = useState(null);
+    
     const clearTimer = () => {
-        if ( timer )
+        if ( timer ) {
             clearInterval(timer);
+            setTimer(null);
+        }
     };
     const onLongPress = (e) => {
         if ( doLongPress ) {
             clearTimer();
-            timer = setInterval(() => {
+            const tmr = setInterval(() => {
                 onPress(e);
             }, longPressDelay || LONG_PRESS_DELAY );
+            setTimer(tmr);
         }
     };
     const onPressOut = (e) => {
