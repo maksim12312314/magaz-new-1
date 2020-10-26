@@ -32,17 +32,22 @@ const DeliveryDetails = (props) => {
         const PHONE_PATTERN = /^((\+7|7|8)+([0-9]){10})$/;
 
         if ( value.trim() !== "" ||
-                ( name === "phone" && value.toLowerCase().match(PHONE_PATTERN) ) ||
                 name === "floor" || name === "notes" ) {
-            dispatch(ChangeDeliveryField(name, value, true));
-            return true;
+            if ( !( name === "phone" && !value.toLowerCase().match(PHONE_PATTERN) ) ) {
+                dispatch(ChangeDeliveryField(name, value, true));
+                return true;
+            }
         }
         dispatch(ChangeDeliveryField(name, value, false));
     };
 
+    const goToDetailsCheck = (e) => {
+        navigation.navigate("DeliveryDetailsCheck");
+    };
+
     return (
         <>
-        <LinearGradient style={styles.background} locations={[0, 1.0]} colors={["#1DC44F", "#3BF3AE"]}/>
+        <LinearGradient style={styles.background} locations={[0, 1.0]} colors={[gradStart, gradEnd]}/>
         <View style={styles.mainContainer}>
             <KeyboardAvoidingView style={styles.infoContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
@@ -57,7 +62,7 @@ const DeliveryDetails = (props) => {
                 }
                 </ScrollView>
             </KeyboardAvoidingView>
-            <OurTextButton disabled={!state.allDetailsAreValid} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
+            <OurTextButton disabled={!state.allDetailsAreValid} onPress={goToDetailsCheck} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
         </View>
         </>
     );
