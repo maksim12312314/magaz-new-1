@@ -35,6 +35,7 @@ const en = {
         orderFormDeliveryTime: "Delivery time",
         orderFormRegister: "Register the order",
         orderCancel: "Cancel the order",
+        orderDelete: "Delete the order",
         orderViewInfo: "View the info",
         orderAddress: "Address:",
         orderStatus: "Status",

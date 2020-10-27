@@ -17,6 +17,7 @@ import {
     ACTION_TYPE_DELIVERY_CHANGE_FIELD,
     ACTION_TYPE_DELIVERY_CLEAR,
     ACTION_TYPE_ORDER_CHANGE_STATUS,
+    ACTION_TYPE_ORDER_DELETE,
 } from "./types";
 import {
     addProductToCartDB,
@@ -25,6 +26,7 @@ import {
     addOrderToDB,
     getDBOrders,
     updateOrderStatus,
+    deleteOrderFromDB,
 } from "./db_handler";
 
 const showToastMessage = (message) => {
@@ -350,7 +352,19 @@ export const reducer = (state, action) => {
             order.status = action.payload;
             newState.orders.set(action.id, order);
 
-            updateOrderStatus(action.id, action.payload)
+            updateOrderStatus(action.id, action.payload);
+
+            return newState;
+        }
+        /**
+         * Удаляет заказ
+         */
+        case ACTION_TYPE_ORDER_DELETE: {
+            const newState = {...state};
+
+            newState.orders.delete(action.payload);
+
+            deleteOrderFromDB(action.payload);
 
             return newState;
         }

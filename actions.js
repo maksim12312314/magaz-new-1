@@ -14,6 +14,7 @@ import {
     ACTION_TYPE_DELIVERY_CHANGE_FIELD,
     ACTION_TYPE_DELIVERY_CLEAR,
     ACTION_TYPE_ORDER_CHANGE_STATUS,
+    ACTION_TYPE_ORDER_DELETE,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -74,4 +75,8 @@ export const ClearDeliveryDetails = () => {
 
 export const ChangeOrderStatus = (id, status) => {
     return {type: ACTION_TYPE_ORDER_CHANGE_STATUS, payload: status, id};
+};
+
+export const DeleteOrder = (id) => {
+    return {type: ACTION_TYPE_ORDER_DELETE, payload: id};
 };

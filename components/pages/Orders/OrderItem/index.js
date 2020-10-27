@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Animated, Dimensions, View, TouchableOpacity } from "react-native";
 import { dispatchContext } from "../../../../contexts";
-import { ChangeOrderStatus } from "../../../../actions";
+import { ChangeOrderStatus, DeleteOrder } from "../../../../actions";
 import styles from "./styles";
 import OurText from "../../../OurText";
 import OurTextButton from "../../../OurTextButton";
@@ -41,6 +41,9 @@ const OrderItem = (props) => {
     const cancelOrder = (e) => {
         dispatch(ChangeOrderStatus(data.id, ORDER_STATUS_CANCELED));
     };
+    const deleteOrder = (e) => {
+        dispatch(DeleteOrder(data.id));
+    };
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
@@ -69,7 +72,12 @@ const OrderItem = (props) => {
                 <OurImageSlider data={images} isModalVisible={isModalVisible} toggleModal={toggleModal} />
             </View>
             <View style={styles.bottomContainer}>
-                <OurTextButton style={styles.button} disabled={data.status === ORDER_STATUS_CANCELED} onPress={cancelOrder} textStyle={{color: gradEnd}} translate={true}>orderCancel</OurTextButton>
+                {
+                    data.status !== ORDER_STATUS_CANCELED ?
+                        <OurTextButton style={styles.button} onPress={cancelOrder} textStyle={{color: gradEnd}} translate={true}>orderCancel</OurTextButton>
+                    :
+                        <OurTextButton style={styles.button} onPress={deleteOrder} textStyle={{color: gradEnd}} translate={true}>orderDelete</OurTextButton>
+                }
                 <OurTextButton style={styles.button} onPress={viewInfo} textStyle={{color: gradEnd}} translate={true}>orderViewInfo</OurTextButton>
             </View>
             <View style={styles.borderContainer}>

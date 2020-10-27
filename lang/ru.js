@@ -36,6 +36,7 @@ const ru = {
         orderFormRegister: "Зарегистрировать заказ",
         orderAddress: "Адрес доставки:",
         orderCancel: "Отменить заказ",
+        orderDelete: "Удалить заказ",
         orderViewInfo: "Информация",
         orderStatus: "Статус",
         orderStatusToBeShipped: "Ожидается отправка",
