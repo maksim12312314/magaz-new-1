@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
-import { HeaderBackButton, HeaderTitle } from "../../Header/index";
+import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "../../Header/index";
 import OurText from "../../OurText";
 import OurTextButton from "../../OurTextButton";
 
@@ -46,7 +46,7 @@ const Cart = (props) => {
         navigation.setOptions({
             headerLeft: (props) => <HeaderBackButton navigation={navigation}/>,
             headerCenter: (props) => <HeaderTitle navigation={navigation} title={"cartTitle"}/>,
-            headerRight: (props) =>{},
+            headerRight: (props) => <HeaderOrdersButton navigation={navigation}/>,
             headerStyle: {
                 backgroundColor: gradStart,
             },

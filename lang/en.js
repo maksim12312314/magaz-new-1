@@ -21,6 +21,8 @@ const en = {
 
         deliveryDetailsTitle: "Delivery Details",
         completedOrdersTitle: "Completed Orders",
+        ordersTitle: "Orders",
+        ordersEmpty: "There's too empty here(",
         
         orderInfoCheck: "Please, check your order information.",
         orderInfoCheckEdit: "Edit info",

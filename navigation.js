@@ -7,7 +7,7 @@ import Cart from "./components/pages/Cart";
 import ProductList from "./components/pages/ProductsList";
 import DeliveryDetails from "./components/pages/DeliveryDetails";
 import DeliveryDetailsCheck from "./components/pages/DeliveryDetailsCheck";
-import Orders from "./components/Orders";
+import Orders from "./components/pages/Orders";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 

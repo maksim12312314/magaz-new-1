@@ -28,6 +28,12 @@ const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
 };
 
+const uuidv4 = () => {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+};
+
 /**
  * Редюсер
  * @param  {object} state - объект state
@@ -231,7 +237,7 @@ const reducer = (state, action) => {
         }
 
         /**
-         * Расчитывает итог для корзины
+         * Записывает заказы в state
          */
         case ACTION_TYPE_ORDERS_SET_LIST: {
             const newState = {...state};
@@ -246,8 +252,7 @@ const reducer = (state, action) => {
          */
         case ACTION_TYPE_ORDERS_ADD_TO_LIST: {
             const newState = {...state};
-
-            newState.orders.set(action.payload.id, action.payload);
+            newState.orders.set(newState.orders.size + 1, action.payload);
 
             return newState;
         }

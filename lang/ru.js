@@ -21,6 +21,8 @@ const ru = {
 
         deliveryDetailsTitle: "Детали доставки",
         completedOrdersTitle: "Выполненые заказы",
+        ordersTitle: "Заказы",
+        ordersEmpty: "Здесь пусто(",
         
         orderInfoCheck: "Пожалуйста, проверьте информацию.",
         orderInfoCheckEdit: "Редактировать",
