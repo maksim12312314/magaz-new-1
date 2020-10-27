@@ -260,13 +260,12 @@ const reducer = (state, action) => {
             const { fieldName } = action;
             let valid = true;
 
-            for ( let i=0; i<=newState.deliveryDetails.length; i++ ) {
-                if ( newState.deliveryDetails[i] && newState.deliveryDetails[i].name === fieldName ) {
+            for ( let i=0; i<newState.deliveryDetails.length; i++ ) {
+                if ( newState.deliveryDetails[i].name === fieldName )
                     newState.deliveryDetails[i] = { ...newState.deliveryDetails[i], value: action.payload, valid: action.valid };
 
-                    if ( !newState.deliveryDetails[i].valid )
+                if ( !newState.deliveryDetails[i].valid )
                         valid = false;
-                }
             }
             newState.allDetailsAreValid = valid;
 
