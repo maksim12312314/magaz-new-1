@@ -16,13 +16,15 @@ import {
     ACTION_TYPE_ORDERS_ADD_TO_LIST,
     ACTION_TYPE_DELIVERY_CHANGE_FIELD,
     ACTION_TYPE_DELIVERY_CLEAR,
+    ACTION_TYPE_ORDER_CHANGE_STATUS,
 } from "./types";
 import {
     addProductToCartDB,
     deleteProductFromCart,
     clearCart,
     addOrderToDB,
-    getDBOrders
+    getDBOrders,
+    updateOrderStatus,
 } from "./db_handler";
 
 const showToastMessage = (message) => {
@@ -334,6 +336,21 @@ export const reducer = (state, action) => {
 
             newState.deliveryDetails = initialState.deliveryDetails;
             newState.allDetailsAreValid = false;
+
+            return newState;
+        }
+
+        /**
+         * Изменяет статус заказа
+         */
+        case ACTION_TYPE_ORDER_CHANGE_STATUS: {
+            const newState = {...state};
+
+            const order = newState.orders.get(action.id);
+            order.status = action.payload;
+            newState.orders.set(action.id, order);
+
+            updateOrderStatus(action.id, action.payload)
 
             return newState;
         }

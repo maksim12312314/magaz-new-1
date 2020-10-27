@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Animated, Dimensions, View, TouchableOpacity } from "react-native";
-import { stateContext } from "../../../../contexts";
+import { dispatchContext } from "../../../../contexts";
+import { ChangeOrderStatus } from "../../../../actions";
 import styles from "./styles";
 import OurText from "../../../OurText";
 import OurTextButton from "../../../OurTextButton";
@@ -8,7 +9,7 @@ import OurImage from "../../../OurImage";
 import OurImageSlider from "../../../OurImageSlider";
 import { ListAnimation } from "../../../../Animations";
 import { STORE_ADDRESS } from "../../../../config";
-import { statusToText } from "../index";
+import { statusToText, ORDER_STATUS_CANCELED } from "../index";
 
 
 const itemWidth = Dimensions.get("window").width;
@@ -21,6 +22,7 @@ const MAX_IMAGES = 4;
 
 
 const OrderItem = (props) => {
+    const dispatch = useContext(dispatchContext);
     const { x, y, index, data, navigation } = props;
 
     const images = Array.from(data.products.values()).map( (v, i) => {
@@ -36,6 +38,9 @@ const OrderItem = (props) => {
     const viewInfo = (e) => {
         navigation.navigate("DeliveryDetailsCheck", { data: data.deliveryDetails, isOrderMade: true });
     }
+    const cancelOrder = (e) => {
+        dispatch(ChangeOrderStatus(data.id, ORDER_STATUS_CANCELED));
+    };
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
@@ -47,6 +52,9 @@ const OrderItem = (props) => {
                 <View style={styles.infoContainer}>
                     <OurText style={styles.textField} translate={true}>orderStatus</OurText>
                     <OurText style={styles.text} translate={true}>{statusToText(data.status)}</OurText>
+                </View>
+                <View style={styles.infoContainer}>
+                    <OurText style={styles.textField}>{data.totalPrice}$</OurText>
                 </View>
             </View>
             <View style={styles.middleContainer}>
@@ -61,7 +69,7 @@ const OrderItem = (props) => {
                 <OurImageSlider data={images} isModalVisible={isModalVisible} toggleModal={toggleModal} />
             </View>
             <View style={styles.bottomContainer}>
-                <OurTextButton style={styles.button} textStyle={{color: gradEnd}} translate={true}>orderCancel</OurTextButton>
+                <OurTextButton style={styles.button} disabled={data.status === ORDER_STATUS_CANCELED} onPress={cancelOrder} textStyle={{color: gradEnd}} translate={true}>orderCancel</OurTextButton>
                 <OurTextButton style={styles.button} onPress={viewInfo} textStyle={{color: gradEnd}} translate={true}>orderViewInfo</OurTextButton>
             </View>
             <View style={styles.borderContainer}>
@@ -71,4 +79,4 @@ const OrderItem = (props) => {
     );
 };
 
-export default React.memo(OrderItem); 
+export default OrderItem; 

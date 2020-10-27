@@ -101,3 +101,7 @@ export const getCategoryListFromDB = (cb, err) => {
 export const getOrdersFromDB = (cb, err) => {
     executeSql(`SELECT * FROM Orders LIMIT 30`, [], cb, err);
 };
+
+export const updateOrderStatus = (id, status, cb, err) => {
+    executeSql(`UPDATE Orders SET status = ? WHERE id = ?`, [status, id], cb, err);
+};

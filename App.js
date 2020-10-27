@@ -55,7 +55,7 @@ const App = () => {
 					const json = JSON.parse(v.products);
 					products = new Map(Object.entries(json));
 				} catch(err) { console.log("WTF", err) }
-				
+
 				const order = {
 					id: v.id,
 					deliveryDetails: {
@@ -70,7 +70,6 @@ const App = () => {
 					status: v.status,
 					totalPrice: v.totalPrice,
 				};
-				console.log("ORDER", order);
 				data.set(order.id, order);
 			});
 			dispatch(SetOrderList(data));

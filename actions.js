@@ -13,6 +13,7 @@ import {
     ACTION_TYPE_ORDERS_ADD_TO_LIST,
     ACTION_TYPE_DELIVERY_CHANGE_FIELD,
     ACTION_TYPE_DELIVERY_CLEAR,
+    ACTION_TYPE_ORDER_CHANGE_STATUS,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -69,4 +70,8 @@ export const ChangeDeliveryField = (fieldName, value, valid) => {
 
 export const ClearDeliveryDetails = () => {
     return {type: ACTION_TYPE_DELIVERY_CLEAR};
+};
+
+export const ChangeOrderStatus = (id, status) => {
+    return {type: ACTION_TYPE_ORDER_CHANGE_STATUS, payload: status, id};
 };
