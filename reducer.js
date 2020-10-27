@@ -323,7 +323,6 @@ export const reducer = (state, action) => {
         case ACTION_TYPE_DELIVERY_CLEAR: {
             const newState = {...state};
             
-            console.log("initialState", initialState.deliveryDetails);
             newState.deliveryDetails = initialState.deliveryDetails;
             newState.allDetailsAreValid = false;
 
