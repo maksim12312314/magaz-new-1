@@ -52,8 +52,8 @@ const OrderItem = (props) => {
             <View style={styles.middleContainer}>
                 {
                     images.map( (url, i) => {
-                        if ( i > MAX_IMAGES )
-                            return <></>;
+                        if ( i > MAX_IMAGES - 1 )
+                            return;
                         else
                             return <OurImage style={styles.productImage} onPress={toggleModal} url={url} key={i} />;
                     })
