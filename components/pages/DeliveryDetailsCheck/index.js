@@ -25,6 +25,7 @@ const DeliveryDetailsCheck = (props) => {
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
     const { navigation } = props;
+    const { data, isOrderMade } = props.route.params;
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
@@ -69,21 +70,34 @@ const DeliveryDetailsCheck = (props) => {
         <LinearGradient style={styles.background} locations={[0, 1.0]} colors={[gradStart, gradEnd]}/>
         <View style={styles.mainContainer}>
             <View style={styles.topContainer}>
-                <OurText style={styles.title} translate={true}>orderInfoCheck</OurText>
+            {
+                !isOrderMade ?
+                    <OurText style={styles.title} translate={true}>orderInfoCheck</OurText>
+                : <></>
+            }
             </View>
             <ScrollView>
-            {
-                Object.keys(state.deliveryDetails).map( (fieldName, i ) => {
-                    return <DeliveryDetailsItem field={state.deliveryDetails[fieldName].placeholder}
-                                                text={state.deliveryDetails[fieldName].value}
-                                                key={i} />
-                })
-            }
+                <DeliveryDetailsItem field={"orderFormName"}
+                                     text={data.name}/>
+                <DeliveryDetailsItem field={"orderFormPhone"}
+                                     text={data.phone}/>
+                <DeliveryDetailsItem field={"orderFormAddress"}
+                                     text={data.address}/>
+                <DeliveryDetailsItem field={"orderFormFloor"}
+                                     text={data.floor}/>
+                <DeliveryDetailsItem field={"orderFormNotes"}
+                                     text={data.notes}/>
+                <DeliveryDetailsItem field={"orderFormDeliveryTime"}
+                                     text={data.time}/>
             </ScrollView>
-            <View style={styles.bottomContainer}>
-                <OurTextButton style={styles.button} onPress={goToDetailsEdit} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckEdit</OurTextButton>
-                <OurTextButton style={styles.button} onPress={makeAnOrder} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
-            </View>
+            {
+            !isOrderMade ?
+                <View style={styles.bottomContainer}>
+                    <OurTextButton style={styles.button} onPress={goToDetailsEdit} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckEdit</OurTextButton>
+                    <OurTextButton style={styles.button} onPress={makeAnOrder} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
+                </View>
+                : <></>
+            }
         </View>
         </>
     );

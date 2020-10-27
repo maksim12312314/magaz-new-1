@@ -21,7 +21,7 @@ const MAX_IMAGES = 4;
 
 
 const OrderItem = (props) => {
-    const { x, y, index, data } = props;
+    const { x, y, index, data, navigation } = props;
 
     const images = Array.from(data.products.values()).map( (v, i) => {
         return `${STORE_ADDRESS}wp-content/uploads/${v.imageLink}`;
@@ -33,6 +33,10 @@ const OrderItem = (props) => {
         setModalVisible(!isModalVisible);
     };
 
+    const viewInfo = (e) => {
+        navigation.navigate("DeliveryDetailsCheck", { data: data.deliveryDetails, isOrderMade: true });
+    }
+
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
     const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
@@ -41,12 +45,8 @@ const OrderItem = (props) => {
         <Animated.View style={[styles.mainContainer, {height: itemHeight, width:itemWidth}, { opacity, transform: [{ translateX }, { scale }] }]}>
             <View style={styles.topContainer}>
                 <View style={styles.infoContainer}>
-                    <OurText style={styles.textField} translate={true}>orderAddress</OurText>
-                    <OurText style={styles.text}>{data.deliveryDetails.address}</OurText>
-                </View>
-                <View style={styles.infoContainerReversed}>
                     <OurText style={styles.textField} translate={true}>orderStatus</OurText>
-                    <OurText style={styles.textReversed} translate={true}>{statusToText(data.status)}</OurText>
+                    <OurText style={styles.text} translate={true}>{statusToText(data.status)}</OurText>
                 </View>
             </View>
             <View style={styles.middleContainer}>
@@ -62,7 +62,7 @@ const OrderItem = (props) => {
             </View>
             <View style={styles.bottomContainer}>
                 <OurTextButton style={styles.button} textStyle={{color: gradEnd}} translate={true}>orderCancel</OurTextButton>
-                <OurTextButton style={styles.button} textStyle={{color: gradEnd}} translate={true}>orderViewInfo</OurTextButton>
+                <OurTextButton style={styles.button} onPress={viewInfo} textStyle={{color: gradEnd}} translate={true}>orderViewInfo</OurTextButton>
             </View>
             <View style={styles.borderContainer}>
                 <View style={styles.itemBorder}/>

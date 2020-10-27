@@ -42,7 +42,15 @@ const DeliveryDetails = (props) => {
     };
 
     const goToDetailsCheck = (e) => {
-        navigation.navigate("DeliveryDetailsCheck");
+        const deliveryDetails = {
+            name: state.deliveryDetails.name.value,
+            phone: state.deliveryDetails.phone.value,
+            address: state.deliveryDetails.address.value,
+            floor: state.deliveryDetails.floor.value,
+            notes: state.deliveryDetails.notes.value,
+            time: state.deliveryDetails.time.value,
+        };
+        navigation.navigate("DeliveryDetailsCheck", { data: deliveryDetails, isOrderMade: false });
     };
 
     return (

@@ -21,7 +21,7 @@ export const statusToText = (status) => {
     return statuses[status] || "orderStatusToBeShipped"
 };
 
-const LocallyAnimatedFlatList = ({data}) => {
+const LocallyAnimatedFlatList = ({data, navigation}) => {
     const [x, setX] = useState(new Animated.Value(0));
     const [y, setY] = useState(new Animated.Value(0));
     const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
@@ -30,7 +30,7 @@ const LocallyAnimatedFlatList = ({data}) => {
     
     const renderItemsBlock = ({item, index}) => {
         return (
-            <OrderItem x={x} y={y} index={index} data={item}/>
+            <OrderItem x={x} y={y} navigation={navigation} index={index} data={item}/>
         );
     };
 
@@ -75,7 +75,7 @@ const Orders = (props) => {
         			<OurText style={styles.emptyText} translate={true}>ordersEmpty</OurText>
         		</View>
         	:
-        		<MemoedLocallyAnimatedFlatList data={Array.from(state.orders.values())}/>
+        		<MemoedLocallyAnimatedFlatList navigation={navigation} data={Array.from(state.orders.values())}/>
         }
         </View>
         </>
