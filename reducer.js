@@ -15,6 +15,7 @@ import {
     ACTION_TYPE_ORDERS_SET_LIST,
     ACTION_TYPE_ORDERS_ADD_TO_LIST,
     ACTION_TYPE_DELIVERY_CHANGE_FIELD,
+    ACTION_TYPE_DELIVERY_CLEAR,
 } from "./types";
 import {
     addProductToCartDB,
@@ -28,10 +29,49 @@ const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
 };
 
-const uuidv4 = () => {
-    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
+export const initialState = {
+    cartItems: new Map(),
+    cartTotalPrice: 0,
+    orders: new Map(),
+    deliveryDetails: {
+        name: {
+            name: "name",
+            placeholder: "orderFormName",
+            value: "",
+            valid: false,
+        },
+        phone: {
+            name: "phone",
+            placeholder: "orderFormPhone",
+            value: "",
+            valid: false,
+        },
+        address: {
+            name: "address",
+            placeholder: "orderFormAddress",
+            value: "",
+            valid: false,
+        },
+        floor: {
+            name: "floor",
+            placeholder: "orderFormFloor",
+            value: "",
+            valid: true,
+        },
+        notes: {
+            name: "notes",
+            placeholder: "orderFormNotes",
+            value: "",
+            valid: true,
+        },
+        time: {
+            name: "time",
+            placeholder: "orderFormDeliveryTime",
+            value: "",
+            valid: false,
+        },
+    },
+    allDetailsAreValid: false,
 };
 
 /**
@@ -39,7 +79,7 @@ const uuidv4 = () => {
  * @param  {object} state - объект state
  * @param  {object} action - объект action
  */
-const reducer = (state, action) => {
+export const reducer = (state, action) => {
     /**
      * Проверяет тип действия
      */
@@ -265,14 +305,27 @@ const reducer = (state, action) => {
             const { fieldName } = action;
             let valid = true;
 
-            for ( let i=0; i<newState.deliveryDetails.length; i++ ) {
-                if ( newState.deliveryDetails[i].name === fieldName )
-                    newState.deliveryDetails[i] = { ...newState.deliveryDetails[i], value: action.payload, valid: action.valid };
+            newState.deliveryDetails[fieldName].value = action.payload;
+            newState.deliveryDetails[fieldName].valid = true;
 
-                if ( !newState.deliveryDetails[i].valid )
-                        valid = false;
+            for ( const [fn, data] of Object.entries(newState.deliveryDetails) ) {
+                if ( !data.valid )
+                    valid = false;
             }
             newState.allDetailsAreValid = valid;
+
+            return newState;
+        }
+
+        /**
+         * Очищает deliveryDetails
+         */
+        case ACTION_TYPE_DELIVERY_CLEAR: {
+            const newState = {...state};
+            
+            console.log("initialState", initialState.deliveryDetails);
+            newState.deliveryDetails = initialState.deliveryDetails;
+            newState.allDetailsAreValid = false;
 
             return newState;
         }
@@ -281,5 +334,3 @@ const reducer = (state, action) => {
             return state;
     }
 };
-
-export default reducer;

@@ -52,11 +52,11 @@ const DeliveryDetails = (props) => {
             <KeyboardAvoidingView style={styles.infoContainer}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                 {
-                    state.deliveryDetails.map( (field, i ) => {
-                    return <OurTextField name={field.name}
-                                  defValue={field.value}
+                    Object.keys(state.deliveryDetails).map( (fieldName, i ) => {
+                    return <OurTextField name={state.deliveryDetails[fieldName].name}
+                                  defValue={state.deliveryDetails[fieldName].value}
                                   onValidate={validateForm}
-                                  placeholder={t(field.placeholder)}
+                                  placeholder={t(state.deliveryDetails[fieldName].placeholder)}
                                   key={i}/>
                               })
                 }

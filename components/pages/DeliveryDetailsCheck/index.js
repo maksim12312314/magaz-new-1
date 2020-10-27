@@ -3,7 +3,7 @@ import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";
 import { stateContext, dispatchContext } from "../../../contexts";
-import { AddOrderToList } from "../../../actions";
+import { AddOrderToList, ClearCart, ClearDeliveryDetails } from "../../../actions";
 import { ORDER_STATUS_TO_BE_SHIPPED } from "../Orders";
 
 import OurText from "../../OurText";
@@ -43,7 +43,7 @@ const DeliveryDetailsCheck = (props) => {
         navigation.navigate("DeliveryDetails");
     };
 
-    const goToOrders = (e) => {
+    const makeAnOrder = (e) => {
         const orderData = {
             deliveryDetails: state.deliveryDetails,
             status:  ORDER_STATUS_TO_BE_SHIPPED,
@@ -51,6 +51,9 @@ const DeliveryDetailsCheck = (props) => {
             totalPrice: state.cartTotalPrice,
         };
         dispatch(AddOrderToList(orderData));
+        dispatch(ClearCart());
+        dispatch(ClearDeliveryDetails());
+        navigation.popToTop();
         navigation.navigate("Orders");
     };
 
@@ -63,12 +66,16 @@ const DeliveryDetailsCheck = (props) => {
             </View>
             <ScrollView>
             {
-                state.deliveryDetails.map( (field, i ) => <DeliveryDetailsItem field={field.placeholder} text={field.value} key={i} />)
+                Object.keys(state.deliveryDetails).map( (fieldName, i ) => {
+                    return <DeliveryDetailsItem field={state.deliveryDetails[fieldName].placeholder}
+                                                text={state.deliveryDetails[fieldName].value}
+                                                key={i} />
+                })
             }
             </ScrollView>
             <View style={styles.bottomContainer}>
                 <OurTextButton style={styles.button} onPress={goToDetailsEdit} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckEdit</OurTextButton>
-                <OurTextButton style={styles.button} onPress={goToOrders} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
+                <OurTextButton style={styles.button} onPress={makeAnOrder} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
             </View>
         </View>
         </>

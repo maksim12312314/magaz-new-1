@@ -84,7 +84,7 @@ export const deleteProductFromCart = (productId) => {
     executeSql(`DELETE FROM Cart WHERE productId=?`, [productId], null, (tr, err) => console.log(`ERROR DELETING RECORD ${productId}`, err));
 };
 export const clearCart = () => {
-    executeSql(`TRUNCATE TABLE Cart`, [], null, (tr, err) => console.log(`ERROR CLEARING CART`, err));
+    executeSql(`DELETE FROM Cart`, [], null, (tr, err) => console.log(`ERROR CLEARING CART`, err));
 };
 
 export const getImageFromDB = (imageLink, cb, err) => {

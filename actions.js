@@ -12,6 +12,7 @@ import {
     ACTION_TYPE_ORDERS_SET_LIST,
     ACTION_TYPE_ORDERS_ADD_TO_LIST,
     ACTION_TYPE_DELIVERY_CHANGE_FIELD,
+    ACTION_TYPE_DELIVERY_CLEAR,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -64,4 +65,8 @@ export const AddOrderToList = (data) => {
 
 export const ChangeDeliveryField = (fieldName, value, valid) => {
     return {type: ACTION_TYPE_DELIVERY_CHANGE_FIELD, fieldName, payload: value, valid};
+};
+
+export const ClearDeliveryDetails = () => {
+    return {type: ACTION_TYPE_DELIVERY_CLEAR};
 };
