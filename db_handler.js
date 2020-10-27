@@ -34,7 +34,8 @@ export const createDBTables = () => {
         orderNotes TEXT,
         orderDeliveryTime INTEGER,
         status INTEGER,
-        products TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+        products TEXT,
+        totalPrice INTEGER)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
 };
 
 export const addCategoryToDB = (name, productCategoryId, imageLink) => {
@@ -63,9 +64,9 @@ export const addImageToDB = (imageLink, imageData) => {
     	imageLink,
         imageData) VALUES(?, ?)`, [imageLink, imageData]);
 };
-export const addOrderToDB = (customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products) => {
+export const addOrderToDB = (customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products, totalPrice) => {
     try {
-        products = JSON.stringify(products);
+        products = JSON.stringify(Object.fromEntries(products));
     } catch {
         products = JSON.stringify([]);
     }
@@ -77,7 +78,8 @@ export const addOrderToDB = (customerName, customerPhone, customerAddress, custo
         orderNotes,
         orderDeliveryTime,
         status,
-        products) VALUES(?, ?, ?, ?, ?, ?, ?, ?)`, [customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products]);
+        products,
+        totalPrice) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`, [customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products, totalPrice]);
 };
 
 export const deleteProductFromCart = (productId) => {

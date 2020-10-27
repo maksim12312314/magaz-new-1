@@ -45,7 +45,14 @@ const DeliveryDetailsCheck = (props) => {
 
     const makeAnOrder = (e) => {
         const orderData = {
-            deliveryDetails: state.deliveryDetails,
+            deliveryDetails: {
+                name: state.deliveryDetails.name.value,
+                phone: state.deliveryDetails.phone.value,
+                address: state.deliveryDetails.address.value,
+                floor: state.deliveryDetails.floor.value,
+                notes: state.deliveryDetails.notes.value,
+                time: state.deliveryDetails.time.value,
+            },
             status:  ORDER_STATUS_TO_BE_SHIPPED,
             products: state.cartItems,
             totalPrice: state.cartTotalPrice,

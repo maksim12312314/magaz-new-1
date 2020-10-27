@@ -292,7 +292,16 @@ export const reducer = (state, action) => {
          */
         case ACTION_TYPE_ORDERS_ADD_TO_LIST: {
             const newState = {...state};
+            const { payload } = action;
+
             newState.orders.set(newState.orders.size + 1, action.payload);
+
+            addOrderToDB(payload.deliveryDetails.name,
+                payload.deliveryDetails.phone,
+                payload.deliveryDetails.address,
+                payload.deliveryDetails.floor,
+                payload.deliveryDetails.notes,
+                payload.deliveryDetails.time, payload.status, payload.products, payload.totalPrice);
 
             return newState;
         }
@@ -322,7 +331,7 @@ export const reducer = (state, action) => {
          */
         case ACTION_TYPE_DELIVERY_CLEAR: {
             const newState = {...state};
-            
+
             newState.deliveryDetails = initialState.deliveryDetails;
             newState.allDetailsAreValid = false;
 

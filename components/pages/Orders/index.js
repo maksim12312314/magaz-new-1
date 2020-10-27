@@ -5,11 +5,21 @@ import { HeaderBackButton, HeaderCartButton, HeaderTitle } from "./../../Header/
 import { stateContext } from "../../../contexts";
 import OurText from "../../OurText";
 import OurTextButton from "../../OurTextButton";
+import OrderItem from "./OrderItem";
 import styles from "./styles";
 
 export const ORDER_STATUS_TO_BE_SHIPPED = 0;
 export const ORDER_STATUS_SHIPPED 		= 1;
 export const ORDER_STATUS_CANCELED 		= 2;
+
+export const statusToText = (status) => {
+    const statuses = [
+        "orderStatusToBeShipped",
+        "orderStatusShipped",
+        "orderStatusCanceled",
+    ];
+    return statuses[status] || "orderStatusToBeShipped"
+};
 
 const LocallyAnimatedFlatList = ({data}) => {
     const [x, setX] = useState(new Animated.Value(0));
@@ -19,15 +29,14 @@ const LocallyAnimatedFlatList = ({data}) => {
     });
     
     const renderItemsBlock = ({item, index}) => {
-    	console.log("HELLO", item);
         return (
-            <OurText style={styles.emptyText} translate={true}>item.deliveryDetails[0].placeholder</OurText>
+            <OrderItem x={x} y={y} index={index} data={item}/>
         );
     };
 
     return (
         <Animated.FlatList
-            contentContainerStyle={styles.cartList}
+            style={styles.flatList}
             data={data}
             renderItem={renderItemsBlock}
             keyExtractor={(item, index) => String(index)}
@@ -66,7 +75,7 @@ const Orders = (props) => {
         			<OurText style={styles.emptyText} translate={true}>ordersEmpty</OurText>
         		</View>
         	:
-        		<MemoedLocallyAnimatedFlatList data={state.orders}/>
+        		<MemoedLocallyAnimatedFlatList data={Array.from(state.orders.values())}/>
         }
         </View>
         </>

@@ -10,7 +10,9 @@ const styles = StyleSheet.create({
         minHeight: "100%",
     },
     mainContainer: {
-
+    },
+    flatList: {
+        paddingTop: 12,
     },
     emptyTextContainer: {
         alignItems: "center",

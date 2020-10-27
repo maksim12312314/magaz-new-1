@@ -50,12 +50,27 @@ const App = () => {
 		getOrdersFromDB((tr, result) => {
 			const data = new Map();
 			result.rows["_array"].map( (v, i) => {
-				const products = [];
+				let products = new Map();
 				try {
-					products = JSON.parse(v.products);
-				} catch { /*fuck)*/ }
-
-				const order = { ...v, products };
+					const json = JSON.parse(v.products);
+					products = new Map(Object.entries(json));
+				} catch(err) { console.log("WTF", err) }
+				
+				const order = {
+					id: v.id,
+					deliveryDetails: {
+						name: v.customerName,
+						phone: v.customerPhone,
+						address: v.customerAddress,
+						floor: v.customerFloor,
+						notes: v.orderNotes,
+						time: v.orderDeliveryTime,
+					},
+					products: products,
+					status: v.status,
+					totalPrice: v.totalPrice,
+				};
+				console.log("ORDER", order);
 				data.set(order.id, order);
 			});
 			dispatch(SetOrderList(data));
