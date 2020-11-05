@@ -58,6 +58,7 @@ const App = () => {
 
 				const order = {
 					id: v.id,
+					uuid: v.uuid,
 					deliveryDetails: {
 						name: v.customerName,
 						phone: v.customerPhone,
@@ -70,7 +71,7 @@ const App = () => {
 					status: v.status,
 					totalPrice: v.totalPrice,
 				};
-				data.set(order.id, order);
+				data.set(order.uuid, order);
 			});
 			dispatch(SetOrderList(data));
 		},

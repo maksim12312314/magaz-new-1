@@ -5,6 +5,7 @@ import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";
 import { stateContext, dispatchContext } from "../../../contexts";
 import { AddOrderToList, ClearCart, ClearDeliveryDetails } from "../../../actions";
 import { ORDER_STATUS_TO_BE_SHIPPED } from "../Orders";
+import uuid from "react-native-uuid";
 
 import OurText from "../../OurText";
 import OurTextButton from "../../OurTextButton";
@@ -54,6 +55,7 @@ const DeliveryDetailsCheck = (props) => {
                 notes: state.deliveryDetails.notes.value,
                 time: state.deliveryDetails.time.value,
             },
+            uuid: uuid.v1(),
             status:  ORDER_STATUS_TO_BE_SHIPPED,
             products: state.cartItems,
             totalPrice: state.cartTotalPrice,

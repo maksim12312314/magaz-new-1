@@ -39,10 +39,10 @@ const OrderItem = (props) => {
         navigation.navigate("DeliveryDetailsCheck", { data: data.deliveryDetails, isOrderMade: true });
     }
     const cancelOrder = (e) => {
-        dispatch(ChangeOrderStatus(data.id, ORDER_STATUS_CANCELED));
+        dispatch(ChangeOrderStatus(data.uuid, ORDER_STATUS_CANCELED));
     };
     const deleteOrder = (e) => {
-        dispatch(DeleteOrder(data.id));
+        dispatch(DeleteOrder(data.uuid));
     };
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];

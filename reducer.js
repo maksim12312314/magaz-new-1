@@ -297,10 +297,10 @@ export const reducer = (state, action) => {
         case ACTION_TYPE_ORDERS_ADD_TO_LIST: {
             const newState = {...state};
             const { payload } = action;
+            newState.orders.set(payload.uuid, payload);
 
-            newState.orders.set(newState.orders.size + 1, action.payload);
-
-            addOrderToDB(payload.deliveryDetails.name,
+            addOrderToDB(payload.uuid,
+                payload.deliveryDetails.name,
                 payload.deliveryDetails.phone,
                 payload.deliveryDetails.address,
                 payload.deliveryDetails.floor,
@@ -323,7 +323,7 @@ export const reducer = (state, action) => {
 
             for ( const [fn, data] of Object.entries(newState.deliveryDetails) ) {
                 if ( !data.valid )
-                    valid = false;
+                    valid = true;
             }
             newState.allDetailsAreValid = valid;
 
@@ -356,6 +356,7 @@ export const reducer = (state, action) => {
 
             return newState;
         }
+
         /**
          * Удаляет заказ
          */

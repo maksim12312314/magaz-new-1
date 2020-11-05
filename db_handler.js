@@ -27,6 +27,7 @@ export const createDBTables = () => {
         imageData TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
     executeSql(`CREATE TABLE IF NOT EXISTS Orders(
         id INTEGER PRIMARY KEY NOT NULL,
+        uuid TEXT UNIQUE,
         customerName TEXT,
         customerPhone TEXT,
         customerAddress TEXT,
@@ -64,13 +65,14 @@ export const addImageToDB = (imageLink, imageData) => {
     	imageLink,
         imageData) VALUES(?, ?)`, [imageLink, imageData]);
 };
-export const addOrderToDB = (customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products, totalPrice) => {
+export const addOrderToDB = (uuid, customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products, totalPrice) => {
     try {
         products = JSON.stringify(Object.fromEntries(products));
     } catch {
         products = JSON.stringify([]);
     }
-    executeSql(`INSERT INTO Orders(
+    executeSql(`INSERT OR REPLACE INTO Orders(
+        uuid,
         customerName,
         customerPhone,
         customerAddress,
@@ -79,7 +81,7 @@ export const addOrderToDB = (customerName, customerPhone, customerAddress, custo
         orderDeliveryTime,
         status,
         products,
-        totalPrice) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`, [customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products, totalPrice]);
+        totalPrice) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [uuid, customerName, customerPhone, customerAddress, customerFloor, orderNotes, orderDeliveryTime, status, products, totalPrice]);
 };
 
 export const deleteProductFromCart = (productId) => {
@@ -88,8 +90,8 @@ export const deleteProductFromCart = (productId) => {
 export const clearCart = () => {
     executeSql(`DELETE FROM Cart`, [], null, (tr, err) => console.log(`ERROR CLEARING CART`, err));
 };
-export const deleteOrderFromDB = (id) => {
-    executeSql(`DELETE FROM Orders WHERE id=?`, [id], null, (tr, err) => console.log(`ERROR DELETING ORDER RECORD ${id}`, err));
+export const deleteOrderFromDB = (uuid) => {
+    executeSql(`DELETE FROM Orders WHERE uuid=?`, [uuid], null, (tr, err) => console.log(`ERROR DELETING ORDER RECORD ${uuid}`, err));
 };
 
 export const getImageFromDB = (imageLink, cb, err) => {
@@ -105,6 +107,6 @@ export const getOrdersFromDB = (cb, err) => {
     executeSql(`SELECT * FROM Orders LIMIT 30`, [], cb, err);
 };
 
-export const updateOrderStatus = (id, status, cb, err) => {
-    executeSql(`UPDATE Orders SET status = ? WHERE id = ?`, [status, id], cb, err);
+export const updateOrderStatus = (uuid, status, cb, err) => {
+    executeSql(`UPDATE Orders SET status = ? WHERE uuid = ?`, [status, uuid], cb, err);
 };
