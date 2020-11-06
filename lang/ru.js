@@ -17,6 +17,8 @@ const ru = {
         close: "Закрыть",
         ok: "Ок",
 
+        appInfo: "Версия: {{version}}\n\nАвторы:\nVladislav Drogin\nSergey Nameless\nDanil Stavnichiy\nMaxim Saryev",
+
         notAvailable: "н/д",
 
         deliveryDetailsTitle: "Детали доставки",

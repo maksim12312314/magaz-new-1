@@ -6,20 +6,24 @@ import React, { useReducer, useEffect } from "react";
 import { AppRegistry } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppStackNavigator from "./navigation";
-import { name } from "./app.json";
+import { expo } from "./app.json";
 import * as hehe from './utils';
 import { reducer, initialState } from "./reducer";
 import { stateContext, dispatchContext } from "./contexts";
 import { createDBTables, getCartFromDB, getOrdersFromDB } from "./db_handler";
-import { ComputeTotalPrice, SetCartProducts, SetOrderList } from "./actions";
+import { SetCartProducts, SetOrderList } from "./actions";
+import OurModal from "./components/OurModal";
 import "./i18n";
 
 /**Контейнер приложения */
 const AppContainer = () => {
 	return (
-		<NavigationContainer>
-			<AppStackNavigator/>
-		</NavigationContainer>
+		<>
+			<NavigationContainer>
+				<AppStackNavigator/>
+			</NavigationContainer>
+			<OurModal/>
+		</>
 	);	
 }
 
@@ -38,7 +42,6 @@ const App = () => {
 				data.set(v.productId, v);
 			});
 			dispatch(SetCartProducts(data));
-			dispatch(ComputeTotalPrice());
 		},
 		(err) => {
 			console.log("WELL SHIT", err)
@@ -88,6 +91,6 @@ const App = () => {
 		</stateContext.Provider>
 	);
 };
-AppRegistry.registerComponent(name, () => App);
+AppRegistry.registerComponent(expo.name, () => App);
 
 export default App;

@@ -15,6 +15,9 @@ import {
     ACTION_TYPE_DELIVERY_CLEAR,
     ACTION_TYPE_ORDER_CHANGE_STATUS,
     ACTION_TYPE_ORDER_DELETE,
+    ACTION_TYPE_MODAL_SHOW,
+    ACTION_TYPE_MODAL_CLOSE,
+    ACTION_TYPE_MODAL_TOGGLE,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -79,4 +82,16 @@ export const ChangeOrderStatus = (id, status) => {
 
 export const DeleteOrder = (id) => {
     return {type: ACTION_TYPE_ORDER_DELETE, payload: id};
+};
+
+export const ShowModal = (data={}) => {
+    return {type: ACTION_TYPE_MODAL_SHOW, payload: data};
+};
+
+export const CloseModal = () => {
+    return {type: ACTION_TYPE_MODAL_CLOSE};
+};
+
+export const ToggleModal = (data={}) => {
+    return {type: ACTION_TYPE_MODAL_TOGGLE, payload: data};
 };

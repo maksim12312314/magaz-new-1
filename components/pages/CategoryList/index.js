@@ -6,9 +6,11 @@ import OurActivityIndicator from "../../OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
 import { STORE_ADDRESS } from "../../../config";
+import { expo } from "../../../app.json";
 
 import {
     SetCategoryList,
+    ShowModal,
 } from "../../../actions";
 import { getCategoryListQuery } from "../../../queries";
 import { addCategoryToDB, getCategoryListFromDB } from "../../../db_handler";
@@ -16,15 +18,25 @@ import { HeaderTitle, HeaderCartButton } from "../../Header";
 import useFetch from "../../../network_handler";
 
 /**Список категорий товаров*/
-// TODO abort fetch in case of change of page
-const CategoryList = (props) =>
-{
+const CategoryList = (props) => {
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
+    const showAppInfo = (e) => {
+        const data = {
+            title: { text: expo.name, params: {} },
+            text: { text: "appInfo", params: { version: expo.version } },
+            animationIn: "bounceInDown",
+            animationOut: "bounceOutUp",
+            buttons: [{
+                text: "ok",
+            }]
+        };
+        dispatch(ShowModal(data));
+    };
 
     useLayoutEffect( () => {
         navigation.setOptions({
-            headerLeft: (props)=><HeaderTitle navigation={navigation} title={"categoryListTitle"}/>,
+            headerLeft: (props)=><HeaderTitle navigation={navigation} title={"categoryListTitle"} onPress={showAppInfo}/>,
             headerCenter: (props)=>{},
             headerRight: (props)=><HeaderCartButton navigation={navigation}/>,
             headerStyle: {

@@ -38,7 +38,7 @@ const CartItem = (props) => {
                 <OurText style={styles.itemCount} params={{quantity: productQuantity}}>cartPcs</OurText>
                 <View style={styles.itemCountController}>
                     <OurText style={styles.itemPrice}>{price * productQuantity}$</OurText>
-                    <ItemCount productId={productId}/>
+                    <ItemCount productId={productId} quantity={productQuantity}/>
                 </View>
             </View>
             <View style={styles.borderContainer}>

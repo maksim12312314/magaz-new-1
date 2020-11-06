@@ -10,6 +10,7 @@ import {
     DeleteProductFromCart,
     DecreaseProductQuantity,
     IncreaseProductQuantity,
+    ShowModal,
 } from "../../../../../actions";
 
 
@@ -18,31 +19,45 @@ const size = Math.max(Dimensions.get("window").width, Dimensions.get("window").h
 /** Компонент, который отображает количество товаров в корзине */
 const ItemCount = (props) => {
     const dispatch = useContext(dispatchContext);
-    const { productId } = props;
+    const { productId, quantity } = props;
     const { t } = useTranslation();
+
+    const deleteModalData = {
+        title: { text: "cartDeleteTitle", params: {} },
+        text: { text: "cartDeleteMessage", params: {} },
+        animationIn: "fadeInRight",
+        animationOut: "fadeOutLeft",
+        buttons: [
+            {
+                text: "cancel",
+                textStyle: {
+                    color: "#383838",
+                },
+            },
+            {
+                text: "ok",
+                onPress: (e) => {
+                    dispatch(DeleteProductFromCart(productId));
+                },
+            }
+        ],
+    };
 
     const plusPressed = (e) => {
         // Добавляем 1 товар
         dispatch(IncreaseProductQuantity(productId));
     };
     const minusPressed = (e) => {
-        // Вычитаем 1 товар
-        dispatch(DecreaseProductQuantity(productId, dispatch, t));
+        // Удаляем товар, если остался один товар
+        if ( quantity <= 1 ) {
+            dispatch(ShowModal(deleteModalData));
+        } else {
+            // Или вычитаем 1 товар
+            dispatch(DecreaseProductQuantity(productId, dispatch, t));
+        }
     };
     const deletePressed = (e) => {
-        Alert.alert(t("cartDeleteTitle"), t("cartDeleteMessage"), [
-            {
-                text: t("cancel"),
-                style: "cancel"
-            },
-            {
-                text: t("ok"),
-                onPress: () => {
-                    dispatch(DeleteProductFromCart(productId, true));
-                },
-            },
-        ],
-        {cancelable: false});
+        dispatch(ShowModal(deleteModalData));
     };
 
     return (
