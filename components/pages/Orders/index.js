@@ -8,18 +8,6 @@ import OurTextButton from "../../OurTextButton";
 import OrderItem from "./OrderItem";
 import styles from "./styles";
 
-export const ORDER_STATUS_TO_BE_SHIPPED = 0;
-export const ORDER_STATUS_SHIPPED 		= 1;
-export const ORDER_STATUS_CANCELED 		= 2;
-
-export const statusToText = (status) => {
-    const statuses = [
-        "orderStatusToBeShipped",
-        "orderStatusShipped",
-        "orderStatusCanceled",
-    ];
-    return statuses[status] || "orderStatusToBeShipped"
-};
 
 const LocallyAnimatedFlatList = ({data, navigation}) => {
     const [x, setX] = useState(new Animated.Value(0));

@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "../../Header";
 import { stateContext, dispatchContext } from "../../../contexts";
 import { AddOrderToList, ClearCart, ClearDeliveryDetails } from "../../../actions";
-import { ORDER_STATUS_TO_BE_SHIPPED } from "../Orders";
+import { ORDER_STATUS_TO_BE_SHIPPED } from "../Orders/orderStates";
 import uuid from "react-native-uuid";
 
 import OurText from "../../OurText";

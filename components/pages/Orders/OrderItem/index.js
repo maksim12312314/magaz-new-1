@@ -9,7 +9,7 @@ import OurImage from "../../../OurImage";
 import OurImageSlider from "../../../OurImageSlider";
 import { ListAnimation } from "../../../../Animations";
 import { STORE_ADDRESS } from "../../../../config";
-import { statusToText, ORDER_STATUS_CANCELED } from "../index";
+import { statusToText, ORDER_STATUS_CANCELED } from "../orderStates";
 
 
 const itemWidth = Dimensions.get("window").width;
