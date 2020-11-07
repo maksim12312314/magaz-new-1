@@ -354,8 +354,44 @@ export const reducer = (state, action) => {
          */
         case ACTION_TYPE_DELIVERY_CLEAR: {
             const newState = {...state};
-
-            newState.deliveryDetails = initialState.deliveryDetails;
+            newState.deliveryDetails = {
+                name: {
+                    name: "name",
+                    placeholder: "orderFormName",
+                    value: "",
+                    valid: false,
+                },
+                phone: {
+                    name: "phone",
+                    placeholder: "orderFormPhone",
+                    value: "",
+                    valid: false,
+                },
+                address: {
+                    name: "address",
+                    placeholder: "orderFormAddress",
+                    value: "",
+                    valid: false,
+                },
+                floor: {
+                    name: "floor",
+                    placeholder: "orderFormFloor",
+                    value: "",
+                    valid: true,
+                },
+                notes: {
+                    name: "notes",
+                    placeholder: "orderFormNotes",
+                    value: "",
+                    valid: true,
+                },
+                time: {
+                    name: "time",
+                    placeholder: "orderFormDeliveryTime",
+                    value: "",
+                    valid: false,
+                },
+            };
             newState.allDetailsAreValid = false;
 
             return newState;
