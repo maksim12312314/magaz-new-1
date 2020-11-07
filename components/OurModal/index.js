@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { View } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { View, StatusBar } from "react-native";
 import Modal from 'react-native-modal';
 import OurText from "../OurText";
 import OurTextButton from "../OurTextButton";
@@ -7,6 +7,7 @@ import { stateContext, dispatchContext } from "../../contexts";
 import { CloseModal } from "../../actions";
 import styles from "./styles";
 
+const BACKDROP_OPACITY = .7;
 
 const OurModal = (props) => {
     const state = useContext(stateContext);
@@ -18,8 +19,15 @@ const OurModal = (props) => {
         }
     ];
 
+    useEffect( () => {
+        if ( modal.visible )
+            StatusBar.setBackgroundColor(`rgba(0, 0, 0, ${BACKDROP_OPACITY})`);
+        else
+            StatusBar.setBackgroundColor("rgba(0, 0, 0, 0)");
+    }, [modal.visible]);
+
     return (
-        <Modal {...props} isVisible={modal.visible} animationIn={modal.animationIn} animationOut={modal.animationOut} backdropTransitionOutTiming={0}>
+        <Modal {...props} isVisible={modal.visible} animationIn={modal.animationIn} animationOut={modal.animationOut} backdropOpacity={BACKDROP_OPACITY} backdropTransitionOutTiming={0}>
             <View style={styles.mainContainer}>
                 <View style={styles.topContainer}>
                     <OurText style={styles.title} translate={true} params={modal.title.params}>{modal.title.text}</OurText>
