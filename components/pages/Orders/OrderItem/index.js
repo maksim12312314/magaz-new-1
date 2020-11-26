@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Animated, View, TouchableOpacity } from "react-native";
+import { Animated, View, TouchableOpacity, LayoutAnimation } from "react-native";
 import { dispatchContext } from "~/contexts";
 import { ChangeOrderStatus, DeleteOrder } from "~/actions";
 import { STORE_ADDRESS } from "~/config";
@@ -11,10 +11,13 @@ import { statusToText, ORDER_STATUS_CANCELED } from "../orderStates";
 import styles from "./styles";
 
 const MAX_IMAGES = 4;
+const ANIMATION_DURATION = 200;
 
 const OrderItem = (props) => {
     const dispatch = useContext(dispatchContext);
     const { data, navigation } = props;
+    const [opacity, setOpacity] = useState(new Animated.Value(1));
+    const [height, setHeight] = useState(null);
 
     const images = Array.from(data.products.values()).map( (v, i) => {
         return `${STORE_ADDRESS}wp-content/uploads/${v.imageLink}`;
@@ -33,13 +36,23 @@ const OrderItem = (props) => {
         dispatch(ChangeOrderStatus(data.uuid, ORDER_STATUS_CANCELED));
     };
     const deleteOrder = (e) => {
-        dispatch(DeleteOrder(data.uuid));
+        LayoutAnimation.configureNext(LayoutAnimation.create(
+            ANIMATION_DURATION,
+            LayoutAnimation.Types.linear,
+            LayoutAnimation.Properties.scaleY,
+        ));
+        Animated.timing(opacity, {
+            toValue: 0,
+            duration: ANIMATION_DURATION,
+            useNativeDriver: true,
+        }).start(() => dispatch(DeleteOrder(data.uuid)));
+        setHeight(0.01);
     };
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
     return (
-        <Animated.View style={[styles.mainContainer]}>
+        <Animated.View style={[styles.mainContainer, { opacity, height }]}>
             <View style={styles.topContainer}>
                 <View style={styles.infoContainer}>
                     <OurText style={styles.textField} translate={true}>orderStatus</OurText>
