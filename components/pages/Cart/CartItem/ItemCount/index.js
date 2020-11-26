@@ -19,7 +19,7 @@ const size = Math.max(Dimensions.get("window").width, Dimensions.get("window").h
 /** Компонент, который отображает количество товаров в корзине */
 const ItemCount = (props) => {
     const dispatch = useContext(dispatchContext);
-    const { productId, quantity } = props;
+    const { productId, quantity, onRemove } = props;
     const { t } = useTranslation();
 
     const deleteModalData = {
@@ -37,7 +37,13 @@ const ItemCount = (props) => {
             {
                 text: "ok",
                 onPress: (e) => {
-                    dispatch(DeleteProductFromCart(productId));
+
+                    if ( onRemove )
+                        onRemove( () => {
+                            dispatch(DeleteProductFromCart(productId));
+                        });
+                    else
+                        dispatch(DeleteProductFromCart(productId));
                 },
             }
         ],
