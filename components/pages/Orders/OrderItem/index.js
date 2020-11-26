@@ -20,10 +20,9 @@ const totalHeight = 440;
 const MAX_IMAGES = 4;
 
 
-
 const OrderItem = (props) => {
     const dispatch = useContext(dispatchContext);
-    const { x, y, index, data, navigation } = props;
+    const { data, navigation } = props;
 
     const images = Array.from(data.products.values()).map( (v, i) => {
         return `${STORE_ADDRESS}wp-content/uploads/${v.imageLink}`;
@@ -47,10 +46,8 @@ const OrderItem = (props) => {
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
-    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
-
     return (
-        <Animated.View style={[styles.mainContainer, {height: itemHeight, width:itemWidth}, { opacity, transform: [{ translateX }, { scale }] }]}>
+        <Animated.View style={[styles.mainContainer]}>
             <View style={styles.topContainer}>
                 <View style={styles.infoContainer}>
                     <OurText style={styles.textField} translate={true}>orderStatus</OurText>

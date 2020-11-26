@@ -10,26 +10,19 @@ import OurText from "../../OurText";
 import OurTextButton from "../../OurTextButton";
 
 const LocallyAnimatedFlatList = ({data}) => {
-    const [x, setX] = useState(new Animated.Value(0));
-    const [y, setY] = useState(new Animated.Value(0));
-    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
-        useNativeDriver: true,
-    });
 
     const renderItemsBlock = ({item, index}) => {
         return (
-            <CartItem x={x} y={y} index={index} productId={item.productId} name={item.name} price={item.price} productQuantity={item.productQuantity} imageLink={item.imageLink}/>
+            <CartItem productId={item.productId} name={item.name} price={item.price} productQuantity={item.productQuantity} imageLink={item.imageLink}/>
         );
     };
 
     return (
-        <Animated.FlatList
+        <FlatList
             contentContainerStyle={styles.cartList}
             data={data}
             renderItem={renderItemsBlock}
             keyExtractor={(item) => String(item.productId)}
-
-            {...{ onScroll }}
         />
     )
 };

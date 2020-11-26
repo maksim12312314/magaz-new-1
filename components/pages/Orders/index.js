@@ -10,26 +10,19 @@ import styles from "./styles";
 
 
 const LocallyAnimatedFlatList = ({data, navigation}) => {
-    const [x, setX] = useState(new Animated.Value(0));
-    const [y, setY] = useState(new Animated.Value(0));
-    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
-        useNativeDriver: true,
-    });
     
     const renderItemsBlock = ({item, index}) => {
         return (
-            <OrderItem x={x} y={y} navigation={navigation} index={index} data={item}/>
+            <OrderItem navigation={navigation} data={item}/>
         );
     };
 
     return (
-        <Animated.FlatList
+        <FlatList
             style={styles.flatList}
             data={data}
             renderItem={renderItemsBlock}
             keyExtractor={(item, index) => String(index)}
-
-            {...{ onScroll }}
         />
     )
 };

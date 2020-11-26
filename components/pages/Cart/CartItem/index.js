@@ -18,17 +18,15 @@ const totalHeight = 440;
 
 /** Компонент товара в корзине */
 const CartItem = (props) => {
-    const { x, y, index, productId, name, price, productQuantity, imageLink } = props;
+    const { productId, name, price, productQuantity, imageLink } = props;
     const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
-
     return (
-        <Animated.View style={[styles.mainContainer, {height: itemHeight, width:itemWidth}, { opacity, transform: [{ translateX }, { scale }] }]}>
+        <Animated.View style={[styles.mainContainer]}>
             <View style={styles.topContainer}>
                 <OurText style={styles.itemName}>{name}</OurText>
                 <OurImage style={styles.productImage} url={`${STORE_ADDRESS}wp-content/uploads/${imageLink}`} onPress={toggleModal}/>
