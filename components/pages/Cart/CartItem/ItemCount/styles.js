@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     },
     itemControl: {
         flexDirection: "row",
+        overflow: "hidden",
     },
 });
 

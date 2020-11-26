@@ -13,7 +13,7 @@ const itemWidth = Dimensions.get("window").width;
 const itemHeight = 156;
 const itemHeight2 = 164;
 const totalHeight = 440;
-const ANIMATION_DURATION = 2000;
+const ANIMATION_DURATION = 200;
 
 
 /** Компонент товара в корзине */
@@ -27,13 +27,17 @@ const CartItem = (props) => {
         setModalVisible(!isModalVisible);
     };
     const onRemove = (callback) => {
-        LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.linear, duration: ANIMATION_DURATION});
+        LayoutAnimation.configureNext(LayoutAnimation.create(
+            ANIMATION_DURATION,
+            LayoutAnimation.Types.linear,
+            LayoutAnimation.Properties.scaleY,
+        ));
         Animated.timing(opacity, {
             toValue: 0,
             duration: ANIMATION_DURATION,
             useNativeDriver: true,
         }).start(callback);
-        setHeight(0);
+        setHeight(0.01);
     };
 
 

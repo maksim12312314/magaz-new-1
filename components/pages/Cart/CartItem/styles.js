@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
         color: "#FFF",
         fontSize: 18,
         maxWidth: 240,
+        overflow: "hidden",
     },
     productImage: {
         width: 96,
@@ -36,18 +37,21 @@ const styles = StyleSheet.create({
         fontSize: 17,
         marginHorizontal: 0,
         textAlign: "right",
+        overflow: "hidden",
     },
     itemCount: {
         color: "#FFF",
         fontSize: 18,
         marginHorizontal: 32,
         flexGrow: 0,
+        overflow: "hidden",
     },
     itemCountController: {
         width: 120,
         flexDirection: "column",
         alignItems: "flex-end",
         marginRight: 6,
+        overflow: "hidden",
     },
     borderContainer: {
         alignItems: "center",
@@ -58,6 +62,7 @@ const styles = StyleSheet.create({
         width: 340,
         borderWidth: .5,
         borderColor: "#fff5",
+        overflow: "hidden",
     },
 });
 
