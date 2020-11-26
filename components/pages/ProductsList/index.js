@@ -21,7 +21,7 @@ const LocallyAnimatedFlatList = ({data, refreshing, onRefresh}) => {
 
     const renderProductItem = ({item, index})=>{
         return (
-            <ProductsItem index={index} id={item.productId} data={item} x={x} y={y}
+            <ProductsItem index={index} id={item.databaseId} data={item} x={x} y={y}
             imageUrl={item.image?.mediaDetails?.file} name={item.name} />
         )
     };
@@ -34,7 +34,7 @@ const LocallyAnimatedFlatList = ({data, refreshing, onRefresh}) => {
             refreshing={refreshing}
             onRefresh={onRefresh}
             renderItem={ renderProductItem }
-            keyExtractor={item => String(item.productId)}
+            keyExtractor={item => String(item.databaseId)}
 
             {...{ onScroll }}
         />

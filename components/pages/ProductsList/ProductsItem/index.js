@@ -40,11 +40,11 @@ const ProductsItem = (props) => {
     const buyProduct = (e, data) => {
 
         const productQuantity = 1;
-        const price = data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0;
+        const price = data.price ? data.price.match(/([0-9]*)\.?([0-9]?)/)[0] : 0;
 
         // Заносим данные
         let payload = {
-            productId: data.productId,
+            productId: data.databaseId,
             name: data.name,
             productQuantity: productQuantity,
             price: price,

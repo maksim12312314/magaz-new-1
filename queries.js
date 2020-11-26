@@ -25,7 +25,7 @@ export const getProductListQuery = (id) => {
             {
                 products(where: {categoryId: ${id}}) {
                     nodes {
-                        productId
+                        databaseId
                         name
                         description
                         image {
@@ -43,21 +43,21 @@ export const getProductListQuery = (id) => {
                         ... on VariableProduct {
                           variations {
                             nodes {
-                              price
-                              variationId
-                              name
+                                price
+                                databaseId
+                                name
                             }
                           }
                           attributes {
                             nodes {
-                              attributeId
-                              name
-                              options
+                                attributeId
+                                name
+                                options
                             }
                           }
                         }
                         ... on SimpleProduct {
-                          price
+                            price
                         }
                       }
                 }
