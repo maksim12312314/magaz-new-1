@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Animated, Dimensions, View } from "react-native";
-import { stateContext } from "../../../../contexts";
+import { stateContext } from "~/contexts";
+import { STORE_ADDRESS } from "~/config";
+import OurText from "~/components/OurText";
+import OurImage from "~/components/OurImage";
+import OurImageSlider from "~/components/OurImageSlider";
 import ItemCount from "./ItemCount";
 import styles from "./styles";
-import OurText from "../../../OurText";
-import OurImage from "../../../OurImage";
-import OurImageSlider from "../../../OurImageSlider";
-import { ListAnimation } from "../../../../Animations";
-import { STORE_ADDRESS } from "../../../../config";
 
 
 const itemWidth = Dimensions.get("window").width;

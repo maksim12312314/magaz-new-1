@@ -1,13 +1,13 @@
 import React, {useState, useContext, useLayoutEffect} from "react";
-import { stateContext } from "../../../contexts";
 import { View, FlatList, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { stateContext } from "~/contexts";
+import OurText from "~/components/OurText";
+import OurTextButton from "~/components/OurTextButton";
+import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "~/components/Header/index";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
-import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "../../Header/index";
-import OurText from "../../OurText";
-import OurTextButton from "../../OurTextButton";
 
 const LocallyAnimatedFlatList = ({data}) => {
 

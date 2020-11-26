@@ -1,8 +1,8 @@
 import React from "react";
 import { View, FlatList} from "react-native";
+import { STORE_ADDRESS } from "~/config";
+import OurImage from "~/components/OurImage";
 import styles from "./styles";
-import { STORE_ADDRESS } from "../../config";
-import OurImage from "../OurImage";
 
 
 const renderGalleryImg = ({item}) => 

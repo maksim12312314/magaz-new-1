@@ -1,24 +1,16 @@
 import React, { useState, useContext } from "react";
-import { Animated, Dimensions, View, TouchableOpacity } from "react-native";
-import { dispatchContext } from "../../../../contexts";
-import { ChangeOrderStatus, DeleteOrder } from "../../../../actions";
-import styles from "./styles";
-import OurText from "../../../OurText";
-import OurTextButton from "../../../OurTextButton";
-import OurImage from "../../../OurImage";
-import OurImageSlider from "../../../OurImageSlider";
-import { ListAnimation } from "../../../../Animations";
-import { STORE_ADDRESS } from "../../../../config";
+import { Animated, View, TouchableOpacity } from "react-native";
+import { dispatchContext } from "~/contexts";
+import { ChangeOrderStatus, DeleteOrder } from "~/actions";
+import { STORE_ADDRESS } from "~/config";
+import OurText from "~/components/OurText";
+import OurTextButton from "~/components/OurTextButton";
+import OurImage from "~/components/OurImage";
+import OurImageSlider from "~/components/OurImageSlider";
 import { statusToText, ORDER_STATUS_CANCELED } from "../orderStates";
-
-
-const itemWidth = Dimensions.get("window").width;
-const itemHeight = 168;
-const itemHeight2 = 152;
-const totalHeight = 440;
+import styles from "./styles";
 
 const MAX_IMAGES = 4;
-
 
 const OrderItem = (props) => {
     const dispatch = useContext(dispatchContext);

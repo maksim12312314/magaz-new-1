@@ -1,10 +1,10 @@
 import React, { useState, useContext, useLayoutEffect } from "react";
 import { Animated, FlatList, View } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
-import { HeaderBackButton, HeaderCartButton, HeaderTitle } from "./../../Header/index";
-import { stateContext } from "../../../contexts";
-import OurText from "../../OurText";
-import OurTextButton from "../../OurTextButton";
+import { stateContext } from "~/contexts";
+import { HeaderBackButton, HeaderCartButton, HeaderTitle } from "~/components/Header/index";
+import OurText from "~/components/OurText";
+import OurTextButton from "~/components/OurTextButton";
 import OrderItem from "./OrderItem";
 import styles from "./styles";
 
