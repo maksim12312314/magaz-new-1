@@ -4,10 +4,8 @@ import { STORE_ADDRESS } from "~/config";
 import OurImage from "~/components/OurImage";
 import styles from "./styles";
 
-
-const renderGalleryImg = ({item}) => 
-{
-
+// Элемент галереи
+const renderGalleryImg = ({item}) => {
     return (
             <View style={styles.left_bottom}>
                 <OurImage
@@ -19,22 +17,20 @@ const renderGalleryImg = ({item}) =>
     );
 };
 
-const GalleryImg = (props) =>
-{
-const {data} = props;
+// Галерея
+const GalleryImg = (props) => {
+    const { data } = props;
 
     return (
-    <FlatList 
-        contentContainerStyle={styles.list}
-        horizontal={true}
-        data={data}
-        renderItem={renderGalleryImg}
-        keyExtractor={(item) => String(data.indexOf(item))}
-        showsHorizontalScrollIndicator={false}
-    />
+        <FlatList 
+            contentContainerStyle={styles.list}
+            horizontal={true}
+            data={data}
+            renderItem={renderGalleryImg}
+            keyExtractor={(item) => String(data.indexOf(item))}
+            showsHorizontalScrollIndicator={false}
+        />
     );
 };
-
-
 
 export default GalleryImg;

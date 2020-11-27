@@ -1,4 +1,6 @@
-
+/*
+ * Возвращает GraphQL запрос на категории
+ */
 export const getCategoryListQuery = () => {
     return JSON.stringify({
         query: `
@@ -19,11 +21,15 @@ export const getCategoryListQuery = () => {
     });
 };
 
-export const getProductListQuery = (id) => {
+/*
+ * Возвращает GraphQL запрос на список товаров
+ * @param {number} categoryId - id категории
+ */
+export const getProductListQuery = (categoryId) => {
     return JSON.stringify({
         query: `
             {
-                products(where: {categoryId: ${id}}) {
+                products(where: {categoryId: ${categoryId}}) {
                     nodes {
                         databaseId
                         name
