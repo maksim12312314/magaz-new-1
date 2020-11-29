@@ -12,14 +12,14 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        minHeight: Dimensions.get("window").height,
+        minHeight: "100%",
     },
     items: {
         flex: 1,
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
-        width: Dimensions.get("window").width,
+        width: "100%",
     },
     emptyText: {
         marginTop: 18,
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     },
     checkoutButton: {
         width: Dimensions.get("window").width - 16,
+        width: "100%",
         left: 0,
         right: 0,
         bottom: 0,
