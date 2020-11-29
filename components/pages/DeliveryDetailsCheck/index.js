@@ -1,7 +1,8 @@
 import React, { useContext, useLayoutEffect } from "react";
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import uuid from "react-native-uuid";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from 'uuid';
 import { stateContext, dispatchContext } from "~/contexts";
 import { AddOrderToList, ClearCart, ClearDeliveryDetails } from "~/actions";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "~/components/Header";
@@ -53,7 +54,7 @@ const DeliveryDetailsCheck = (props) => {
                 notes: state.deliveryDetails.notes.value,
                 time: state.deliveryDetails.time.value,
             },
-            uuid: uuid.v1(),
+            uuid: uuidv4(),
             status:  ORDER_STATUS_TO_BE_SHIPPED,
             products: state.cartItems,
             totalPrice: state.cartTotalPrice,
