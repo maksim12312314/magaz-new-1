@@ -3,6 +3,9 @@ import { StyleSheet, Dimensions } from "react-native";
 // CART PAGE STYLES
 
 const styles = StyleSheet.create({
+    flatList: {
+        width: "100%",
+    },
     cartList: {
         flexDirection: "column",
     },
@@ -34,6 +37,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-end",
         marginBottom: 8,
+    },
+    bottomContainer: {
+        paddingHorizontal: 12,
+        width: "100%",
     },
     checkoutButton: {
         width: Dimensions.get("window").width - 16,
