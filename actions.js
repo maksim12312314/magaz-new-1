@@ -68,7 +68,7 @@ export const AddOrderToList = (data) => {
     return {type: ACTION_TYPE_ORDERS_ADD_TO_LIST, payload: data};
 };
 
-export const ChangeDeliveryField = (fieldName, value, valid) => {
+export const ChangeDeliveryField = (fieldName, value, valid=true) => {
     return {type: ACTION_TYPE_DELIVERY_CHANGE_FIELD, fieldName, payload: value, valid};
 };
 

@@ -31,6 +31,7 @@ const en = {
         orderInfoCheckOrder: "Make an order",
         orderFormName: "Name",
         orderFormPhone: "Phone number",
+        orderFormEmail: "Email",
         orderFormAddress: "Address",
         orderFormFloor: "Floor",
         orderFormNotes: "Notes",

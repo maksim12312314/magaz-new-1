@@ -10,6 +10,22 @@ import OurTextButton from "~/components/OurTextButton";
 import OurTextField from "~/components/OurTextField";
 import styles from "./styles";
 
+const KEYBOARD_TYPES = {
+    email: "email-address",
+    phone: "phone-pad",
+};
+const fieldToKeyboardType = (field) => {
+    return KEYBOARD_TYPES[field];
+};
+
+const AUTO_COMPLETE_TYPES = {
+    email: "email",
+    phone: "tel",
+};
+const fieldToCompleteType = (field) => {
+    return AUTO_COMPLETE_TYPES[field];
+};
+
 const DeliveryDetails = (props) => {
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
@@ -30,11 +46,15 @@ const DeliveryDetails = (props) => {
 
     const validateForm = (value, name) => {
         const PHONE_PATTERN = /^((\+7|7|8)+([0-9]){10})$/;
+        const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if ( value.trim() !== "" ||
-                name === "floor" || name === "notes" ) {
+        if ( value.trim() !== "" ) {
             if ( !( name === "phone" && !value.toLowerCase().match(PHONE_PATTERN) ) ) {
-                dispatch(ChangeDeliveryField(name, value, true));
+                dispatch(ChangeDeliveryField(name, value));
+                return true;
+            }
+            if ( !( name === "email" && !value.toLowerCase().match(EMAIL_PATTERN) ) ) {
+                dispatch(ChangeDeliveryField(name, value));
                 return true;
             }
         }
@@ -58,10 +78,12 @@ const DeliveryDetails = (props) => {
         <LinearGradient style={styles.background} locations={[0, 1.0]} colors={[gradStart, gradEnd]}/>
         <View style={styles.mainContainer}>
             <KeyboardAvoidingView style={styles.infoContainer}>
-                <ScrollView contentContainerStyle={styles.scrollView}>
+                <ScrollView style={styles.scrollView} contentContainerStyle={styles.details}>
                 {
                     Object.keys(state.deliveryDetails).map( (fieldName, i ) => {
                     return <OurTextField name={state.deliveryDetails[fieldName].name}
+                                  autoCompleteType={fieldToCompleteType(fieldName)}
+                                  keyboardType={fieldToKeyboardType(fieldName)}
                                   defValue={state.deliveryDetails[fieldName].value}
                                   onValidate={validateForm}
                                   placeholder={t(state.deliveryDetails[fieldName].placeholder)}
@@ -70,7 +92,9 @@ const DeliveryDetails = (props) => {
                 }
                 </ScrollView>
             </KeyboardAvoidingView>
-            <OurTextButton disabled={!state.allDetailsAreValid} onPress={goToDetailsCheck} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
+            <View style={styles.bottomContainer}>
+                <OurTextButton disabled={!state.allDetailsAreValid} onPress={goToDetailsCheck} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
+            </View>
         </View>
         </>
     );

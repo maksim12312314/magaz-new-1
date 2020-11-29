@@ -65,6 +65,12 @@ export const initialState = {
             value: "",
             valid: false,
         },
+        email: {
+            name: "email",
+            placeholder: "orderFormEmail",
+            value: "",
+            valid: false,
+        },
         address: {
             name: "address",
             placeholder: "orderFormAddress",
@@ -77,17 +83,17 @@ export const initialState = {
             value: "",
             valid: true,
         },
-        notes: {
-            name: "notes",
-            placeholder: "orderFormNotes",
-            value: "",
-            valid: true,
-        },
         time: {
             name: "time",
             placeholder: "orderFormDeliveryTime",
             value: "",
             valid: false,
+        },
+        notes: {
+            name: "notes",
+            placeholder: "orderFormNotes",
+            value: "",
+            valid: true,
         },
     },
     allDetailsAreValid: false,
@@ -343,11 +349,11 @@ export const reducer = (state, action) => {
             let valid = true;
 
             newState.deliveryDetails[fieldName].value = action.payload;
-            newState.deliveryDetails[fieldName].valid = true;
+            newState.deliveryDetails[fieldName].valid = action.valid;
 
             for ( const [fn, data] of Object.entries(newState.deliveryDetails) ) {
                 if ( !data.valid )
-                    valid = true;
+                    valid = false;
             }
             newState.allDetailsAreValid = valid;
 
