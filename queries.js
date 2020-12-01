@@ -94,10 +94,10 @@ export const getUserRegisterQuery = (email, username, password) => {
                     password: "${password}",
                     email: "${email}"
                 }) {
-                user {
-                    jwtAuthToken
-                    jwtRefreshToken
-                }
+                    user {
+                        jwtAuthToken
+                        jwtRefreshToken
+                    }
                 }
             }
         `,
