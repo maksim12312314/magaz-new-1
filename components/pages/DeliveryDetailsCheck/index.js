@@ -48,6 +48,7 @@ const DeliveryDetailsCheck = (props) => {
         const orderData = {
             deliveryDetails: {
                 name: state.deliveryDetails.name.value,
+                email: state.deliveryDetails.email.value,
                 phone: state.deliveryDetails.phone.value,
                 address: state.deliveryDetails.address.value,
                 floor: state.deliveryDetails.floor.value,
@@ -80,6 +81,8 @@ const DeliveryDetailsCheck = (props) => {
             <ScrollView>
                 <DeliveryDetailsItem field={"orderFormName"}
                                      text={data.name}/>
+                <DeliveryDetailsItem field={"orderFormEmail"}
+                                     text={data.email}/>
                 <DeliveryDetailsItem field={"orderFormPhone"}
                                      text={data.phone}/>
                 <DeliveryDetailsItem field={"orderFormAddress"}

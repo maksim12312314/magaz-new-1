@@ -10,21 +10,8 @@ import OurTextButton from "~/components/OurTextButton";
 import OurTextField from "~/components/OurTextField";
 import styles from "./styles";
 
-const KEYBOARD_TYPES = {
-    email: "email-address",
-    phone: "phone-pad",
-};
-const fieldToKeyboardType = (field) => {
-    return KEYBOARD_TYPES[field];
-};
-
-const AUTO_COMPLETE_TYPES = {
-    email: "email",
-    phone: "tel",
-};
-const fieldToCompleteType = (field) => {
-    return AUTO_COMPLETE_TYPES[field];
-};
+const PHONE_PATTERN = /^((\+7|7|8)+([0-9]){10})$/;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const DeliveryDetails = (props) => {
     const state = useContext(stateContext);
@@ -45,25 +32,35 @@ const DeliveryDetails = (props) => {
     }, [navigation]);
 
     const validateForm = (value, name) => {
-        const PHONE_PATTERN = /^((\+7|7|8)+([0-9]){10})$/;
-        const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if ( value.trim() !== "" ) {
-            if ( !( name === "phone" && !value.toLowerCase().match(PHONE_PATTERN) ) ) {
-                dispatch(ChangeDeliveryField(name, value));
-                return true;
-            }
-            if ( !( name === "email" && !value.toLowerCase().match(EMAIL_PATTERN) ) ) {
-                dispatch(ChangeDeliveryField(name, value));
+            dispatch(ChangeDeliveryField(name, value));
+            return true;
+        }
+        dispatch(ChangeDeliveryField(name, value, false));
+    };
+    const validateFormEmail = (value) => {
+        if ( value.trim() !== "" ) {
+            if ( value.toLowerCase().match(EMAIL_PATTERN) ) {
+                dispatch(ChangeDeliveryField("email", value));
                 return true;
             }
         }
-        dispatch(ChangeDeliveryField(name, value, false));
+        dispatch(ChangeDeliveryField("email", value, false));
+    };
+    const validateFormPhone = (value) => {
+        if ( value.trim() !== "" ) {
+            if ( value.toLowerCase().match(PHONE_PATTERN) ) {
+                dispatch(ChangeDeliveryField("phone", value));
+                return true;
+            }
+        }
+        dispatch(ChangeDeliveryField("phone", value, false));
     };
 
     const goToDetailsCheck = (e) => {
         const deliveryDetails = {
             name: state.deliveryDetails.name.value,
+            email: state.deliveryDetails.email.value,
             phone: state.deliveryDetails.phone.value,
             address: state.deliveryDetails.address.value,
             floor: state.deliveryDetails.floor.value,
@@ -79,17 +76,41 @@ const DeliveryDetails = (props) => {
         <View style={styles.mainContainer}>
             <KeyboardAvoidingView style={styles.infoContainer}>
                 <ScrollView style={styles.scrollView} contentContainerStyle={styles.details}>
-                {
-                    Object.keys(state.deliveryDetails).map( (fieldName, i ) => {
-                    return <OurTextField name={state.deliveryDetails[fieldName].name}
-                                  autoCompleteType={fieldToCompleteType(fieldName)}
-                                  keyboardType={fieldToKeyboardType(fieldName)}
-                                  defValue={state.deliveryDetails[fieldName].value}
+                    <OurTextField name="name"
+                                  autoCompleteType="name"
+                                  defValue={state.deliveryDetails.name.value}
                                   onValidate={validateForm}
-                                  placeholder={t(state.deliveryDetails[fieldName].placeholder)}
-                                  key={i}/>
-                              })
-                }
+                                  placeholder={t("orderFormName")}/>
+                    <OurTextField name="email"
+                                keyboardType="email-address"
+                                autoCompleteType="email"
+                                defValue={state.deliveryDetails.email.value}
+                                onValidate={validateFormEmail}
+                                placeholder={t("orderFormEmail")}/>
+                    <OurTextField name="phone"
+                                keyboardType="phone-pad"
+                                autoCompleteType="tel"
+                                defValue={state.deliveryDetails.phone.value}
+                                onValidate={validateFormPhone}
+                                placeholder={t("orderFormPhone")}/>
+                    <OurTextField name="address"
+                                autoCompleteType="street-address"
+                                defValue={state.deliveryDetails.address.value}
+                                onValidate={validateForm}
+                                placeholder={t("orderFormAddress")}/>
+                    <OurTextField name="floor"
+                                keyboardType="phone-pad"
+                                defValue={state.deliveryDetails.floor.value}
+                                onValidate={validateForm}
+                                placeholder={t("orderFormFloor")}/>
+                    <OurTextField name="time"
+                                defValue={state.deliveryDetails.time.value}
+                                onValidate={validateForm}
+                                placeholder={t("orderFormDeliveryTime")}/>
+                    <OurTextField name="notes"
+                                defValue={state.deliveryDetails.notes.value}
+                                onValidate={validateForm}
+                                placeholder={t("orderFormNotes")}/>
                 </ScrollView>
             </KeyboardAvoidingView>
             <View style={styles.bottomContainer}>
