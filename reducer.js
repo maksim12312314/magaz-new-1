@@ -21,6 +21,8 @@ import {
     ACTION_TYPE_MODAL_SHOW,
     ACTION_TYPE_MODAL_CLOSE,
     ACTION_TYPE_MODAL_TOGGLE,
+    ACTION_TYPE_USER_SET_TOKENS,
+    ACTION_TYPE_USER_SET_DATA,
 } from "./types";
 import {
     addProductToCartDB,
@@ -31,6 +33,9 @@ import {
     updateOrderStatus,
     deleteOrderFromDB,
 } from "./db_handler";
+import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_TOKEN_EXPIRED } from "./userStatus";
+import { STORE_ADDRESS } from "./config";
+import { getUserLoginQuery } from "./queries";
 
 const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -50,6 +55,17 @@ export const initialState = {
     cartItems: new Map(), // Корзина
     cartTotalPrice: 0, // Итоговая цена для корзины
     orders: new Map(), // Список заказов
+
+    // Данные пользователя
+    user: {
+        status: USER_STATUS_NOT_CHECKED, // Состояние пользователя
+        uuid: "",
+        username: "",
+        email: "",
+        password: "",
+        jwtAuthToken: "",
+        jwtRefreshToken: "",
+    },
 
     // Детали заказа
     deliveryDetails: {
@@ -468,6 +484,48 @@ export const reducer = (state, action) => {
             newState.modal.visible = !newState.modal.visible;
 
             return newState;
+        }
+
+        case ACTION_TYPE_USER_SET_DATA: {
+            const newState = {...state};
+            const { payload } = action;
+
+            if ( payload ) {
+                newState.user = payload;
+
+                if ( payload.status === USER_STATUS_REGISTERED || payload.status === USER_STATUS_TOKEN_EXPIRED ) {
+                    ( async () => {
+                        try {
+                            const res = await fetch(`${STORE_ADDRESS}graphql`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: getUserLoginQuery(payload.uuid, payload.username, payload.password),
+                            });
+                            const data = await res.json();
+                            newState.user.jwtAuthToken = data.jwtAuthToken;
+                            newState.user.jwtRefreshToken = data.jwtRefreshToken;
+                            newState.user.status = USER_STATUS_LOGGED;
+                            updateUserTokens(payload.uuid, payload.jwtAuthToken, payload.jwtRefreshToken);
+                        } catch {}
+                    })();
+                }
+                return newState;
+            }
+            return state;
+        }
+
+        case ACTION_TYPE_USER_SET_TOKENS: {
+            const newState = {...state};
+            const { payload } = action;
+
+            if ( payload ) {
+                newState.jwtAuthToken = payload.jwtAuthToken;
+                newState.jwtRefreshToken = payload.jwtRefreshToken;
+                return newState;
+            }
+            return state;
         }
 
         default:

@@ -25,6 +25,7 @@ export const createDBTables = () => {
         name TEXT,
         productCategoryId INTEGER UNIQUE,
         imageLink TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+
     executeSql(`CREATE TABLE IF NOT EXISTS Cart(
         name TEXT,
         productId INTEGER UNIQUE,
@@ -33,9 +34,11 @@ export const createDBTables = () => {
         price INTEGER,
         selectedVariants TEXT,
         stockQuantity INTEGER)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+
     executeSql(`CREATE TABLE IF NOT EXISTS Images(
         imageLink TEXT UNIQUE,
         imageData TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+
     executeSql(`CREATE TABLE IF NOT EXISTS Orders(
         id INTEGER PRIMARY KEY NOT NULL,
         uuid TEXT UNIQUE,
@@ -48,6 +51,14 @@ export const createDBTables = () => {
         status INTEGER,
         products TEXT,
         totalPrice INTEGER)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
+
+        executeSql(`CREATE TABLE IF NOT EXISTS User(
+            uuid TEXT UNIQUE,
+            username TEXT,
+            email TEXT,
+            password TEXT,
+            jwtAuthToken TEXT,
+            jwtRefreshToken TEXT)`, [], null, (tr, err) => console.log("SOMETHING WENT WRONG", err));
 };
 
 /*
@@ -200,4 +211,36 @@ export const getOrdersFromDB = (callback, error) => {
  */
 export const updateOrderStatus = (uuid, status, callback, error) => {
     executeSql(`UPDATE Orders SET status = ? WHERE uuid = ?`, [status, uuid], callback, error);
+};
+
+/*
+ * Добавляет пользователя в бд
+ * @param {string} uuid - uuid пользователя
+ * @param {string} username - имя пользователя
+ * @param {string} email - email пользователя
+ * @param {string} password - пароль пользователя
+ * @param {string} jwtAuthToken - jwtAuthToken пользователя
+ * @param {string} jwtRefreshToken - jwtRefreshToken пользователя
+ */
+export const addUserToDB = (uuid, username, email, password, jwtAuthToken, jwtRefreshToken) => {
+    executeSql(`INSERT OR REPLACE INTO Orders(
+        uuid,
+        username,
+        email,
+        password,
+        jwtAuthToken,
+        jwtRefreshToken) VALUES(?, ?, ?, ?, ?, ?)`, [uuid, username, email, password, jwtAuthToken, jwtRefreshToken]);
+};
+
+export const updateUserTokens = (uuid, jwtAuthToken, jwtRefreshToken) => {
+    executeSql(`UPDATE User SET jwtAuthToken = ?, jwtRefreshToken = ? WHERE uuid = ?`, [uuid, jwtAuthToken, jwtRefreshToken, uuid]);
+};
+
+/*
+ * Получает данные о пользователе из бд
+ * @param {function} callback - коллбэк при успешном выполнении
+ * @param {function} error - коллбэк при ошибке
+ */
+export const getUserData = (callback, error) => {
+    executeSql(`SELECT * FROM User LIMIT 1`, [], callback, error);
 };
