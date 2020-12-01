@@ -32,6 +32,7 @@ import {
     getDBOrders,
     updateOrderStatus,
     deleteOrderFromDB,
+    updateUserTokens,
 } from "./db_handler";
 import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_TOKEN_EXPIRED } from "./userStatus";
 import { STORE_ADDRESS } from "./config";
@@ -486,6 +487,9 @@ export const reducer = (state, action) => {
             return newState;
         }
 
+        /**
+         * Заносит данные пользователя из бд
+         */
         case ACTION_TYPE_USER_SET_DATA: {
             const newState = {...state};
             const { payload } = action;
@@ -493,6 +497,7 @@ export const reducer = (state, action) => {
             if ( payload ) {
                 newState.user = payload;
 
+                // Если данные в бд есть, то получаем свежие токены
                 if ( payload.status === USER_STATUS_REGISTERED || payload.status === USER_STATUS_TOKEN_EXPIRED ) {
                     ( async () => {
                         try {
@@ -516,6 +521,9 @@ export const reducer = (state, action) => {
             return state;
         }
 
+        /**
+         * Обновляет токены пользователя
+         */
         case ACTION_TYPE_USER_SET_TOKENS: {
             const newState = {...state};
             const { payload } = action;
@@ -523,6 +531,7 @@ export const reducer = (state, action) => {
             if ( payload ) {
                 newState.jwtAuthToken = payload.jwtAuthToken;
                 newState.jwtRefreshToken = payload.jwtRefreshToken;
+                updateUserTokens(payload.uuid, payload.jwtAuthToken, payload.jwtRefreshToken);
                 return newState;
             }
             return state;
