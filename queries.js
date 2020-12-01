@@ -1,5 +1,9 @@
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
+
 /*
  * Возвращает GraphQL запрос на категории
+ * @returns {string}
  */
 export const getCategoryListQuery = () => {
     return JSON.stringify({
@@ -24,6 +28,7 @@ export const getCategoryListQuery = () => {
 /*
  * Возвращает GraphQL запрос на список товаров
  * @param {number} categoryId - id категории
+ * @returns {string}
  */
 export const getProductListQuery = (categoryId) => {
     return JSON.stringify({
@@ -70,4 +75,61 @@ export const getProductListQuery = (categoryId) => {
             }
         `,
     });
+};
+
+/*
+ * Возвращает GraphQL мутацию для регистрации пользователя
+ * @param {string} email - email пользователя
+ * @param {string} username - имя пользователя
+ * @param {string} password - пароль пользователя
+ * @returns {string}
+ */
+export const getUserRegisterQuery = (email, username, password) => {
+    const uuid = uuidv4();
+
+    return JSON.stringify({
+        query: `
+            mutation RegisterUser {
+                registerUser(
+                input: {
+                    clientMutationId: "${uuid}",
+                    username: "${username}",
+                    password: "${password}",
+                    email: "${email}"
+                }) {
+                user {
+                    jwtAuthToken
+                    jwtRefreshToken
+                }
+                }
+            }
+        `,
+    })
+};
+
+/*
+ * Возвращает GraphQL мутацию для входа
+ * @param {string} uuid - uuid пользователя
+ * @param {string} username - имя пользователя
+ * @param {string} password - пароль пользователя
+ * @returns {string}
+ */
+export const getUserLoginQuery = (uuid, username, password) => {
+    return JSON.stringify({
+        query: `
+            mutation LoginUser {
+                login( input: {
+                    clientMutationId: "${uuid}",
+                    username: "${username}",
+                    password: "${password}"
+                }) {
+                    authToken
+                    user {
+                        id
+                        name
+                    }
+                }
+            }
+        `,
+    })
 };
