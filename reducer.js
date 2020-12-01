@@ -389,6 +389,12 @@ export const reducer = (state, action) => {
                     value: "",
                     valid: false,
                 },
+                email: {
+                    name: "email",
+                    placeholder: "orderFormPhone",
+                    value: "",
+                    valid: false,
+                },
                 phone: {
                     name: "phone",
                     placeholder: "orderFormPhone",

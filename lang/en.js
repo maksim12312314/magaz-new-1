@@ -45,6 +45,8 @@ const en = {
         orderStatusToBeShipped: "To be shipped",
         orderStatusShipped: "Shipped",
         orderStatusCanceled: "Canceled",
+        
+        userCheckTitle: "Checking user data",
 
         productsTitle: "Products",
         productPrice: "Price: {{price}}{{currency}}",

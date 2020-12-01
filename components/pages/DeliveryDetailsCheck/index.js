@@ -45,7 +45,7 @@ const DeliveryDetailsCheck = (props) => {
     };
 
     const makeAnOrder = (e) => {
-        const orderData = {
+        /*const orderData = {
             deliveryDetails: {
                 name: state.deliveryDetails.name.value,
                 email: state.deliveryDetails.email.value,
@@ -64,7 +64,8 @@ const DeliveryDetailsCheck = (props) => {
         dispatch(ClearCart());
         dispatch(ClearDeliveryDetails());
         navigation.popToTop();
-        navigation.navigate("Orders");
+        navigation.navigate("Orders");*/
+        navigation.navigate("UserCheck");
     };
 
     return (

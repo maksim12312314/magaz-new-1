@@ -1,5 +1,3 @@
-import "react-native-get-random-values";
-import { v4 as uuidv4 } from "uuid";
 
 /**
  * Возвращает GraphQL запрос на категории
@@ -81,8 +79,7 @@ export const getProductListQuery = (categoryId) => {
  * @param {string} username - имя пользователя
  * @param {string} password - пароль пользователя
  */
-export const getUserRegisterQuery = (email, username, password) => {
-    const uuid = uuidv4();
+export const getUserRegisterQuery = (uuid, email, username, password) => {
 
     return JSON.stringify({
         query: `
