@@ -14,7 +14,7 @@ import { addUserToDB, createDBTables, getCartFromDB, getOrdersFromDB, getUserDat
 import { SetCartProducts, SetOrderList, SetUserData } from "./actions";
 import OurModal from "./components/OurModal";
 import "./i18n";
-import { USER_STATUS_NOT_CHECKED, USER_STATUS_NOT_REGISTERED, USER_STATUS_REGISTERED } from "./userStatus";
+import { USER_STATUS_NOT_CHECKED, USER_STATUS_UNREGISTERED, USER_STATUS_REGISTERED } from "./userStatus";
 
 /** Контейнер приложения **/
 const AppContainer = () => {
@@ -50,7 +50,7 @@ const App = () => {
 			};
 			getUserData((tr, result) => {
 				if ( result.rows["_array"].length === 0 ) {
-					data.status = USER_STATUS_NOT_REGISTERED;
+					data.status = USER_STATUS_UNREGISTERED;
 				} else {
 					const user = result.rows["_array"][0];
 					data.status = USER_STATUS_REGISTERED;

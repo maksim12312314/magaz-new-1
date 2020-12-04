@@ -500,28 +500,9 @@ export const reducer = (state, action) => {
             const newState = {...state};
             const { payload } = action;
 
+            console.log("PAYLOAD", payload)
             if ( payload ) {
                 newState.user = payload;
-
-                // Если данные в бд есть, то получаем свежие токены
-                if ( payload.status === USER_STATUS_REGISTERED || payload.status === USER_STATUS_TOKEN_EXPIRED ) {
-                    ( async () => {
-                        try {
-                            const res = await fetch(`${STORE_ADDRESS}graphql`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: getUserLoginQuery(payload.uuid, payload.username, payload.password),
-                            });
-                            const data = await res.json();
-                            newState.user.jwtAuthToken = data.jwtAuthToken;
-                            newState.user.jwtRefreshToken = data.jwtRefreshToken;
-                            newState.user.status = USER_STATUS_LOGGED;
-                            updateUserTokens(payload.uuid, payload.jwtAuthToken, payload.jwtRefreshToken);
-                        } catch {}
-                    })();
-                }
                 return newState;
             }
             return state;

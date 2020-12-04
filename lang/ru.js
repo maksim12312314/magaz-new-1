@@ -1,7 +1,28 @@
 const ru = {
     translation: {
+        welcomePageTitle: "Добро пожаловать!",
+        welcomePageNote: "Чтобы использовать наше приложение, пожалуйста, войдите или зарегестрируйтесь.",
+        welcomePageRegister: "Зарегестрироваться",
+        welcomePageLogin: "Войти",
+
+        registerPageTitle: "Регистрация",
+        registerPageFormEmail: "E-mail",
+        registerPageFormUsername: "Имя пользователя",
+        registerPageFormPassword: "Пароль",
+        registerPageFormPasswordRetype: "Повторите пароль",
+        registerPageErrorPasswordsDontMatch: "Пароли не совпадают!",
+        registerPageErrorPasswordShort: "Пароль слишком короткий!",
+        registerPageErrorUsernameShort: "Имя пользователя слишком короткое!",
+        registerPageErrorUsernameRegistered: "Данное имя уже занято!",
+        registerPageErrorEmailRegistered: "Данный e-mail уже занят!",
+
+        loginPageTitle: "Вход",
+        loginPageErrorWrongData: "Неверный e-mail или пароль!",
+
         categoryListTitle: "Едопровод",
 
+        activityStandBy: "Ожидайте",
+        activityError: "Что-то пошло не так.",
         activityAborted: "Действие отменено.",
         activityAbortedRefresh: "Обновить",
 

@@ -1,7 +1,28 @@
 const en = {
     translation: {
+        welcomePageTitle: "Welcome to Edoprovod!",
+        welcomePageNote: "To use our application, please, register or log in.",
+        welcomePageRegister: "Register",
+        welcomePageLogin: "Log in",
+
+        registerPageTitle: "Registration",
+        registerPageFormEmail: "E-mail",
+        registerPageFormUsername: "User name",
+        registerPageFormPassword: "Password",
+        registerPageFormPasswordRetype: "Re-type password",
+        registerPageErrorPasswordsDontMatch: "Passwords don't match!",
+        registerPageErrorPasswordShort: "Your password is too short!",
+        registerPageErrorUsernameShort: "User name is too short!",
+        registerPageErrorUsernameRegistered: "That user name is already in use!",
+        registerPageErrorEmailRegistered: "That e-mail is already in use!",
+
+        loginPageTitle: "Log in",
+        loginPageErrorWrongData: "Your e-mail or password are wrong!",
+
         categoryListTitle: "Edoprovod",
 
+        activityStandBy: "Stand By",
+        activityError: "Something went wrong.",
         activityAborted: "Action canceled.",
         activityAbortedRefresh: "Refresh",
 
@@ -31,7 +52,7 @@ const en = {
         orderInfoCheckOrder: "Make an order",
         orderFormName: "Name",
         orderFormPhone: "Phone number",
-        orderFormEmail: "Email",
+        orderFormEmail: "E-mail",
         orderFormAddress: "Address",
         orderFormFloor: "Floor",
         orderFormNotes: "Notes",

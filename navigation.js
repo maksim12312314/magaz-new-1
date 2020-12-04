@@ -7,7 +7,8 @@ import Cart from "./components/pages/Cart";
 import ProductList from "./components/pages/ProductsList";
 import DeliveryDetails from "./components/pages/DeliveryDetails";
 import DeliveryDetailsCheck from "./components/pages/DeliveryDetailsCheck";
-import UserCheck from "./components/pages/UserCheck";
+import WelcomePage from "./components/pages/WelcomePage";
+import RegisterPage from "./components/pages/RegisterPage";
 import Orders from "./components/pages/Orders";
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -23,7 +24,7 @@ const AppStackNavigator = () => {
 
     return (
         <Navigator
-            initialRouteName="CategoryList"
+            initialRouteName="WelcomePage"
             backBehavior="history"
             mode='modal'
             headerMode='screen'
@@ -31,6 +32,12 @@ const AppStackNavigator = () => {
                 tabBarVisible: true,
                 headerHideShadow: true,
             }}>
+            <Screen 
+                name="WelcomePage"
+                component={WelcomePage}/>
+            <Screen 
+                name="RegisterPage"
+                component={RegisterPage}/>
             <Screen 
                 name="CategoryList"
                 component={CategoryList}/>
@@ -46,9 +53,6 @@ const AppStackNavigator = () => {
             <Screen 
                 name="DeliveryDetailsCheck"
                 component={DeliveryDetailsCheck}/>
-            <Screen 
-                name="UserCheck"
-                component={UserCheck}/>
             <Screen 
                 name="Orders"
                 component={Orders}/>
