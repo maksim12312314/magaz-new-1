@@ -23,6 +23,8 @@ import {
     ACTION_TYPE_MODAL_TOGGLE,
     ACTION_TYPE_USER_SET_TOKENS,
     ACTION_TYPE_USER_SET_DATA,
+    ACTION_TYPE_TOAST_ADD,
+    ACTION_TYPE_TOAST_DELETE,
 } from "./types";
 import {
     addProductToCartDB,
@@ -37,6 +39,9 @@ import {
 import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_TOKEN_EXPIRED } from "./userStatus";
 import { STORE_ADDRESS } from "./config";
 import { getUserLoginQuery } from "./queries";
+
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from 'uuid';
 
 const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -53,6 +58,7 @@ export const initialState = {
         animationOut: "slideOutLeft", // Анимация исчезновения
         buttons: [], // Кнопки
     },
+    toasts: new Map(), // Тосты
     cartItems: new Map(), // Корзина
     cartTotalPrice: 0, // Итоговая цена для корзины
     orders: new Map(), // Список заказов
@@ -538,6 +544,36 @@ export const reducer = (state, action) => {
                 newState.jwtAuthToken = payload.jwtAuthToken;
                 newState.jwtRefreshToken = payload.jwtRefreshToken;
                 updateUserTokens(payload.uuid, payload.jwtAuthToken, payload.jwtRefreshToken);
+                return newState;
+            }
+            return state;
+        }
+
+        /**
+         * Добавляет новый Toast
+         */
+        case ACTION_TYPE_TOAST_ADD: {
+            const newState = {...state};
+            const { payload } = action;
+            console.log("TOAST ADD", payload);
+
+            if ( payload ) {
+                payload.id = uuidv4();
+                newState.toasts.set(payload.id, payload);
+                return newState;
+            }
+            return state;
+        }
+
+        /**
+         * Удаляет Toast
+         */
+        case ACTION_TYPE_TOAST_DELETE: {
+            const newState = {...state};
+            const { id } = action;
+            console.log("DELETING TOAST", id)
+            if ( id ) {
+                newState.toasts.delete(id)
                 return newState;
             }
             return state;

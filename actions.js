@@ -20,6 +20,8 @@ import {
     ACTION_TYPE_MODAL_TOGGLE,
     ACTION_TYPE_USER_SET_DATA,
     ACTION_TYPE_USER_SET_TOKENS,
+    ACTION_TYPE_TOAST_ADD,
+    ACTION_TYPE_TOAST_DELETE,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -104,4 +106,12 @@ export const SetUserData = (data) => {
 
 export const SetUserTokens = (data) => {
     return {type: ACTION_TYPE_USER_SET_TOKENS, payload: data};
+};
+
+export const AddToast = (data) => {
+    return {type: ACTION_TYPE_TOAST_ADD, payload: data};
+};
+
+export const DeleteToast = (id) => {
+    return {type: ACTION_TYPE_TOAST_DELETE, id};
 };

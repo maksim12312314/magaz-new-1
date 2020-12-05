@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
 import { stateContext, dispatchContext } from "~/contexts";
-import { SetCategoryList, ShowModal } from "~/actions";
+import { SetCategoryList, ShowModal, AddToast } from "~/actions";
 import { getCategoryListQuery } from "~/queries";
 import { addCategoryToDB, getCategoryListFromDB } from "~/db_handler";
 import useFetch from "~/network_handler";
@@ -11,6 +11,7 @@ import { expo } from "~/app.json";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { HeaderTitle, HeaderCartButton } from "~/components/Header";
 
