@@ -13,7 +13,7 @@ const OurToast = (props) => {
         <View pointerEvents="box-none" style={styles.mainContainer}>
             {
                 toasts.map( (toast, index) => 
-                    <ToastItem duration={toast.duration} id={toast.id} text={toast.text} icon={toast.icon} key={index} />
+                    <ToastItem duration={toast.duration} id={toast.id} text={toast.text} color={toast.color} icon={toast.icon} key={index} />
                 )
             }
         </View>

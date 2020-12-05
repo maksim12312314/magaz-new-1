@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState }  from "react";
+import React, { useContext, useEffect, useState, useRef }  from "react";
 import { Animated, Dimensions, View, LayoutAnimation } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { dispatchContext } from "~/contexts";
@@ -6,58 +6,80 @@ import { DeleteToast } from "~/actions";
 import OurText from "~/components/OurText";
 import styles from "./styles";
 
-const easeIn = LayoutAnimation.create(
-    200,
-    LayoutAnimation.Types.easeIn,
+const ANIMATION_DURATION = 200;
+
+const easeInEaseOut = LayoutAnimation.create(
+    ANIMATION_DURATION,
+    LayoutAnimation.Types.easeInEaseOut,
     LayoutAnimation.Properties.scaleY,
-)
-const animConfigIn = {
-    toValue: 1,
-    duration: 200,
-    useNativeDriver: true,
-};
-const animConfigOut = {
-    toValue: 0,
-    duration: 200,
-    useNativeDriver: true,
-};
-const animConfigOutPos = {
-    toValue: -1,
-    duration: 200,
-    useNativeDriver: true,
-};
+);
 
 const ToastItem = (props) => {
     const { id, duration, text, icon, color, translate } = props;
     const dispatch = useContext(dispatchContext);
     const [timer, setTimer] = useState(null);
-    const [anim, setAnim] = useState(new Animated.Value(0));
-    const [posAnim, setPosAnim] = useState(new Animated.Value(1));
     const [height, setHeight] = useState(0);
+    const opacity = useRef(new Animated.Value(0)).current;
+    const posX = useRef(new Animated.Value(Dimensions.get("screen").width)).current;
+    
+    // Анимация появления
+    const animIn = () => {
+        // Анимируем высоту
+        LayoutAnimation.configureNext(easeInEaseOut);
+        setHeight(48);
+        
+        // Изменяем прозрачность до 1
+        Animated.timing(opacity, {
+            toValue: 1,
+            duration: ANIMATION_DURATION,
+            useNativeDriver: true,
+        }).start();
+        // Изменяем позицию до 0
+        Animated.timing(posX, {
+            toValue: 0,
+            duration: ANIMATION_DURATION,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    // Анимация исчезновения
+    const animOut = () => {
+        // Анимируем высоту
+        LayoutAnimation.configureNext(easeInEaseOut);
+        setHeight(0);
+        
+        // Изменяем позицию до -100%
+        Animated.timing(posX, {
+            toValue: -Dimensions.get("screen").width,
+            duration: ANIMATION_DURATION,
+            useNativeDriver: true,
+        }).start();
+        // Изменяем прозрачность до 0
+        Animated.timing(opacity, {
+            toValue: 0,
+            duration: ANIMATION_DURATION,
+            useNativeDriver: true,
+        }).start( () => {
+            // Удаляем элемент после окончания анимации
+            dispatch(DeleteToast(id));
+        } );
+    };
 
     useEffect(() => {
-        console.log("WTF", id, timer)
-        LayoutAnimation.configureNext(easeIn);
-        setHeight(48);
-        Animated.timing(anim, animConfigIn).start();
-        Animated.timing(posAnim, animConfigOut).start();
+        animIn();
 
         if ( timer ) {
             clearTimeout(timer);
-            console.log("CLEARED TIMER");
         }
         
         setTimer(setTimeout(() => {
-            LayoutAnimation.configureNext(easeIn);
-            setHeight(0.001);
-            Animated.timing(posAnim, animConfigOutPos).start();
-            Animated.timing(anim, animConfigOut).start(()=>dispatch(DeleteToast(id)));
+            animOut();
         }, duration));
 
     }, [duration]);
 
     return (
-        <Animated.View style={[styles.mainContainer, {height, opacity: anim, transform: [{ translateX: Animated.multiply(Dimensions.get("screen").width, posAnim) }] }]}>
+        <Animated.View style={[styles.mainContainer, {height, opacity, transform: [{ translateX: posX }] }]}>
             <>
             {
                 icon ?
@@ -74,4 +96,4 @@ const ToastItem = (props) => {
     );
 };
 
-export default React.memo(ToastItem);
+export default ToastItem;

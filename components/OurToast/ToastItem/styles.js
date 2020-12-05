@@ -7,12 +7,17 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         overflow: "hidden",
 
-        backgroundColor: "#ddde",
-        padding: 10,
+        backgroundColor: "#fffe",
+        paddingLeft: 28,
+        paddingRight: 48,
+        paddingVertical: 10,
         marginVertical: 4,
 
-        borderRadius: 2,
+        borderRadius: 32,
         elevation: 2,
+    },
+    iconContainer: {
+        paddingRight: 14,
     },
     text: {
         fontSize: 16,
