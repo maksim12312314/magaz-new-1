@@ -36,12 +36,14 @@ import {
     deleteOrderFromDB,
     updateUserTokens,
 } from "./db_handler";
+import { AddToast } from "./actions";
 import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_TOKEN_EXPIRED } from "./userStatus";
 import { STORE_ADDRESS } from "./config";
 import { getUserLoginQuery } from "./queries";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
+import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 
 const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -179,14 +181,14 @@ export const reducer = (state, action) => {
          * Заносит товар и его данные в state
          */
         case ACTION_TYPE_CART_ADD_PRODUCT: {
-            const t = action.t; // Translate
+            const { t, dispatch } = action;
             const newState = {...state};
 
             if ( state.cartItems.has(action.payload.productId) ) {
                 const item = state.cartItems.get(action.payload.productId);
                 item.productQuantity += action.payload.productQuantity;
             } else {
-                state.cartItems.set(action.payload.productId, action.payload);
+                newState.cartItems.set(action.payload.productId, action.payload);
             }
 
             // Расчитываем итоговую цену
@@ -204,8 +206,17 @@ export const reducer = (state, action) => {
                 action.payload.price,
                 action.payload.selectedVariants,
                 action.payload.stockQuantity);
-
-            showToastMessage(t("productAddedMessage", {product: action.payload.name}));
+            
+            const toast = {
+                icon: faShoppingBasket,
+                text: t("productAddedMessage", {product: action.payload.name}),
+                duration: 3000,
+                color: "#499eda",
+            };
+            // Ыыыыыыыыыыыыы
+            setTimeout(()=> {
+                dispatch(AddToast(toast));
+            }, 0);
 
             return newState;
         }
@@ -554,11 +565,14 @@ export const reducer = (state, action) => {
          */
         case ACTION_TYPE_TOAST_ADD: {
             const newState = {...state};
-            const { payload } = action;
-            console.log("TOAST ADD", payload);
+            const { payload, id } = action;
+
+            if ( state.toasts.get(id) ) {
+                return state;
+            }
 
             if ( payload ) {
-                payload.id = uuidv4();
+                payload.id = id || uuidv4();
                 newState.toasts.set(payload.id, payload);
                 return newState;
             }
@@ -571,7 +585,7 @@ export const reducer = (state, action) => {
         case ACTION_TYPE_TOAST_DELETE: {
             const newState = {...state};
             const { id } = action;
-            console.log("DELETING TOAST", id)
+            
             if ( id ) {
                 newState.toasts.delete(id)
                 return newState;

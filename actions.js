@@ -37,7 +37,7 @@ export const SetCartProducts = (cartItems) => {
 };
 
 export const AddProductToCart = (product, dispatch, t) => {
-    return {type: ACTION_TYPE_CART_ADD_PRODUCT, payload: product, dispatch, t};
+    return {type: ACTION_TYPE_CART_ADD_PRODUCT, payload: product, t};
 };
 
 export const DeleteProductFromCart = (id, showAlert) => {
@@ -49,7 +49,7 @@ export const ClearCart = () => {
 };
 
 export const DecreaseProductQuantity = (id, dispatch, t) => {
-    return {type: ACTION_TYPE_CART_DECREASE_QUANTITY, payload: id, dispatch, t};
+    return {type: ACTION_TYPE_CART_DECREASE_QUANTITY, payload: id, t};
 };
 
 export const IncreaseProductQuantity = (id) => {
@@ -57,7 +57,7 @@ export const IncreaseProductQuantity = (id) => {
 };
 
 export const ChangeProductQuantity = (id, quantity, dispatch, t) => {
-    return {type: ACTION_TYPE_CART_CHANGE_QUANTITY, payload: id, quantity, dispatch, t};
+    return {type: ACTION_TYPE_CART_CHANGE_QUANTITY, payload: id, quantity, t};
 };
 
 export const ComputeTotalPrice = () => {
@@ -108,8 +108,8 @@ export const SetUserTokens = (data) => {
     return {type: ACTION_TYPE_USER_SET_TOKENS, payload: data};
 };
 
-export const AddToast = (data) => {
-    return {type: ACTION_TYPE_TOAST_ADD, payload: data};
+export const AddToast = (data, id) => {
+    return {type: ACTION_TYPE_TOAST_ADD, payload: data, id};
 };
 
 export const DeleteToast = (id) => {
