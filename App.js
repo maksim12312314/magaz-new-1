@@ -15,6 +15,7 @@ import { SetCartProducts, SetOrderList, SetUserData } from "./actions";
 import OurModal from "./components/OurModal";
 import "./i18n";
 import { USER_STATUS_NOT_CHECKED, USER_STATUS_NOT_REGISTERED, USER_STATUS_REGISTERED } from "./userStatus";
+import OurToast from "~/components/OurToast";
 
 /** Контейнер приложения **/
 const AppContainer = () => {
@@ -24,6 +25,7 @@ const AppContainer = () => {
 				<AppStackNavigator/>
 			</NavigationContainer>
 			<OurModal/>
+			<OurToast/>
 		</>
 	);	
 }
