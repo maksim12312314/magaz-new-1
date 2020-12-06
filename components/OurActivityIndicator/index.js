@@ -61,4 +61,4 @@ const OurActivityIndicator = (props) => {
     );
 };
 
-export default OurActivityIndicator;
+export default React.memo(OurActivityIndicator);
