@@ -22,7 +22,7 @@ export const QUERY_CATEGORY_LIST = gql`
  * @param {number} categoryId - id категории
  */
 export const QUERY_PRODUCT_LIST = gql`
-    query GetProductListQuery($categoryId: Number!) {
+    query GetProductListQuery($categoryId: Int!) {
         products(where: {categoryId: $categoryId}) {
             nodes {
                 databaseId

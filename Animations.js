@@ -1,27 +1,12 @@
 import { Animated } from "react-native";
 
-export const ListAnimation = (x, y, totalHeight, itemHeight, itemWidth, index) => {
+export const ListAnimation = ( y, totalHeight, itemHeight, itemWidth, index) => {
     const position = Animated.subtract(index * itemHeight, y);
     const isDisappearing = -itemHeight;
     const isTop = 0;
     const isBottom = totalHeight - itemHeight;
     const isAppearing = totalHeight;
-    const translateX = Animated.add(
-        Animated.add(
-            x,
-            x.interpolate({
-                inputRange: [0, 0.00001 + index * itemWidth],
-                outputRange: [0, -index * itemWidth],
-                extrapolateRight: "clamp",
-            })
-        ),
-        position.interpolate({
-            inputRange: [isBottom, isAppearing],
-            outputRange: [0, -itemWidth / 4],
-            extrapolate: "clamp",
-        })
-    );
-    const translateY = Animated.add(
+    const translate = Animated.add(
         Animated.add(
             y,
             y.interpolate({
@@ -46,5 +31,5 @@ export const ListAnimation = (x, y, totalHeight, itemHeight, itemWidth, index) =
         outputRange: [0.0, 1, 1, 0.0],
     });
 
-    return [translateX, translateY, scale, opacity]
+    return [translate, scale, opacity]
 };
