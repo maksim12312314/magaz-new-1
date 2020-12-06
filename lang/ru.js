@@ -3,7 +3,8 @@ const ru = {
         categoryListTitle: "Едопровод",
 
         activityAborted: "Действие отменено.",
-        activityAbortedRefresh: "Обновить",
+        activityError: "Что-то пошло не так. Повторите попытку!",
+        activityRefresh: "Обновить",
 
         cartTitle: "Корзина",
         cartPcs: "Количество: {{quantity}} шт.",

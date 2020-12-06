@@ -3,7 +3,8 @@ const en = {
         categoryListTitle: "Edoprovod",
 
         activityAborted: "Action canceled.",
-        activityAbortedRefresh: "Refresh",
+        activityError: "Something went wrong. Try again!",
+        activityRefresh: "Refresh",
 
         cartTitle: "Cart",
         cartPcs: "Quantity: {{quantity}} pcs.",
