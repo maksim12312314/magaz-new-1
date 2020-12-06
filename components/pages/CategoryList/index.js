@@ -3,18 +3,14 @@ import { FlatList } from "react-native";
 import { useQuery } from "@apollo/client";
 import { LinearGradient } from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "~/contexts";
-import { SetCategoryList, ShowModal, AddToast } from "~/actions";
-import { getCategoryListQuery } from "~/queries";
-import { addCategoryToDB, getCategoryListFromDB } from "~/db_handler";
-import useFetch from "~/network_handler";
-import { STORE_ADDRESS } from "~/config";
+import { ShowModal } from "~/actions";
+import { QUERY_CATEGORY_LIST } from '~/queries';
 import { expo } from "~/app.json";
+import { HeaderTitle, HeaderCartButton } from "~/components/Header";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
 
-import { HeaderTitle, HeaderCartButton } from "~/components/Header";
-import { QUERY_CATEGORY_LIST } from '~/queries';
 
 /**Список категорий товаров*/
 const CategoryList = (props) => {
