@@ -6,6 +6,7 @@ import styles from "./styles";
 
 const OurActivityIndicator = (props) => {
     const { error, abortController, doRefresh, translate, params, buttonTextColor } = props;
+    console.log("ERROR", error )
 
     const [aborted, setAborted] = useState(false);
     const onLongPress = (e) => {
@@ -26,7 +27,7 @@ const OurActivityIndicator = (props) => {
                         }} translate={true} textStyle={{color: buttonTextColor, paddingHorizontal: 32}}>activityAbortedRefresh</OurTextButton>
                     </>
                     : error ?
-                        <OurText translate={translate} params={params} style={styles.text}>{error}</OurText>
+                        <OurText translate={translate} params={params} style={styles.text}>Some shit happened</OurText>
                     :
                         <TouchableOpacity onLongPress={onLongPress} delayLongPress={100}>
                             <ActivityIndicator style={styles.indicator} color={"#fff"} size={64}/>

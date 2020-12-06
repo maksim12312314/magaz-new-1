@@ -1,6 +1,7 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useContext, useLayoutEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
+import { useQuery } from "@apollo/client";
+import { LinearGradient } from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "~/contexts";
 import { SetCategoryList, ShowModal, AddToast } from "~/actions";
 import { getCategoryListQuery } from "~/queries";
@@ -11,14 +12,16 @@ import { expo } from "~/app.json";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { HeaderTitle, HeaderCartButton } from "~/components/Header";
+import { QUERY_CATEGORY_LIST } from '~/queries';
 
 /**Список категорий товаров*/
 const CategoryList = (props) => {
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
+    const abortController = new AbortController();
+
     const showAppInfo = (e) => {
         const data = {
             title: { text: expo.name, params: {} },
@@ -52,7 +55,7 @@ const CategoryList = (props) => {
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
 
-    const onMount = (setLoading, setError, abortController) => {
+    /*useEffect( (setLoading, setError, abortController) => {
         if ( !state?.categories?.length ) {
             getCategoryListFromDB((tr, result) => {
                 let data = [];
@@ -72,30 +75,28 @@ const CategoryList = (props) => {
                         });
                 }
                 dispatch(SetCategoryList(data));
-                setLoading(false);
+                //setLoading(false);
             });
         }
-    };
+    });*/
     const onSuccess = ({data}) => {
-        data?.productCategories?.nodes?.map( (v, i) => {
+        console.log("COMPLETE", data);
+        /*data?.productCategories?.nodes?.map( (v, i) => {
             addCategoryToDB(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
         });
-        dispatch(SetCategoryList(data?.productCategories?.nodes));
+        dispatch(SetCategoryList(data?.productCategories?.nodes));*/
     };
 
-	const [
-	    data,
-        loading,
-        error,
-        fetchData,
-        abortController
-    ] = useFetch(`${STORE_ADDRESS}graphql`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+    const { loading, error, data, refetch } = useQuery(QUERY_CATEGORY_LIST, {
+        variables: { hideEmpty: true },
+        context: {
+            fetchOptions: {
+                signal: abortController.signal,
+            }
         },
-        body: getCategoryListQuery(),
-    }, undefined, onMount, onSuccess);
+        onCompleted: onSuccess,
+        onError: (err) => {console.log("WTF", error)}
+    });
 
     return (
         <>
@@ -105,14 +106,14 @@ const CategoryList = (props) => {
                 colors={[gradStart, gradEnd]} />
             {
                 ( loading || error || abortController.signal.aborted ) ?
-                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={fetchData} buttonTextColor={gradStart}/>
+                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={refetch} buttonTextColor={gradStart}/>
                     :
                     <FlatList
                         contentContainerStyle={{paddingTop: 12, alignItems: "center", justifyContent: "center"}}
                         numColumns={2}
-                        data={state.categories}
+                        data={data}
                         refreshing={loading}
-                        onRefresh={() => {fetchData()}}
+                        onRefresh={() => {refetch()}}
                         renderItem={GetCategoryItem}
                         keyExtractor={(item, key) => String(key)}/>
             }

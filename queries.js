@@ -1,77 +1,67 @@
-
+import { gql } from "@apollo/client";
 /**
  * Возвращает GraphQL запрос на категории
  */
-export const getCategoryListQuery = () => {
-    return JSON.stringify({
-        query: `
-            {
-                productCategories(where: {hideEmpty: true}) {
-                    nodes {
-                        name
-                        productCategoryId
-                        image {
-                            mediaDetails {
-                                file
-                            }
-                        }
+export const QUERY_CATEGORY_LIST = gql`
+    query GetCategoryList($hideEmpty: Boolean!) {
+        productCategories(where: {hideEmpty: $hideEmpty}) {
+            nodes {
+                name
+                productCategoryId
+                image {
+                    mediaDetails {
+                        file
                     }
                 }
             }
-        `,
-    });
-};
+        }
+    }`;
 
 /**
  * Возвращает GraphQL запрос на список товаров
  * @param {number} categoryId - id категории
  */
-export const getProductListQuery = (categoryId) => {
-    return JSON.stringify({
-        query: `
-            {
-                products(where: {categoryId: ${categoryId}}) {
+export const QUERY_PRODUCT_LIST = gql`
+    query GetProductListQuery($categoryId: Number!) {
+        products(where: {categoryId: $categoryId}) {
+            nodes {
+                databaseId
+                name
+                description
+                image {
+                    mediaDetails {
+                        file
+                    }
+                }
+                galleryImages {
                     nodes {
-                        databaseId
-                        name
-                        description
-                        image {
-                          mediaDetails {
+                        mediaDetails {
                             file
-                          }
                         }
-                        galleryImages {
-                            nodes {
-                              mediaDetails {
-                                file
-                              }
-                            }
-                        }
-                        ... on VariableProduct {
-                          variations {
-                            nodes {
-                                price
-                                databaseId
-                                name
-                            }
-                          }
-                          attributes {
-                            nodes {
-                                attributeId
-                                name
-                                options
-                            }
-                          }
-                        }
-                        ... on SimpleProduct {
+                    }
+                }
+                ... on VariableProduct {
+                    variations {
+                        nodes {
                             price
+                            databaseId
+                            name
                         }
-                      }
+                    }
+                    attributes {
+                        nodes {
+                            attributeId
+                            name
+                            options
+                        }
+                    }
+                }
+                ... on SimpleProduct {
+                    price
                 }
             }
-        `,
-    });
-};
+        }
+    }`;
 
 /**
  * Возвращает GraphQL мутацию для регистрации пользователя
