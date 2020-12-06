@@ -37,7 +37,7 @@ export const SetCartProducts = (cartItems) => {
 };
 
 export const AddProductToCart = (product, dispatch, t) => {
-    return {type: ACTION_TYPE_CART_ADD_PRODUCT, payload: product, t};
+    return {type: ACTION_TYPE_CART_ADD_PRODUCT, payload: product, t, dispatch};
 };
 
 export const DeleteProductFromCart = (id, showAlert) => {
