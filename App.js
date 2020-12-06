@@ -20,7 +20,7 @@ import "./utils";
 enableScreens();
 
 const client = new ApolloClient({
-	uri: `${STORE_ADDRESS}/graphql`,
+	uri: `${STORE_ADDRESS}graphql`,
 	cache: new InMemoryCache(),
 });
 

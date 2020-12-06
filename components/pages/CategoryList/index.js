@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from "react";
+import React, { useContext, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
 import { useQuery } from "@apollo/client";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,6 +19,8 @@ import { QUERY_CATEGORY_LIST } from '~/queries';
 /**Список категорий товаров*/
 const CategoryList = (props) => {
     const { navigation } = props;
+    const state = useContext(stateContext);
+    const dispatch = useContext(dispatchContext);
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
     const abortController = new AbortController();
 
@@ -46,46 +48,6 @@ const CategoryList = (props) => {
         });
     }, [navigation]);
 
-    const GetCategoryItem = ({item}) => {
-        return (
-            <CategoryItem navigation={navigation} name={item.name} id={item.productCategoryId} imageUrl={item?.image?.mediaDetails?.file} cached={item.cached}/>
-        )
-    };
-
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-
-    /*useEffect( (setLoading, setError, abortController) => {
-        if ( !state?.categories?.length ) {
-            getCategoryListFromDB((tr, result) => {
-                let data = [];
-                for (let i = 0; i <= result.rows.length; i++) {
-                    const row = result.rows.item(i);
-
-                    if (row)
-                        data.push({
-                            name: row.name,
-                            productCategoryId: row.productCategoryId,
-                            image: {
-                                mediaDetails: {
-                                    file: row.imageLink,
-                                }
-                            },
-                            cached: true,
-                        });
-                }
-                dispatch(SetCategoryList(data));
-                //setLoading(false);
-            });
-        }
-    });*/
-    const onSuccess = ({data}) => {
-        console.log("COMPLETE", data);
-        /*data?.productCategories?.nodes?.map( (v, i) => {
-            addCategoryToDB(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
-        });
-        dispatch(SetCategoryList(data?.productCategories?.nodes));*/
-    };
 
     const { loading, error, data, refetch } = useQuery(QUERY_CATEGORY_LIST, {
         variables: { hideEmpty: true },
@@ -94,8 +56,7 @@ const CategoryList = (props) => {
                 signal: abortController.signal,
             }
         },
-        onCompleted: onSuccess,
-        onError: (err) => {console.log("WTF", error)}
+        onError: (err) => {console.log("Error while fetching categories", error)}
     });
 
     return (
@@ -109,12 +70,16 @@ const CategoryList = (props) => {
                     <OurActivityIndicator error={error} abortController={abortController} doRefresh={refetch} buttonTextColor={gradStart}/>
                     :
                     <FlatList
-                        contentContainerStyle={{paddingTop: 12, alignItems: "center", justifyContent: "center"}}
+                        contentContainerStyle={styles.flatListContentContainer}
                         numColumns={2}
-                        data={data}
+                        data={data?.productCategories?.nodes}
                         refreshing={loading}
                         onRefresh={() => {refetch()}}
-                        renderItem={GetCategoryItem}
+                        renderItem={({item}) => <CategoryItem navigation={navigation}
+                                                        name={item.name}
+                                                        id={item.productCategoryId}
+                                                        imageUrl={item?.image?.mediaDetails?.file}
+                                                        cached={item.cached}/>}
                         keyExtractor={(item, key) => String(key)}/>
             }
         </>
