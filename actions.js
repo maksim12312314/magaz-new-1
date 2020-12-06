@@ -22,6 +22,7 @@ import {
     ACTION_TYPE_USER_SET_TOKENS,
     ACTION_TYPE_TOAST_ADD,
     ACTION_TYPE_TOAST_DELETE,
+    ACTION_TYPE_TOAST_CHANGE_DURATION,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -114,4 +115,8 @@ export const AddToast = (data, id) => {
 
 export const DeleteToast = (id) => {
     return {type: ACTION_TYPE_TOAST_DELETE, id};
+};
+
+export const ChangeToastDuration = (id, duration) => {
+    return {type: ACTION_TYPE_TOAST_CHANGE_DURATION, id, duration};
 };

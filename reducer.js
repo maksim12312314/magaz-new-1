@@ -25,6 +25,7 @@ import {
     ACTION_TYPE_USER_SET_DATA,
     ACTION_TYPE_TOAST_ADD,
     ACTION_TYPE_TOAST_DELETE,
+    ACTION_TYPE_TOAST_CHANGE_DURATION,
 } from "./types";
 import {
     addProductToCartDB,
@@ -181,14 +182,14 @@ export const reducer = (state, action) => {
          * Заносит товар и его данные в state
          */
         case ACTION_TYPE_CART_ADD_PRODUCT: {
-            const { t, dispatch } = action;
+            const { payload, t, dispatch } = action;
             const newState = {...state};
 
-            if ( state.cartItems.has(action.payload.productId) ) {
-                const item = state.cartItems.get(action.payload.productId);
-                item.productQuantity += action.payload.productQuantity;
+            if ( state.cartItems.has(payload.productId) ) {
+                const item = state.cartItems.get(payload.productId);
+                item.productQuantity += payload.productQuantity;
             } else {
-                newState.cartItems.set(action.payload.productId, action.payload);
+                newState.cartItems.set(payload.productId, payload);
             }
 
             // Расчитываем итоговую цену
@@ -199,23 +200,23 @@ export const reducer = (state, action) => {
                 });
             }
 
-            addProductToCartDB(action.payload.name,
-                action.payload.productId,
-                action.payload.imageLink,
-                action.payload.productQuantity,
-                action.payload.price,
-                action.payload.selectedVariants,
-                action.payload.stockQuantity);
+            addProductToCartDB(payload.name,
+                payload.productId,
+                payload.imageLink,
+                payload.productQuantity,
+                payload.price,
+                payload.selectedVariants,
+                payload.stockQuantity);
             
             const toast = {
                 icon: faShoppingBasket,
-                text: t("productAddedMessage", {product: action.payload.name}),
+                text: t("productAddedMessage", {product: payload.name}),
                 duration: 3000,
                 color: "#499eda",
             };
             // Ыыыыыыыыыыыыы
             setTimeout(()=> {
-                dispatch(AddToast(toast));
+                dispatch(AddToast(toast, payload.productId));
             }, 0);
 
             return newState;
@@ -567,10 +568,6 @@ export const reducer = (state, action) => {
             const newState = {...state};
             const { payload, id } = action;
 
-            if ( state.toasts.get(id) ) {
-                return state;
-            }
-
             if ( payload ) {
                 payload.id = id || uuidv4();
                 newState.toasts.set(payload.id, payload);
@@ -588,6 +585,22 @@ export const reducer = (state, action) => {
             
             if ( id ) {
                 newState.toasts.delete(id)
+                return newState;
+            }
+            return state;
+        }
+        
+        /**
+         * Изменяет длительность Toast
+         */
+        case ACTION_TYPE_TOAST_CHANGE_DURATION: {
+            const newState = {...state};
+            const { id, duration } = action;
+            
+            if ( id && duration ) {
+                const toast = newState.toasts.get(id);
+                toast.duration = duration;
+                newState.toast.set(id, toast);
                 return newState;
             }
             return state;
