@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef }  from "react";
-import { Animated, Dimensions, View, LayoutAnimation } from "react-native";
+import { Animated, Easing, Dimensions, View, LayoutAnimation } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { dispatchContext } from "~/contexts";
 import { DeleteToast } from "~/actions";
@@ -7,6 +7,8 @@ import OurText from "~/components/OurText";
 import styles from "./styles";
 
 const ANIMATION_DURATION = 200;
+const TOAST_HEIGHT_MIN = .00001;
+const TOAST_HEIGHT_MAX = 64;
 
 const easeInEaseOut = LayoutAnimation.create(
     ANIMATION_DURATION,
@@ -18,7 +20,7 @@ const ToastItem = (props) => {
     const { id, duration, text, icon, color, translate } = props;
     const dispatch = useContext(dispatchContext);
     const [timer, setTimer] = useState(null);
-    const [height, setHeight] = useState(0);
+    const [height, setHeight] = useState(TOAST_HEIGHT_MIN);
     const opacity = useRef(new Animated.Value(0)).current;
     const posX = useRef(new Animated.Value(Dimensions.get("screen").width)).current;
     
@@ -26,7 +28,7 @@ const ToastItem = (props) => {
     const animIn = () => {
         // Анимируем высоту
         LayoutAnimation.configureNext(easeInEaseOut);
-        setHeight(48);
+        setHeight(TOAST_HEIGHT_MAX);
         
         // Изменяем прозрачность до 1
         Animated.timing(opacity, {
@@ -46,7 +48,7 @@ const ToastItem = (props) => {
     const animOut = () => {
         // Анимируем высоту
         LayoutAnimation.configureNext(easeInEaseOut);
-        setHeight(0);
+        setHeight(TOAST_HEIGHT_MIN);
         
         // Изменяем позицию до -100%
         Animated.timing(posX, {
@@ -96,4 +98,4 @@ const ToastItem = (props) => {
     );
 };
 
-export default ToastItem;
+export default React.memo(ToastItem);

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { faShip } from "@fortawesome/free-solid-svg-icons";
 import { stateContext } from "~/contexts";
 import ToastItem from "./ToastItem";
 import styles from "./styles";
