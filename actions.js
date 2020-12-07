@@ -20,6 +20,9 @@ import {
     ACTION_TYPE_MODAL_TOGGLE,
     ACTION_TYPE_USER_SET_DATA,
     ACTION_TYPE_USER_SET_TOKENS,
+    ACTION_TYPE_TOAST_ADD,
+    ACTION_TYPE_TOAST_DELETE,
+    ACTION_TYPE_TOAST_CHANGE_DURATION,
 } from "./types.js"
 
 export const SetProductList = (products, id) => {
@@ -35,7 +38,7 @@ export const SetCartProducts = (cartItems) => {
 };
 
 export const AddProductToCart = (product, dispatch, t) => {
-    return {type: ACTION_TYPE_CART_ADD_PRODUCT, payload: product, dispatch, t};
+    return {type: ACTION_TYPE_CART_ADD_PRODUCT, payload: product, t, dispatch};
 };
 
 export const DeleteProductFromCart = (id, showAlert) => {
@@ -47,7 +50,7 @@ export const ClearCart = () => {
 };
 
 export const DecreaseProductQuantity = (id, dispatch, t) => {
-    return {type: ACTION_TYPE_CART_DECREASE_QUANTITY, payload: id, dispatch, t};
+    return {type: ACTION_TYPE_CART_DECREASE_QUANTITY, payload: id, t};
 };
 
 export const IncreaseProductQuantity = (id) => {
@@ -55,7 +58,7 @@ export const IncreaseProductQuantity = (id) => {
 };
 
 export const ChangeProductQuantity = (id, quantity, dispatch, t) => {
-    return {type: ACTION_TYPE_CART_CHANGE_QUANTITY, payload: id, quantity, dispatch, t};
+    return {type: ACTION_TYPE_CART_CHANGE_QUANTITY, payload: id, quantity, t};
 };
 
 export const ComputeTotalPrice = () => {
@@ -104,4 +107,16 @@ export const SetUserData = (data) => {
 
 export const SetUserTokens = (data) => {
     return {type: ACTION_TYPE_USER_SET_TOKENS, payload: data};
+};
+
+export const AddToast = (data, id) => {
+    return {type: ACTION_TYPE_TOAST_ADD, payload: data, id};
+};
+
+export const DeleteToast = (id) => {
+    return {type: ACTION_TYPE_TOAST_DELETE, id};
+};
+
+export const ChangeToastDuration = (id, duration) => {
+    return {type: ACTION_TYPE_TOAST_CHANGE_DURATION, id, duration};
 };

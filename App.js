@@ -1,20 +1,28 @@
+import React, { useReducer, useEffect } from "react";
+import { AppRegistry } from "react-native";
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { NavigationContainer } from "@react-navigation/native";
 import { enableScreens } from "react-native-screens";
+import { expo } from "./app.json";
+import { STORE_ADDRESS } from "./config";
+import { reducer, initialState } from "./reducer";
+import { stateContext, dispatchContext } from "./contexts";
+import { SetCartProducts, SetOrderList, SetUserData } from "./actions";
+import { addUserToDB, createDBTables, getCartFromDB, getOrdersFromDB, getUserData } from "./db_handler";
+import { USER_STATUS_NOT_CHECKED, USER_STATUS_NOT_REGISTERED, USER_STATUS_REGISTERED } from "./userStatus";
+import AppStackNavigator from "./navigation";
+import OurModal from "./components/OurModal";
+import OurToast from "~/components/OurToast";
+import "react-native-get-random-values";
+import "./i18n";
+import "./utils";
 
 enableScreens();
 
-import React, { useReducer, useEffect } from "react";
-import { AppRegistry } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import AppStackNavigator from "./navigation";
-import { expo } from "./app.json";
-import "./utils";
-import { reducer, initialState } from "./reducer";
-import { stateContext, dispatchContext } from "./contexts";
-import { addUserToDB, createDBTables, getCartFromDB, getOrdersFromDB, getUserData } from "./db_handler";
-import { SetCartProducts, SetOrderList, SetUserData } from "./actions";
-import OurModal from "./components/OurModal";
-import "./i18n";
-import { USER_STATUS_NOT_CHECKED, USER_STATUS_UNREGISTERED, USER_STATUS_REGISTERED } from "./userStatus";
+const client = new ApolloClient({
+	uri: `${STORE_ADDRESS}graphql`,
+	cache: new InMemoryCache(),
+});
 
 /** Контейнер приложения **/
 const AppContainer = () => {
@@ -24,6 +32,7 @@ const AppContainer = () => {
 				<AppStackNavigator/>
 			</NavigationContainer>
 			<OurModal/>
+			<OurToast/>
 		</>
 	);	
 }
@@ -118,7 +127,9 @@ const App = () => {
 	return (
 		<stateContext.Provider value={state}>
 			<dispatchContext.Provider value={dispatch}>
-				<AppContainer/>
+				<ApolloProvider client={client}>
+					<AppContainer/>
+				</ApolloProvider>
 			</dispatchContext.Provider>
 		</stateContext.Provider>
 	);

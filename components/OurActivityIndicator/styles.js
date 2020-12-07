@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: "center",
         alignItems: "center",
+        paddingHorizontal: 10,
     },
     indicator: {
         alignSelf: "center",

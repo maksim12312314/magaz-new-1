@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { Animated, View, TouchableOpacity, LayoutAnimation } from "react-native";
 import { dispatchContext } from "~/contexts";
 import { ChangeOrderStatus, DeleteOrder } from "~/actions";
@@ -12,11 +12,18 @@ import styles from "./styles";
 
 const MAX_IMAGES = 4;
 const ANIMATION_DURATION = 200;
+const ORDER_MIN_HEIGHT = .00001;
+
+const linear = LayoutAnimation.create(
+    ANIMATION_DURATION,
+    LayoutAnimation.Types.linear,
+    LayoutAnimation.Properties.scaleY,
+);
 
 const OrderItem = (props) => {
     const dispatch = useContext(dispatchContext);
     const { data, navigation } = props;
-    const [opacity, setOpacity] = useState(new Animated.Value(1));
+    const opacity = useRef(new Animated.Value(1)).current;
     const [height, setHeight] = useState(null);
 
     const images = Array.from(data.products.values()).map( (v, i) => {
@@ -36,17 +43,13 @@ const OrderItem = (props) => {
         dispatch(ChangeOrderStatus(data.uuid, ORDER_STATUS_CANCELED));
     };
     const deleteOrder = (e) => {
-        LayoutAnimation.configureNext(LayoutAnimation.create(
-            ANIMATION_DURATION,
-            LayoutAnimation.Types.linear,
-            LayoutAnimation.Properties.scaleY,
-        ));
+        LayoutAnimation.configureNext(linear);
         Animated.timing(opacity, {
             toValue: 0,
             duration: ANIMATION_DURATION,
             useNativeDriver: true,
         }).start(() => dispatch(DeleteOrder(data.uuid)));
-        setHeight(0.01);
+        setHeight(ORDER_MIN_HEIGHT);
     };
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
@@ -89,4 +92,4 @@ const OrderItem = (props) => {
     );
 };
 
-export default OrderItem; 
+export default React.memo(OrderItem); 

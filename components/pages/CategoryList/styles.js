@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
     categorylist: {
         flexDirection:"row",
     },
+    flatListContentContainer: {
+        paddingTop: 12,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     loading: {
         alignSelf: "center",
         justifyContent: "center",

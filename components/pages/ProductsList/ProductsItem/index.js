@@ -22,15 +22,17 @@ const itemHeight2 = itemHeight + 16;
 
 /** Список товаров той или иной категории */
 const ProductsItem = (props) => {
-    const {data, x, y, index, name, imageUrl} = props;
-    const dispatch = useContext(dispatchContext);
-    const itemAttributes = data?.attributes?.nodes || [];
+    const { data, y, index, name, imageUrl } = props;
     const {t} = useTranslation();
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const dispatch = useContext(dispatchContext);
+
+    const itemAttributes = data?.attributes?.nodes || [];
     const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
     const images = [url, ...(data?.galleryImages?.nodes.map((obj) => {
         return `${STORE_ADDRESS}wp-content/uploads/${obj?.mediaDetails?.file}`
     }))];
-    const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -58,10 +60,10 @@ const ProductsItem = (props) => {
         dispatch(AddProductToCart(payload, dispatch, t));
     };
 
-    const [translateX, translateY, scale, opacity] = ListAnimation(x, y, totalHeight, itemHeight2, itemWidth, index);
+    const [translate, scale, opacity] = ListAnimation(y, totalHeight, itemHeight2, itemWidth, index);
 
     return (
-        <Animated.View style={[styles.mainContainer, {height: itemHeight}, { opacity, transform: [{ translateX }, { scale }] }]}>
+        <Animated.View style={[styles.mainContainer, {height: itemHeight}, { opacity, transform: [{ translateX: translate }, { translateY: translate }, { scale }] }]}>
             <View style={styles.titleContainer}>
                 <OurText style={styles.title}>{name}</OurText>
             </View>

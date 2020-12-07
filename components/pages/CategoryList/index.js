@@ -1,23 +1,25 @@
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useContext, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
+import { useQuery } from "@apollo/client";
+import { LinearGradient } from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "~/contexts";
-import { SetCategoryList, ShowModal } from "~/actions";
-import { getCategoryListQuery } from "~/queries";
-import { addCategoryToDB, getCategoryListFromDB } from "~/db_handler";
-import useFetch from "~/network_handler";
-import { STORE_ADDRESS } from "~/config";
+import { ShowModal } from "~/actions";
+import { QUERY_CATEGORY_LIST } from '~/queries';
 import { expo } from "~/app.json";
+import { HeaderTitle, HeaderCartButton } from "~/components/Header";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
 
-import { HeaderTitle, HeaderCartButton } from "~/components/Header";
 
 /**Список категорий товаров*/
 const CategoryList = (props) => {
     const { navigation } = props;
+    const state = useContext(stateContext);
+    const dispatch = useContext(dispatchContext);
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
+    const abortController = new AbortController();
+
     const showAppInfo = (e) => {
         const data = {
             title: { text: expo.name, params: {} },
@@ -42,59 +44,16 @@ const CategoryList = (props) => {
         });
     }, [navigation]);
 
-    const GetCategoryItem = ({item}) => {
-        return (
-            <CategoryItem navigation={navigation} name={item.name} id={item.productCategoryId} imageUrl={item?.image?.mediaDetails?.file} cached={item.cached}/>
-        )
-    };
 
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-
-    const onMount = (setLoading, setError, abortController) => {
-        if ( !state?.categories?.length ) {
-            getCategoryListFromDB((tr, result) => {
-                let data = [];
-                for (let i = 0; i <= result.rows.length; i++) {
-                    const row = result.rows.item(i);
-
-                    if (row)
-                        data.push({
-                            name: row.name,
-                            productCategoryId: row.productCategoryId,
-                            image: {
-                                mediaDetails: {
-                                    file: row.imageLink,
-                                }
-                            },
-                            cached: true,
-                        });
-                }
-                dispatch(SetCategoryList(data));
-                setLoading(false);
-            });
-        }
-    };
-    const onSuccess = ({data}) => {
-        data?.productCategories?.nodes?.map( (v, i) => {
-            addCategoryToDB(v.name, v.productCategoryId, v.image?.mediaDetails?.file);
-        });
-        dispatch(SetCategoryList(data?.productCategories?.nodes));
-    };
-
-	const [
-	    data,
-        loading,
-        error,
-        fetchData,
-        abortController
-    ] = useFetch(`${STORE_ADDRESS}graphql`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+    const { loading, error, data, refetch } = useQuery(QUERY_CATEGORY_LIST, {
+        variables: { hideEmpty: true },
+        context: {
+            fetchOptions: {
+                signal: abortController.signal,
+            }
         },
-        body: getCategoryListQuery(),
-    }, undefined, onMount, onSuccess);
+        onError: (err) => {console.log("Error while fetching categories", error)}
+    });
 
     return (
         <>
@@ -104,15 +63,19 @@ const CategoryList = (props) => {
                 colors={[gradStart, gradEnd]} />
             {
                 ( loading || error || abortController.signal.aborted ) ?
-                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={fetchData} buttonTextColor={gradStart}/>
+                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={refetch} buttonTextColor={gradStart}/>
                     :
                     <FlatList
-                        contentContainerStyle={{paddingTop: 12, alignItems: "center", justifyContent: "center"}}
+                        contentContainerStyle={styles.flatListContentContainer}
                         numColumns={2}
-                        data={state.categories}
+                        data={data?.productCategories?.nodes}
                         refreshing={loading}
-                        onRefresh={() => {fetchData()}}
-                        renderItem={GetCategoryItem}
+                        onRefresh={() => {refetch()}}
+                        renderItem={({item}) => <CategoryItem navigation={navigation}
+                                                        name={item.name}
+                                                        id={item.productCategoryId}
+                                                        imageUrl={item?.image?.mediaDetails?.file}
+                                                        cached={item.cached}/>}
                         keyExtractor={(item, key) => String(key)}/>
             }
         </>

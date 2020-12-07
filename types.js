@@ -19,3 +19,6 @@ export const ACTION_TYPE_MODAL_CLOSE				= 18;
 export const ACTION_TYPE_MODAL_TOGGLE				= 19;
 export const ACTION_TYPE_USER_SET_DATA				= 20;
 export const ACTION_TYPE_USER_SET_TOKENS			= 21;
+export const ACTION_TYPE_TOAST_ADD					= 22;
+export const ACTION_TYPE_TOAST_DELETE				= 23;
+export const ACTION_TYPE_TOAST_CHANGE_DURATION		= 24;

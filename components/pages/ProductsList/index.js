@@ -1,9 +1,8 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import { Animated, FlatList } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
-import { STORE_ADDRESS } from "~/config";
-import { getProductListQuery } from "~/queries";
-import useFetch from "~/network_handler";
+import { useQuery } from "@apollo/client";
+import { QUERY_PRODUCT_LIST } from "~/queries";
 import { HeaderBackButton, HeaderCartButton, HeaderTitle } from "~/components/Header/index";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import ProductsItem from './ProductsItem/index';
@@ -13,17 +12,20 @@ import styles from "./styles";
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const LocallyAnimatedFlatList = ({data, refreshing, onRefresh}) => {
-    const [x, setX] = useState(new Animated.Value(0));
-    const [y, setY] = useState(new Animated.Value(0));
-    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x, y } } }], {
+    const y = useRef(new Animated.Value(0)).current;
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
         useNativeDriver: true,
     });
 
-    const renderProductItem = ({item, index})=>{
+    const renderProductItem = ({item, index}) => {
         return (
-            <ProductsItem index={index} id={item.databaseId} data={item} x={x} y={y}
-            imageUrl={item.image?.mediaDetails?.file} name={item.name} />
-        )
+            <ProductsItem   y={y}
+                            index={index}
+                            id={item.databaseId}
+                            data={item}
+                            name={item.name}
+                            imageUrl={item.image?.mediaDetails?.file} />
+        );
     };
 
     return (
@@ -47,6 +49,7 @@ const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
 const ProductsList = (props) => {
     const { navigation } = props;
     const { currentCategory } = props.route.params;
+    const abortController = new AbortController();
 
     const [gradStart, gradEnd] = ['#499eda', '#2454e5'];
 
@@ -61,18 +64,14 @@ const ProductsList = (props) => {
         });
     }, [navigation]);
 
-    const [
-        data,
-        loading,
-        error,
-        fetchData,
-        abortController
-    ] = useFetch(`${STORE_ADDRESS}graphql`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+    const { loading, error, data, refetch } = useQuery(QUERY_PRODUCT_LIST, {
+        variables: { categoryId: currentCategory.id },
+        context: {
+            fetchOptions: {
+                signal: abortController.signal,
+            }
         },
-        body: getProductListQuery(currentCategory.id),
+        onError: (err) => {console.log(`Error while fetching products in category ${currentCategory.id}`, error)}
     });
 
     return (
@@ -83,9 +82,9 @@ const ProductsList = (props) => {
                 colors={[gradStart, gradEnd]} />
             {
                 ( loading || error || abortController.signal.aborted ) ?
-                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={fetchData} buttonTextColor={gradStart}/>
+                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={refetch} buttonTextColor={gradStart}/>
                 :
-                    <MemoedLocallyAnimatedFlatList data={data?.data?.products?.nodes} refreshing={loading} onRefresh={()=>{fetchData()}}/>
+                    <MemoedLocallyAnimatedFlatList data={data?.products?.nodes} refreshing={loading} onRefresh={()=>{refetch()}}/>
             }
         </>
     );

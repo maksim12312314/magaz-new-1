@@ -23,6 +23,9 @@ import {
     ACTION_TYPE_MODAL_TOGGLE,
     ACTION_TYPE_USER_SET_TOKENS,
     ACTION_TYPE_USER_SET_DATA,
+    ACTION_TYPE_TOAST_ADD,
+    ACTION_TYPE_TOAST_DELETE,
+    ACTION_TYPE_TOAST_CHANGE_DURATION,
 } from "./types";
 import {
     addProductToCartDB,
@@ -34,9 +37,14 @@ import {
     deleteOrderFromDB,
     updateUserTokens,
 } from "./db_handler";
+import { AddToast } from "./actions";
 import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_TOKEN_EXPIRED } from "./userStatus";
 import { STORE_ADDRESS } from "./config";
 import { getUserLoginQuery } from "./queries";
+
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from 'uuid';
+import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 
 const showToastMessage = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -53,6 +61,7 @@ export const initialState = {
         animationOut: "slideOutLeft", // Анимация исчезновения
         buttons: [], // Кнопки
     },
+    toasts: new Map(), // Тосты
     cartItems: new Map(), // Корзина
     cartTotalPrice: 0, // Итоговая цена для корзины
     orders: new Map(), // Список заказов
@@ -173,14 +182,14 @@ export const reducer = (state, action) => {
          * Заносит товар и его данные в state
          */
         case ACTION_TYPE_CART_ADD_PRODUCT: {
-            const t = action.t; // Translate
+            const { payload, t, dispatch } = action;
             const newState = {...state};
 
-            if ( state.cartItems.has(action.payload.productId) ) {
-                const item = state.cartItems.get(action.payload.productId);
-                item.productQuantity += action.payload.productQuantity;
+            if ( state.cartItems.has(payload.productId) ) {
+                const item = state.cartItems.get(payload.productId);
+                item.productQuantity += payload.productQuantity;
             } else {
-                state.cartItems.set(action.payload.productId, action.payload);
+                newState.cartItems.set(payload.productId, payload);
             }
 
             // Расчитываем итоговую цену
@@ -191,15 +200,24 @@ export const reducer = (state, action) => {
                 });
             }
 
-            addProductToCartDB(action.payload.name,
-                action.payload.productId,
-                action.payload.imageLink,
-                action.payload.productQuantity,
-                action.payload.price,
-                action.payload.selectedVariants,
-                action.payload.stockQuantity);
-
-            showToastMessage(t("productAddedMessage", {product: action.payload.name}));
+            addProductToCartDB(payload.name,
+                payload.productId,
+                payload.imageLink,
+                payload.productQuantity,
+                payload.price,
+                payload.selectedVariants,
+                payload.stockQuantity);
+            
+            const toast = {
+                icon: faShoppingBasket,
+                text: t("productAddedMessage", {product: payload.name}),
+                duration: 3000,
+                color: "#499eda",
+            };
+            // Ыыыыыыыыыыыыы
+            setTimeout(()=> {
+                dispatch(AddToast(toast, payload.productId));
+            }, 0);
 
             return newState;
         }
@@ -519,6 +537,51 @@ export const reducer = (state, action) => {
                 newState.jwtAuthToken = payload.jwtAuthToken;
                 newState.jwtRefreshToken = payload.jwtRefreshToken;
                 updateUserTokens(payload.uuid, payload.jwtAuthToken, payload.jwtRefreshToken);
+                return newState;
+            }
+            return state;
+        }
+
+        /**
+         * Добавляет новый Toast
+         */
+        case ACTION_TYPE_TOAST_ADD: {
+            const newState = {...state};
+            const { payload, id } = action;
+
+            if ( payload ) {
+                payload.id = id || uuidv4();
+                newState.toasts.set(payload.id, payload);
+                return newState;
+            }
+            return state;
+        }
+
+        /**
+         * Удаляет Toast
+         */
+        case ACTION_TYPE_TOAST_DELETE: {
+            const newState = {...state};
+            const { id } = action;
+            
+            if ( id ) {
+                newState.toasts.delete(id)
+                return newState;
+            }
+            return state;
+        }
+        
+        /**
+         * Изменяет длительность Toast
+         */
+        case ACTION_TYPE_TOAST_CHANGE_DURATION: {
+            const newState = {...state};
+            const { id, duration } = action;
+            
+            if ( id && duration ) {
+                const toast = newState.toasts.get(id);
+                toast.duration = duration;
+                newState.toast.set(id, toast);
                 return newState;
             }
             return state;
