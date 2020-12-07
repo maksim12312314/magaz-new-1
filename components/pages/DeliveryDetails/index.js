@@ -81,7 +81,7 @@ const DeliveryDetails = (props) => {
                     <OurTextField name="email"
                                 keyboardType="email-address"
                                 autoCompleteType="email"
-                                defValue={state.deliveryDetails.email.value}
+                                defValue={state.user.email || state.deliveryDetails.email.value}
                                 onValidate={validateFormEmail}
                                 placeholder={t("orderFormEmail")}/>
                     <OurTextField name="phone"

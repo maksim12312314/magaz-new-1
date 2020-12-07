@@ -4,9 +4,10 @@ const ru = {
         welcomePageNote: "Чтобы использовать наше приложение, пожалуйста, войдите или зарегестрируйтесь.",
         welcomePageRegister: "Зарегестрироваться",
         welcomePageLogin: "Войти",
+        welcomePageContinue: "Продолжить без входа",
 
         registerPageTitle: "Регистрация",
-        registerPageFormEmail: "E-mail",
+        registerPageFormEmail: "Электронная почта",
         registerPageFormUsername: "Имя пользователя",
         registerPageFormPassword: "Пароль",
         registerPageFormPasswordRetype: "Повторите пароль",
@@ -34,6 +35,8 @@ const ru = {
         cartDeleteTitle: "Удалить из корзины",
         cartDeleteMessage: "Вы действительно хотите удалить товар из корзины?",
         cartEmpty: "Здесь пусто(",
+        cartLoginTitle: "Требуется вход в учётную запись!",
+        cartLoginMessage: "Войдите или зарегестрируйтесь чтобы продолжить.",
 
         cancel: "Отмена",
         close: "Закрыть",
@@ -52,6 +55,7 @@ const ru = {
         orderInfoCheckEdit: "Редактировать",
         orderInfoCheckOrder: "Оформить заказ",
         orderFormName: "Имя",
+        orderFormEmail: "Электронная почта",
         orderFormPhone: "Телефон",
         orderFormAddress: "Адрес",
         orderFormFloor: "Этаж",

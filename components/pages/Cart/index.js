@@ -1,10 +1,12 @@
 import React, {useState, useContext, useLayoutEffect} from "react";
 import { View, FlatList, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { stateContext } from "~/contexts";
+import { stateContext, dispatchContext } from "~/contexts";
+import { ShowModal } from "~/actions";
+import { USER_STATUS_LOGGED } from "~/userStatus";
+import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "~/components/Header/index";
 import OurText from "~/components/OurText";
 import OurTextButton from "~/components/OurTextButton";
-import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "~/components/Header/index";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
 import styles from "./styles";
@@ -33,6 +35,7 @@ const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
 /** Компонент корзины */
 const Cart = (props) => {
     const state = useContext(stateContext);
+    const dispatch = useContext(dispatchContext);
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
 
@@ -48,8 +51,39 @@ const Cart = (props) => {
     }, [navigation]);
 
     const toDeliveryDetails = (e) => {
-        if ( state.cartItems?.size )
-            navigation.navigate("DeliveryDetails");
+        if ( state.cartItems?.size ) {
+            if ( state.user.status !== USER_STATUS_LOGGED ) {
+                const loginModalData = {
+                    title: { text: "cartLoginTitle", params: {} },
+                    text: { text: "cartLoginMessage", params: {} },
+                    animationIn: "fadeInUp",
+                    animationOut: "fadeOutDown",
+                    buttons: [
+                        {
+                            text: "cancel",
+                            textStyle: {
+                                color: "#383838",
+                            },
+                        },
+                        {
+                            text: "welcomePageRegister",
+                            onPress: (e) => {
+                                navigation.navigate("RegisterPage");
+                            },
+                        },
+                        {
+                            text: "welcomePageLogin",
+                            onPress: (e) => {
+                                navigation.navigate("LoginPage");
+                            },
+                        },
+                    ],
+                };
+                dispatch(ShowModal(loginModalData));
+            } else {
+                navigation.navigate("DeliveryDetails");
+            }
+        }
     };
 
     return (

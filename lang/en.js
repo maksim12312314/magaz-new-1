@@ -8,7 +8,7 @@ const en = {
 
         registerPageTitle: "Registration",
         registerPageFormEmail: "E-mail",
-        registerPageFormUsername: "User name",
+        registerPageFormUsername: "User Name",
         registerPageFormPassword: "Password",
         registerPageFormPasswordRetype: "Re-type password",
         registerPageErrorPasswordsDontMatch: "Passwords don't match!",
@@ -35,6 +35,8 @@ const en = {
         cartDeleteTitle: "Delete from cart",
         cartDeleteMessage: "Are you sure that you want to delete this item from cart?",
         cartEmpty: "There's too empty here(",
+        cartLoginTitle: "Login required!",
+        cartLoginMessage: "To continue you must register or login.",
 
         cancel: "Cancel",
         close: "Close",

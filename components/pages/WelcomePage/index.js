@@ -1,9 +1,9 @@
 import React, { useState, useLayoutEffect, useContext, useEffect } from "react";
 import { View } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
-import { STORE_ADDRESS } from "~/config";
 import { stateContext, dispatchContext } from "~/contexts";
-import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_UNREGISTERED, USER_STATUS_LOGGED } from "~/userStatus";
+import { SetUserData } from "~/actions";
+import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_UNREGISTERED, USER_STATUS_LOGGED, USER_STATUS_LOGIN_SKIPPED } from "~/userStatus";
 import { HeaderTitle } from "~/components/Header";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import OurTextButton from "~/components/OurTextButton";
@@ -29,11 +29,19 @@ const WelcomePage = (props) => {
     };
 
     const navigateToCategoryList = (e) => {
-        navigation.navigate("CategoryList");
+        const user = {
+            status: USER_STATUS_LOGIN_SKIPPED, // Состояние пользователя
+            uuid: "",
+            username: "",
+            email: "",
+            password: "",
+            jwtAuthToken: "",
+            jwtRefreshToken: "",
+        };
+        dispatch(SetUserData(user));
     };
-    console.log("Emm", status);
+    
     useEffect( () => {
-        console.log("HELLO STATUS", status)
         switch (status) {
             case USER_STATUS_REGISTERED: {
                 setLoading(true);
@@ -49,6 +57,10 @@ const WelcomePage = (props) => {
             };
             case USER_STATUS_UNREGISTERED: {
                 setLoading(false);
+                break;
+            };
+            case USER_STATUS_LOGIN_SKIPPED: {
+                navigation.navigate("CategoryList");
                 break;
             };
             default:
