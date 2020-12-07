@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import { stateContext } from "~/contexts";
 import ToastItem from "./ToastItem";
 import styles from "./styles";
@@ -9,13 +9,13 @@ const OurToast = (props) => {
     const toasts = Array.from(state.toasts.values());
 
     return (
-        <View pointerEvents="box-none" style={styles.mainContainer}>
+        <KeyboardAvoidingView behavior={"padding"} pointerEvents="box-none" style={styles.mainContainer}>
             {
                 toasts.map( (toast, index) => 
-                    <ToastItem duration={toast.duration} id={toast.id} text={toast.text} color={toast.color} icon={toast.icon} key={index} />
+                    <ToastItem duration={toast.duration} id={toast.id} text={toast.text} translate={toast.translate} color={toast.color} icon={toast.icon} key={index} />
                 )
             }
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 
