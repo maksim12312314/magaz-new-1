@@ -10,9 +10,6 @@ import OurTextButton from "~/components/OurTextButton";
 import OurTextField from "~/components/OurTextField";
 import styles from "./styles";
 
-const PHONE_PATTERN = /^((\+7|7|8)+([0-9]){10})$/;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 const DeliveryDetails = (props) => {
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);

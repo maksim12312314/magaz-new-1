@@ -4,6 +4,7 @@ const en = {
         welcomePageNote: "To use our application, please, register or log in.",
         welcomePageRegister: "Register",
         welcomePageLogin: "Log in",
+        welcomePageContinue: "Continue without login",
 
         registerPageTitle: "Registration",
         registerPageFormEmail: "E-mail",
@@ -11,7 +12,7 @@ const en = {
         registerPageFormPassword: "Password",
         registerPageFormPasswordRetype: "Re-type password",
         registerPageErrorPasswordsDontMatch: "Passwords don't match!",
-        registerPageErrorPasswordShort: "Your password is too short!",
+        registerPageErrorPasswordNotValid: "Password must have minimum eight characters, at least one letter and one number!",
         registerPageErrorUsernameShort: "User name is too short!",
         registerPageErrorUsernameRegistered: "That user name is already in use!",
         registerPageErrorEmailRegistered: "That e-mail is already in use!",

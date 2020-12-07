@@ -9,6 +9,7 @@ import DeliveryDetails from "./components/pages/DeliveryDetails";
 import DeliveryDetailsCheck from "./components/pages/DeliveryDetailsCheck";
 import WelcomePage from "./components/pages/WelcomePage";
 import RegisterPage from "./components/pages/RegisterPage";
+import LoginPage from "./components/pages/LoginPage";
 import Orders from "./components/pages/Orders";
 
 const { Navigator, Screen } = createNativeStackNavigator();
@@ -38,6 +39,9 @@ const AppStackNavigator = () => {
             <Screen 
                 name="RegisterPage"
                 component={RegisterPage}/>
+            <Screen 
+                name="LoginPage"
+                component={LoginPage}/>
             <Screen 
                 name="CategoryList"
                 component={CategoryList}/>

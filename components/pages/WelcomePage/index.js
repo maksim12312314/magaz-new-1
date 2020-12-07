@@ -28,6 +28,10 @@ const WelcomePage = (props) => {
         navigation.navigate("LoginPage");
     };
 
+    const navigateToCategoryList = (e) => {
+        navigation.navigate("CategoryList");
+    };
+    console.log("Emm", status);
     useEffect( () => {
         console.log("HELLO STATUS", status)
         switch (status) {
@@ -81,6 +85,7 @@ const WelcomePage = (props) => {
                         <View style={styles.bottomContainer}>
                             <OurTextButton onPress={navigateToRegister} style={styles.button} textStyle={{color: gradEnd, fontSize: 20}} translate={true}>welcomePageRegister</OurTextButton>
                             <OurTextButton onPress={navigateToLogin} style={styles.button} textStyle={{color: gradEnd, fontSize: 20}} translate={true}>welcomePageLogin</OurTextButton>
+                            <OurTextButton onPress={navigateToCategoryList} style={styles.button} textStyle={{color: gradEnd, fontSize: 20}} translate={true}>welcomePageContinue</OurTextButton>
                         </View>
                     </View>
             }

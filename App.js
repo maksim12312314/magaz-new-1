@@ -9,7 +9,7 @@ import { reducer, initialState } from "./reducer";
 import { stateContext, dispatchContext } from "./contexts";
 import { SetCartProducts, SetOrderList, SetUserData } from "./actions";
 import { addUserToDB, createDBTables, getCartFromDB, getOrdersFromDB, getUserData } from "./db_handler";
-import { USER_STATUS_NOT_CHECKED, USER_STATUS_NOT_REGISTERED, USER_STATUS_REGISTERED } from "./userStatus";
+import { USER_STATUS_NOT_CHECKED, USER_STATUS_UNREGISTERED, USER_STATUS_REGISTERED } from "./userStatus";
 import AppStackNavigator from "./navigation";
 import OurModal from "./components/OurModal";
 import OurToast from "~/components/OurToast";

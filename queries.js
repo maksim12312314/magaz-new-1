@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
+
 /**
- * Возвращает GraphQL запрос на категории
+ * GraphQL запрос на категории
  */
 export const QUERY_CATEGORY_LIST = gql`
     query GetCategoryList($hideEmpty: Boolean!) {
@@ -18,8 +19,7 @@ export const QUERY_CATEGORY_LIST = gql`
     }`;
 
 /**
- * Возвращает GraphQL запрос на список товаров
- * @param {number} categoryId - id категории
+ * GraphQL запрос на список товаров
  */
 export const QUERY_PRODUCT_LIST = gql`
     query GetProductListQuery($categoryId: Int!) {
@@ -64,55 +64,42 @@ export const QUERY_PRODUCT_LIST = gql`
     }`;
 
 /**
- * Возвращает GraphQL мутацию для регистрации пользователя
- * @param {string} email - email пользователя
- * @param {string} username - имя пользователя
- * @param {string} password - пароль пользователя
+ * GraphQL мутация для регистрации пользователя
  */
-export const getUserRegisterQuery = (uuid, email, username, password) => {
-
-    return JSON.stringify({
-        query: `
-            mutation RegisterUser {
-                registerUser(
-                input: {
-                    clientMutationId: "${uuid}",
-                    username: "${username}",
-                    password: "${password}",
-                    email: "${email}"
-                }) {
-                    user {
-                        jwtAuthToken
-                        jwtRefreshToken
-                    }
-                }
+export const MUTATION_REGISTER_USER = gql`
+    mutation RegisterUser($uuid: String!, $username: String!, $password: String!, $email: String!) {
+        registerUser(
+        input: {
+            clientMutationId: $uuid,
+            username: $username,
+            password: $password,
+            email: $email
+        }) {
+            user {
+                jwtAuthToken
+                jwtRefreshToken
             }
-        `,
-    })
-};
+        }
+    }
+`;
 
 /**
- * Возвращает GraphQL мутацию для входа
- * @param {string} uuid - uuid пользователя
- * @param {string} username - имя пользователя
- * @param {string} password - пароль пользователя
+ * GraphQL мутация для входа
  */
-export const getUserLoginQuery = (uuid, username, password) => {
-    return JSON.stringify({
-        query: `
-            mutation LoginUser {
-                login( input: {
-                    clientMutationId: "${uuid}",
-                    username: "${username}",
-                    password: "${password}"
-                }) {
-                    authToken
-                    user {
-                        id
-                        name
-                    }
-                }
+export const MUTATION_LOGIN_USER = gql`
+    mutation LoginUser($uuid: String!, $username: String!, $password: String!) {
+        login( input: {
+            clientMutationId: $uuid,
+            username: $username,
+            password: $password
+        }) {
+            authToken
+            refreshToken
+            user {
+                databaseId
+                username
+                email
             }
-        `,
-    })
-};
+        }
+    }
+`;
