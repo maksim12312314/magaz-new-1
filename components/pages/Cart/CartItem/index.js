@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { Animated, Dimensions, View, LayoutAnimation } from "react-native";
 import { stateContext } from "~/contexts";
 import { STORE_ADDRESS } from "~/config";
@@ -8,36 +8,33 @@ import OurImageSlider from "~/components/OurImageSlider";
 import ItemCount from "./ItemCount";
 import styles from "./styles";
 
-
-const itemWidth = Dimensions.get("window").width;
-const itemHeight = 156;
-const itemHeight2 = 164;
-const totalHeight = 440;
 const ANIMATION_DURATION = 200;
+const PRODUCT_MIN_HEIGHT = .00001;
 
+const linear = LayoutAnimation.create(
+    ANIMATION_DURATION,
+    LayoutAnimation.Types.linear,
+    LayoutAnimation.Properties.scaleY,
+);
 
 /** Компонент товара в корзине */
 const CartItem = (props) => {
     const { productId, name, price, productQuantity, imageLink } = props;
     const [isModalVisible, setModalVisible] = useState(false);
-    const [opacity, setOpacity] = useState(new Animated.Value(1));
     const [height, setHeight] = useState(null);
+    const opacity = useRef(new Animated.Value(1)).current;
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
     const onRemove = (callback) => {
-        LayoutAnimation.configureNext(LayoutAnimation.create(
-            ANIMATION_DURATION,
-            LayoutAnimation.Types.linear,
-            LayoutAnimation.Properties.scaleY,
-        ));
+        LayoutAnimation.configureNext(linear);
         Animated.timing(opacity, {
             toValue: 0,
             duration: ANIMATION_DURATION,
             useNativeDriver: true,
         }).start(callback);
-        setHeight(0.01);
+        setHeight(PRODUCT_MIN_HEIGHT);
     };
 
 

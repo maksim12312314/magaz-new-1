@@ -21,8 +21,8 @@ const ToastItem = (props) => {
     const dispatch = useContext(dispatchContext);
     const [timer, setTimer] = useState(null);
     const [height, setHeight] = useState(TOAST_HEIGHT_MIN);
-    const opacity = useRef(new Animated.Value(0)).current;
-    const posX = useRef(new Animated.Value(Dimensions.get("screen").width)).current;
+    const anim = useRef(new Animated.Value(0)).current;
+    //const posX = useRef(new Animated.Value(Dimensions.get("screen").width)).current;
     
     // Анимация появления
     const animIn = () => {
@@ -30,15 +30,9 @@ const ToastItem = (props) => {
         LayoutAnimation.configureNext(easeInEaseOut);
         setHeight(TOAST_HEIGHT_MAX);
         
-        // Изменяем прозрачность до 1
-        Animated.timing(opacity, {
+        // Запускаем анимацию
+        Animated.timing(anim, {
             toValue: 1,
-            duration: ANIMATION_DURATION,
-            useNativeDriver: true,
-        }).start();
-        // Изменяем позицию до 0
-        Animated.timing(posX, {
-            toValue: 0,
             duration: ANIMATION_DURATION,
             useNativeDriver: true,
         }).start();
@@ -50,15 +44,9 @@ const ToastItem = (props) => {
         LayoutAnimation.configureNext(easeInEaseOut);
         setHeight(TOAST_HEIGHT_MIN);
         
-        // Изменяем позицию до -100%
-        Animated.timing(posX, {
-            toValue: -Dimensions.get("screen").width,
-            duration: ANIMATION_DURATION,
-            useNativeDriver: true,
-        }).start();
-        // Изменяем прозрачность до 0
-        Animated.timing(opacity, {
-            toValue: 0,
+        // Запускаем анимацию
+        Animated.timing(anim, {
+            toValue: 2,
             duration: ANIMATION_DURATION,
             useNativeDriver: true,
         }).start( () => {
@@ -80,8 +68,20 @@ const ToastItem = (props) => {
 
     }, [duration]);
 
+    const screenWidth = Dimensions.get("screen").width;
+    const opacity = anim.interpolate({
+        inputRange: [0, 1, 2],
+        outputRange: [0, 1, 0],
+        extrapolateRight: "clamp",
+    });
+    const translateX = anim.interpolate({
+        inputRange: [0, 1, 2],
+        outputRange: [screenWidth, 0, -screenWidth],
+        extrapolateRight: "clamp",
+    });
+
     return (
-        <Animated.View style={[styles.mainContainer, {height, opacity, transform: [{ translateX: posX }] }]}>
+        <Animated.View style={[styles.mainContainer, {height, opacity, transform: [{ translateX }] }]}>
             <>
             {
                 icon ?
