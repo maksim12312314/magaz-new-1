@@ -10,9 +10,9 @@ if ( Platform.OS === "android" )
 const VALIDATE_TIME = 1100;
 
 const OurTextField = (props) => {
-    const { name, validateTime, defValue, placeholder, onValidate, onChange, autoCompleteType, keyboardType } = props;
+    const { name, validateTime, model, defValue, placeholder, onValidate, onChange, autoCompleteType, keyboardType, secureTextEntry, autoCapitalize } = props;
 
-    const [text, setText] = useState(defValue || "");
+    const [text, setText] = model || useState(defValue || "");
     const [isFocused, setFocus] = useState(text || false);
     const [isValid, setValid] = useState(true);
     const [validateTimer, setValidateTimer] = useState(null);
@@ -48,13 +48,15 @@ const OurTextField = (props) => {
         <View style={styles.mainContainer}>
             <OurText style={[styles.placeholder,
                 isFocused ? styles.placeholderFocused : styles.placeholderUnfocused,
-                isValid ? styles.placeholderValid : styles.placeholderNotValid]}>{placeholder}</OurText>
+                isValid ? styles.placeholderValid : styles.placeholderNotValid]} translate={true}>{placeholder}</OurText>
             <TextInput style={[styles.textInput, isValid ? styles.textInputValid : styles.textInputNotValid]}
                        onChangeText={onChangeText}
                        onFocus={onFocus}
                        onBlur={onBlur}
                        autoCompleteType={autoCompleteType}
+                       autoCapitalize={autoCapitalize}
                        keyboardType={keyboardType}
+                       secureTextEntry={secureTextEntry}
                        value={text}/>
         </View>
     )   
