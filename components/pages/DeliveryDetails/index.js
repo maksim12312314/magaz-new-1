@@ -2,6 +2,7 @@ import React, { useState, useContext, useLayoutEffect } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
+import { PHONE_PATTERN, EMAIL_PATTERN } from "~/patterns";
 import { stateContext, dispatchContext } from "~/contexts";
 import { ChangeDeliveryField } from "~/actions";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "~/components/Header";
