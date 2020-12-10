@@ -51,6 +51,7 @@ const LoginPage = (props) => {
             jwtRefreshToken: data.login.refreshToken,
         };
         dispatch(SetUserData(userData));
+        navigation.popToTop();
     };
 
     const [loginCustomer, {loading, error}] = useMutation(MUTATION_LOGIN_USER, {onError, onCompleted});

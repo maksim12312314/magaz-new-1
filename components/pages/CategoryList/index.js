@@ -1,9 +1,10 @@
-import React, { useContext, useLayoutEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
 import { useQuery } from "@apollo/client";
 import { LinearGradient } from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "~/contexts";
 import { ShowModal } from "~/actions";
+import { USER_STATUS_UNREGISTERED } from "~/userStatus";
 import { QUERY_CATEGORY_LIST } from '~/queries';
 import { expo } from "~/app.json";
 import { HeaderTitle, HeaderCartButton } from "~/components/Header";
@@ -19,6 +20,7 @@ const CategoryList = (props) => {
     const dispatch = useContext(dispatchContext);
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
     const abortController = new AbortController();
+    const status = state.user.status;
 
     const showAppInfo = (e) => {
         const data = {
@@ -32,6 +34,40 @@ const CategoryList = (props) => {
         };
         dispatch(ShowModal(data));
     };
+
+    useEffect(() => {
+        switch(status) {
+            case USER_STATUS_UNREGISTERED: {
+                const data = {
+                    title: { text: "cartLoginTitle", params: {} },
+                    text: { text: "cartLoginMessage", params: {} },
+                    animationIn: "fadeInUp",
+                    animationOut: "fadeOutDown",
+                    buttons: [
+                        {
+                            text: "welcomePageContinue",
+                            textStyle: {
+                                color: "#383838",
+                            },
+                        },
+                        {
+                            text: "welcomePageRegister",
+                            onPress: (e) => {
+                                navigation.navigate("RegisterPage");
+                            },
+                        },
+                        {
+                            text: "welcomePageLogin",
+                            onPress: (e) => {
+                                navigation.navigate("LoginPage");
+                            },
+                        },
+                    ],
+                };
+                dispatch(ShowModal(data));
+            };
+        }
+    }, [status]);
 
     useLayoutEffect( () => {
         navigation.setOptions({

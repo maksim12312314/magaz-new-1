@@ -7,7 +7,6 @@ import Cart from "./components/pages/Cart";
 import ProductList from "./components/pages/ProductsList";
 import DeliveryDetails from "./components/pages/DeliveryDetails";
 import DeliveryDetailsCheck from "./components/pages/DeliveryDetailsCheck";
-import WelcomePage from "./components/pages/WelcomePage";
 import RegisterPage from "./components/pages/RegisterPage";
 import LoginPage from "./components/pages/LoginPage";
 import Orders from "./components/pages/Orders";
@@ -25,7 +24,7 @@ const AppStackNavigator = () => {
 
     return (
         <Navigator
-            initialRouteName="WelcomePage"
+            initialRouteName="CategoryList"
             backBehavior="history"
             mode='modal'
             headerMode='screen'
@@ -33,9 +32,6 @@ const AppStackNavigator = () => {
                 tabBarVisible: true,
                 headerHideShadow: true,
             }}>
-            <Screen 
-                name="WelcomePage"
-                component={WelcomePage}/>
             <Screen 
                 name="RegisterPage"
                 component={RegisterPage}/>

@@ -56,6 +56,7 @@ const RegisterPage = (props) => {
             jwtRefreshToken: data.registerUser.user.jwtRefreshToken,
         };
         dispatch(SetUserData(userData));
+        navigation.popToTop();
     };
 
     const [regCustomer, {loading, error}] = useMutation(MUTATION_REGISTER_USER, {onError, onCompleted});
