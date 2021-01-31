@@ -2,11 +2,13 @@ import React, { useContext, useLayoutEffect } from "react";
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import "react-native-get-random-values";
+import { useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 import { stateContext, dispatchContext } from "~/contexts";
 import { AddOrderToList, ClearCart, ClearDeliveryDetails } from "~/actions";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "~/components/Header";
 import { ORDER_STATUS_TO_BE_SHIPPED } from "~/components/pages/Orders/orderStates";
+import { MUTATION_CREATE_ORDER } from "~/queries";
 import OurText from "~/components/OurText";
 import OurTextButton from "~/components/OurTextButton";
 import styles from "./styles";
@@ -26,6 +28,9 @@ const DeliveryDetailsCheck = (props) => {
     const dispatch = useContext(dispatchContext);
     const { navigation } = props;
     const { data, isOrderMade } = props.route.params;
+    const onError = (err) => {console.log("well shit", err)}
+    const onCompleted = (data) => {console.log("Okay", data)}
+    const [order, {loading, error}] = useMutation(MUTATION_CREATE_ORDER, {onError, onCompleted});
 
     const [gradStart, gradEnd] = ["#931DC4", "#F33BC8"];
 
@@ -65,6 +70,12 @@ const DeliveryDetailsCheck = (props) => {
         dispatch(ClearDeliveryDetails());
         navigation.popToTop();
         navigation.navigate("Orders");
+        order({
+            variables: {
+                clientMutationId: state.user.uuid,
+                customerId: state.user.databaseId,
+            },
+        });
     };
 
     return (

@@ -7,7 +7,7 @@ import styles from "./styles";
 const ANIMATION_DURATION = 500;
 
 const OurActivityIndicator = (props) => {
-    const { error, abortController, doRefresh, translate, params, buttonTextColor } = props;
+    const { error, abortController, doRefresh, translate, params, buttonTextColor, size } = props;
     const [opacity] = useState(new Animated.Value(0));
     const [posX] = useState(new Animated.Value(Dimensions.get("screen").width));
     
@@ -54,7 +54,7 @@ const OurActivityIndicator = (props) => {
                     </Animated.View>
                     :
                         <TouchableOpacity onLongPress={onLongPress} delayLongPress={100}>
-                            <ActivityIndicator style={styles.indicator} color={"#fff"} size={64}/>
+                            <ActivityIndicator size={size || 64} style={styles.indicator} color={"#fff"}/>
                         </TouchableOpacity>
             }
         </View>

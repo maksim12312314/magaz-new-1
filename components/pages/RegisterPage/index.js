@@ -49,6 +49,7 @@ const RegisterPage = (props) => {
         const userData = {
             status: USER_STATUS_LOGGED, // Состояние пользователя
             uuid: customerId,
+            databaseId: data.login.user.databaseId,
             username,
             email,
             password,
@@ -56,6 +57,7 @@ const RegisterPage = (props) => {
             jwtRefreshToken: data.registerUser.user.jwtRefreshToken,
         };
         dispatch(SetUserData(userData));
+        
         navigation.popToTop();
     };
 

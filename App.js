@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import { AppRegistry } from "react-native";
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import { NavigationContainer } from "@react-navigation/native";
 import { enableScreens } from "react-native-screens";
 import { expo } from "./app.json";
@@ -13,16 +13,17 @@ import { USER_STATUS_NOT_CHECKED, USER_STATUS_UNREGISTERED, USER_STATUS_REGISTER
 import AppStackNavigator from "./navigation";
 import OurModal from "./components/OurModal";
 import OurToast from "~/components/OurToast";
+import client from "./apollo";
 import "react-native-get-random-values";
 import "./i18n";
 import "./utils";
 
 enableScreens();
 
-const client = new ApolloClient({
-	uri: `${STORE_ADDRESS}graphql`,
-	cache: new InMemoryCache(),
-});
+// const client = new ApolloClient({
+// 	uri: `${STORE_ADDRESS}graphql`,
+// 	cache: new InMemoryCache(),
+// });
 
 /** Контейнер приложения **/
 const AppContainer = () => {

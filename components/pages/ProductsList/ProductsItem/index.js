@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { View, TouchableOpacity, Dimensions, Animated } from "react-native";
+import { View, ActivityIndicator, Dimensions, Animated } from "react-native";
+import { useMutation } from '@apollo/client';
 import { useTranslation } from "react-i18next";
 import { STORE_ADDRESS } from "~/config";
-import { dispatchContext } from "~/contexts";
-import { AddProductToCart } from "~/actions";
+import { dispatchContext, stateContext } from "~/contexts";
+import { AddProductToCart, AddToast } from "~/actions";
 import { ListAnimation } from "~/Animations";
 import OurText from "~/components/OurText";
 import OurImage from "~/components/OurImage";
@@ -11,7 +12,10 @@ import OurTextButton from "~/components/OurTextButton";
 import GalleryImg from "~/components/Gallery";
 import OurPicker from "~/components/OurPicker";
 import OurImageSlider from "~/components/OurImageSlider";
+import OurActivityIndicator from "~/components/OurActivityIndicator";
 import styles from "./styles";
+import { MUTATION_ADD_TO_CART } from "~/queries";
+import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 
 
 const totalHeight = Dimensions.get("window").height;
@@ -26,21 +30,19 @@ const ProductsItem = (props) => {
     const {t} = useTranslation();
     const [isModalVisible, setModalVisible] = useState(false);
 
+    const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-
-    const itemAttributes = data?.attributes?.nodes || [];
-    const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
-    const images = [url, ...(data?.galleryImages?.nodes.map((obj) => {
-        return `${STORE_ADDRESS}wp-content/uploads/${obj?.mediaDetails?.file}`
-    }))];
-
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
+    const onError = (err) => {
+        const toast = {
+            icon: faShoppingBasket,
+            text: t("activityError"),
+            duration: 3000,
+            color: "#499eda",
+        };
+        dispatch(AddToast(toast, data.databaseId));
+        console.log("Something went wrong",err)
     };
-
-    // Обрабатываем нажатие на кнопку "Купить"
-    const buyProduct = (e, data) => {
-
+    const onCompleted = (d) => {
         const productQuantity = 1;
         const price = data.price ? data.price.match(/([0-9]*)\.?([0-9]?)/)[0] : 0;
 
@@ -58,12 +60,35 @@ const ProductsItem = (props) => {
         };
         // Добавляем в корзину
         dispatch(AddProductToCart(payload, dispatch, t));
+    }
+    const [addToCart, {loading, error}] = useMutation(MUTATION_ADD_TO_CART, {onError, onCompleted});
+
+    const itemAttributes = data?.attributes?.nodes || [];
+    const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
+    const images = [url, ...(data?.galleryImages?.nodes.map((obj) => {
+        return `${STORE_ADDRESS}wp-content/uploads/${obj?.mediaDetails?.file}`
+    }))];
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+    // Обрабатываем нажатие на кнопку "Купить"
+    const buyProduct = (e, data) => {
+        const productQuantity = 1;
+        addToCart({
+            variables: {
+                productId: data.databaseId,
+                quantity: productQuantity,
+                clientMutationId: state.user.uuid,
+            }
+        });
     };
 
     const [translate, scale, opacity] = ListAnimation(y, totalHeight, itemHeight2, itemWidth, index);
 
     return (
-        <Animated.View style={[styles.mainContainer, {height: itemHeight}, { opacity, transform: [{ translateX: translate }, { translateY: translate }, { scale }] }]}>
+        <Animated.View style={[styles.mainContainer, {height: itemHeight}, { opacity, transform: [{ translateX: translate }, { scale }] }]}>
             <View style={styles.titleContainer}>
                 <OurText style={styles.title}>{name}</OurText>
             </View>
@@ -91,11 +116,18 @@ const ProductsItem = (props) => {
                              params={{
                                  price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
                              }}>productPrice</OurText>
-                    <OurTextButton style={styles.buyButton}
-                                   textStyle={styles.buyButtonText}
-                                   translate={true}
-                                   onPress={(e) => buyProduct(e, data)}
-                    >productBuy</OurTextButton>
+                    <View style={styles.buy} >
+                    {
+                        !loading ?
+                            <OurTextButton style={styles.buyButton}
+                                        textStyle={styles.buyButtonText}
+                                        translate={true}
+                                        onPress={(e) => buyProduct(e, data)}
+                            >productBuy</OurTextButton>
+                        :
+                        <ActivityIndicator size={48} color={"#fff"}/>
+                    }
+                    </View>
                 </View>
             </View>
             <View style={styles.descriptionContainer}>

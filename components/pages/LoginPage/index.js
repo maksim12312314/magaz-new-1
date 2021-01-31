@@ -44,6 +44,7 @@ const LoginPage = (props) => {
         const userData = {
             status: USER_STATUS_LOGGED, // Состояние пользователя
             uuid: customerId,
+            databaseId: data.login.user.databaseId,
             email: data.login.user.email,
             username,
             password,

@@ -103,3 +103,28 @@ export const MUTATION_LOGIN_USER = gql`
         }
     }
 `;
+
+export const MUTATION_CREATE_ORDER = gql`
+    mutation CreateOrder($clientMutationId: String!, $customerId: Int!) {
+        createOrder(input:{clientMutationId: $clientMutationId, customerId: $customerId}){
+            clientMutationId
+            order {
+                orderKey
+            }
+        }
+    }
+`;
+
+export const MUTATION_ADD_TO_CART = gql`
+    mutation cartAdd($productId: Int!, $quantity: Int!, $clientMutationId: String!) {
+        addToCart(input: { productId: $productId, quantity: $quantity, clientMutationId: $clientMutationId }){
+            cartItem {
+                quantity
+                subtotal
+                subtotalTax
+                tax
+                total
+            }
+        }
+    }
+`;
