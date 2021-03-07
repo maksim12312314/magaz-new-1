@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { View, ActivityIndicator, Dimensions, Animated } from "react-native";
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from "react-i18next";
 import { STORE_ADDRESS } from "~/config";
 import { dispatchContext, stateContext } from "~/contexts";
@@ -16,6 +16,7 @@ import OurActivityIndicator from "~/components/OurActivityIndicator";
 import styles from "./styles";
 import { MUTATION_ADD_TO_CART } from "~/queries";
 import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { QUERY_GET_CART } from "../../../../queries";
 
 
 const totalHeight = Dimensions.get("window").height;
@@ -45,7 +46,7 @@ const ProductsItem = (props) => {
     const onCompleted = (d) => {
         const productQuantity = 1;
         const price = data.price ? data.price.match(/([0-9]*)\.?([0-9]?)/)[0] : 0;
-
+        console.log("BOUGHT DATA", d)
         // Заносим данные
         let payload = {
             productId: data.databaseId,
@@ -73,6 +74,10 @@ const ProductsItem = (props) => {
         setModalVisible(!isModalVisible);
     };
 
+    const {dataCart} = useQuery(QUERY_GET_CART, { onError, onCompleted: (data) => {
+        console.log("HELLO CART DATA", data)
+    } } );
+
     // Обрабатываем нажатие на кнопку "Купить"
     const buyProduct = (e, data) => {
         const productQuantity = 1;
@@ -83,6 +88,7 @@ const ProductsItem = (props) => {
                 clientMutationId: state.user.uuid,
             }
         });
+        // getCart();
     };
 
     const [translate, scale, opacity] = ListAnimation(y, totalHeight, itemHeight2, itemWidth, index);

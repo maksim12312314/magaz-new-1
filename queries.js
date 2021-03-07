@@ -115,6 +115,38 @@ export const MUTATION_CREATE_ORDER = gql`
     }
 `;
 
+export const MUTATION_CHECKOUT = gql`
+    mutation Checkout(
+            $clientMutationId: String!,
+            $isPaid: Boolean!,
+            $address: String!,
+            $email: String!,
+            $firstName: String!,
+            $lastName: String!,
+            $postcode: String!,
+            $phone: String!,
+            $paymentMethod: String!,
+        ) {
+        checkout( input: {
+            clientMutationId: $clientMutationId,
+            isPaid: $isPaid,
+            billing: {
+                address1: $address,
+                email: $email,
+                firstName: $firstName,
+                lastName: $lastName,
+                postcode: $postcode,
+                phone: $phone
+            }
+        } ) {
+            clientMutationId
+            order {
+                id
+            }
+        }
+    }
+`;
+
 export const MUTATION_ADD_TO_CART = gql`
     mutation cartAdd($productId: Int!, $quantity: Int!, $clientMutationId: String!) {
         addToCart(input: { productId: $productId, quantity: $quantity, clientMutationId: $clientMutationId }){
@@ -124,6 +156,24 @@ export const MUTATION_ADD_TO_CART = gql`
                 subtotalTax
                 tax
                 total
+            }
+        }
+    }
+`;
+
+export const QUERY_GET_CART = gql`
+    query getCart {
+        cart {
+            contents {
+                nodes {
+                    key
+                    product {
+                        databaseId
+                        name
+                    }
+                    quantity
+                    total
+                }
             }
         }
     }
