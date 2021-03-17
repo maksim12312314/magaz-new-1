@@ -13,6 +13,8 @@ import { USER_STATUS_LOGGED } from "~/userStatus";
 import { MUTATION_LOGIN_USER } from "~/queries";
 import { HeaderTitle, HeaderBackButton } from "~/components/Header";
 
+import SyncStorage from "sync-storage";
+
 import OurTextField from "~/components/OurTextField";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import OurTextButton from "~/components/OurTextButton";
@@ -51,7 +53,8 @@ const LoginPage = (props) => {
             jwtAuthToken: data.login.authToken,
             jwtRefreshToken: data.login.refreshToken,
         };
-        dispatch(SetUserData(userData));
+        SyncStorage.set("user-uuid", userData.uuid);
+        //dispatch(SetUserData(userData));
         navigation.popToTop();
     };
 

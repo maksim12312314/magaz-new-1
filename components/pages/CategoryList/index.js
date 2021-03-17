@@ -4,13 +4,13 @@ import { useQuery } from "@apollo/client";
 import { LinearGradient } from 'expo-linear-gradient';
 import { stateContext, dispatchContext } from "~/contexts";
 import { ShowModal } from "~/actions";
-import { USER_STATUS_UNREGISTERED } from "~/userStatus";
 import { QUERY_CATEGORY_LIST } from '~/queries';
 import { expo } from "~/app.json";
 import { HeaderTitle, HeaderCartButton } from "~/components/Header";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
+import SyncStorage from "sync-storage";
 
 
 /**Список категорий товаров*/
@@ -35,9 +35,22 @@ const CategoryList = (props) => {
         dispatch(ShowModal(data));
     };
 
-    useEffect(() => {
-        switch(status) {
-            case USER_STATUS_UNREGISTERED: {
+    useLayoutEffect( () => {
+        navigation.setOptions({
+            headerLeft: (props)=><HeaderTitle navigation={navigation} title={"categoryListTitle"} onPress={showAppInfo}/>,
+            headerCenter: (props)=>{},
+            headerRight: (props)=><HeaderCartButton navigation={navigation}/>,
+            headerStyle: {
+                backgroundColor: gradStart,
+            },
+        });
+    }, [navigation]);
+
+    useEffect( () => {
+        SyncStorage.init().then(res=>{
+            const token = SyncStorage.get("bearer-token");
+            
+            if ( !token ) {
                 const data = {
                     title: { text: "cartLoginTitle", params: {} },
                     text: { text: "cartLoginMessage", params: {} },
@@ -65,21 +78,9 @@ const CategoryList = (props) => {
                     ],
                 };
                 dispatch(ShowModal(data));
-            };
-        }
-    }, [status]);
-
-    useLayoutEffect( () => {
-        navigation.setOptions({
-            headerLeft: (props)=><HeaderTitle navigation={navigation} title={"categoryListTitle"} onPress={showAppInfo}/>,
-            headerCenter: (props)=>{},
-            headerRight: (props)=><HeaderCartButton navigation={navigation}/>,
-            headerStyle: {
-                backgroundColor: gradStart,
-            },
-        });
-    }, [navigation]);
-
+            }
+        })
+    }, []);
 
     const { loading, error, data, refetch } = useQuery(QUERY_CATEGORY_LIST, {
         variables: { hideEmpty: true },

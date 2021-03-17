@@ -1,5 +1,6 @@
 import React, {useState, useContext, useLayoutEffect} from "react";
 import { View, FlatList, Animated } from "react-native";
+import { useMutation, useQuery } from '@apollo/client';
 import { LinearGradient } from "expo-linear-gradient";
 import { stateContext, dispatchContext } from "~/contexts";
 import { ShowModal } from "~/actions";
@@ -7,8 +8,11 @@ import { USER_STATUS_LOGGED } from "~/userStatus";
 import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "~/components/Header/index";
 import OurText from "~/components/OurText";
 import OurTextButton from "~/components/OurTextButton";
+import OurActivityIndicator from "~/components/OurActivityIndicator";
 import CartItem from "./CartItem";
 import CartTotal from "./CartTotal";
+import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { QUERY_GET_CART } from "~/queries";
 import styles from "./styles";
 
 const LocallyAnimatedFlatList = ({data}) => {
@@ -49,6 +53,24 @@ const Cart = (props) => {
             },
         });
     }, [navigation]);
+
+    const onError = (err) => {
+        const toast = {
+            icon: faShoppingBasket,
+            text: t("activityError"),
+            duration: 3000,
+            color: "#499eda",
+        };
+        dispatch(AddToast(toast, "CART_FETCH_ERROR"));
+        console.log("Something went wrong",err)
+    };
+    const onCompleted = (data) => {
+        console.log("PRIVED CART DATA", data)
+    };
+    const { loading, error, data, refetch } = useQuery(QUERY_GET_CART, {
+        onError,
+        onCompleted,
+    });
 
     const toDeliveryDetails = (e) => {
         if ( state.cartItems?.size ) {
@@ -95,10 +117,14 @@ const Cart = (props) => {
 
                 <View style={styles.items}>
                     {
-                        state.cartItems?.size === 0 ?
+                        loading ?
+                        <OurActivityIndicator />
+                        :
+                        state.cartItems?.size === 0 && !loading ?
                             <OurText style={styles.emptyText}
                                 translate={true}>cartEmpty</OurText>
                         : <></>
+                        
                     }
                     <MemoedLocallyAnimatedFlatList data={Array.from(state.cartItems.values())}/>
                     <CartTotal total={state.cartTotalPrice} />

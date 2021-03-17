@@ -16,7 +16,6 @@ import OurActivityIndicator from "~/components/OurActivityIndicator";
 import styles from "./styles";
 import { MUTATION_ADD_TO_CART } from "~/queries";
 import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
-import { QUERY_GET_CART } from "../../../../queries";
 
 
 const totalHeight = Dimensions.get("window").height;
@@ -73,10 +72,6 @@ const ProductsItem = (props) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-
-    const {dataCart} = useQuery(QUERY_GET_CART, { onError, onCompleted: (data) => {
-        console.log("HELLO CART DATA", data)
-    } } );
 
     // Обрабатываем нажатие на кнопку "Купить"
     const buyProduct = (e, data) => {

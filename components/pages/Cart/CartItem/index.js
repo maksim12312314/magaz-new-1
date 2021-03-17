@@ -9,7 +9,7 @@ import ItemCount from "./ItemCount";
 import styles from "./styles";
 
 const ANIMATION_DURATION = 200;
-const PRODUCT_MIN_HEIGHT = .00001;
+const PRODUCT_MIN_HEIGHT = 0.0001;
 
 const linear = LayoutAnimation.create(
     ANIMATION_DURATION,

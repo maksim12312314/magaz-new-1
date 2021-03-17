@@ -14,15 +14,18 @@ export const middleware = new ApolloLink((operation, forward) => {
 	/**
 	 * If session data exist in local storage, set value as session header.
 	 */
-	const token = SyncStorage.get("bearer-token");
-	console.log("TOKEN IS1", token)
-	if ( token ) {
-		operation.setContext(({ headers = {} }) => ({
-			headers: {
-				'woocommerce-session': `Session ${token}`,
-			}
-		}));
-	}
+	SyncStorage.init().then( res=> {
+		const token = SyncStorage.get("bearer-token");
+		console.log("HEY TOKEN", token)
+		
+		if ( token ) {
+			operation.setContext(({ headers = {} }) => ({
+				headers: {
+					'woocommerce-session': `Session ${token}`,
+				}
+			}));
+		}
+	})
 
 	return forward(operation);
 });
@@ -39,12 +42,14 @@ export const afterware = new ApolloLink((operation, forward) => {
 		const context = operation.getContext();
 		const { response: { headers } } = context;
 		const token = headers.get('woocommerce-session');
-		
-	console.log("TOKEN IS", token)
+
 		if ( token ) {
-			if ( SyncStorage.get('bearer-token') !== token ) {
-				SyncStorage.set('bearer-token', headers.get('woocommerce-session'));
-			}
+			SyncStorage.init().then( res=> {
+					if ( SyncStorage.get('bearer-token') !== token ) {
+						SyncStorage.set('bearer-token', headers.get('woocommerce-session'));
+					}
+				}
+			)
 		}
 
 		return response;
