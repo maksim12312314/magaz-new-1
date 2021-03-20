@@ -12,10 +12,12 @@ import OurTextButton from "~/components/OurTextButton";
 import GalleryImg from "~/components/Gallery";
 import OurPicker from "~/components/OurPicker";
 import OurImageSlider from "~/components/OurImageSlider";
-import OurActivityIndicator from "~/components/OurActivityIndicator";
 import styles from "./styles";
 import { MUTATION_ADD_TO_CART } from "~/queries";
 import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import client from "~/apollo";
+import { SetCartProducts } from "~/actions";
+import { QUERY_GET_CART } from "~/queries";
 
 
 const totalHeight = Dimensions.get("window").height;
@@ -27,7 +29,7 @@ const itemHeight2 = itemHeight + 16;
 /** Список товаров той или иной категории */
 const ProductsItem = (props) => {
     const { data, y, index, name, imageUrl } = props;
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [isModalVisible, setModalVisible] = useState(false);
 
     const state = useContext(stateContext);
@@ -40,26 +42,19 @@ const ProductsItem = (props) => {
             color: "#499eda",
         };
         dispatch(AddToast(toast, data.databaseId));
-        console.log("Something went wrong",err)
+        console.log("Something went wrong", err)
     };
     const onCompleted = (d) => {
-        const productQuantity = 1;
-        const price = data.price ? data.price.match(/([0-9]*)\.?([0-9]?)/)[0] : 0;
-        console.log("BOUGHT DATA", d)
-        // Заносим данные
-        let payload = {
-            productId: data.databaseId,
-            name: data.name,
-            productQuantity: productQuantity,
-            price: price,
-            stockQuantity: data.stockQuantity || 99,
-            selectedVariants: [
-                "variantID",
-            ],
-            imageLink: data.image?.mediaDetails?.file,
+        client.query({query:QUERY_GET_CART}).then( (cartData) => {
+            dispatch(SetCartProducts(cartData?.data?.cart?.contents?.nodes || [], cartData.data.cart.total));
+        });
+        const toast = {
+            icon: faShoppingBasket,
+            text: t("productAddedMessage", {product: data.name}),
+            duration: 3000,
+            color: "#499eda",
         };
-        // Добавляем в корзину
-        dispatch(AddProductToCart(payload, dispatch, t));
+        dispatch(AddToast(toast, "ADD_CART_" + data.databaseId));
     }
     const [addToCart, {loading, error}] = useMutation(MUTATION_ADD_TO_CART, {onError, onCompleted});
 

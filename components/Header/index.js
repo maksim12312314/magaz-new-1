@@ -85,9 +85,14 @@ export const HeaderCartButton = (props) => {
                                 : <></>
                         }
                     </OurIconButton>
-                    <OurText style={styles.priceText}>
-                        {state.cartTotalPrice}$
-                    </OurText>
+                    {
+                    state.cartTotalPrice ?
+                        <OurText style={styles.priceText}>
+                            {state.cartTotalPrice}
+                        </OurText>
+                    :
+                        <></>
+                    }
                 </View>
             </View>
         </View>

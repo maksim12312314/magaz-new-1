@@ -164,16 +164,17 @@ export const reducer = (state, action) => {
          */
         case ACTION_TYPE_CART_SET_PRODUCTS: {
             const newState = {...state};
+            const { payload, cartTotal } = action;
+            const cart = new Map()
 
-            newState.cartItems = action.payload || [];
+            payload.map( (v, i) => {
+                cart.set(v.product.databaseId, v);
+            });
 
+            newState.cartItems = cart;
             // Расчитываем итоговую цену
-            newState.cartTotalPrice = 0;
-            if ( newState.cartItems.size ) {
-                newState.cartItems.forEach( (value) => {
-                    newState.cartTotalPrice += value.price * value.productQuantity;
-                });
-            }
+            const total = cartTotal.match(/(\d{0,99})\.(\d{0,99})(\D)/);
+            newState.cartTotalPrice = total[1] + total[3];
 
             return newState;
         }

@@ -151,6 +151,10 @@ export const MUTATION_ADD_TO_CART = gql`
     mutation cartAdd($productId: Int!, $quantity: Int!, $clientMutationId: String!) {
         addToCart(input: { productId: $productId, quantity: $quantity, clientMutationId: $clientMutationId }){
             cartItem {
+                key
+                product {
+                    name
+                }
                 quantity
                 subtotal
                 subtotalTax
@@ -170,11 +174,17 @@ export const QUERY_GET_CART = gql`
                     product {
                         databaseId
                         name
+                        image {
+                            mediaDetails {
+                                file
+                            }
+                        }   
                     }
                     quantity
                     total
                 }
             }
+            total
         }
     }
 `;

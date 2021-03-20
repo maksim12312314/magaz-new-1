@@ -36,7 +36,8 @@ const CartItem = (props) => {
         }).start(callback);
         setHeight(PRODUCT_MIN_HEIGHT);
     };
-
+    const total = price.match(/(\d{0,99})\.(\d{0,99})(\D)/);
+    const newPrice = total[1] + total[3];
 
     return (
         <Animated.View style={[styles.mainContainer, { opacity, height }]}>
@@ -48,7 +49,7 @@ const CartItem = (props) => {
             <View style={styles.bottomContainer}>
                 <OurText style={styles.itemCount} params={{quantity: productQuantity}}>cartPcs</OurText>
                 <View style={styles.itemCountController}>
-                    <OurText style={styles.itemPrice}>{price * productQuantity}$</OurText>
+                    <OurText style={styles.itemPrice}>{newPrice}</OurText>
                     <ItemCount productId={productId} quantity={productQuantity} onRemove={onRemove}/>
                 </View>
             </View>

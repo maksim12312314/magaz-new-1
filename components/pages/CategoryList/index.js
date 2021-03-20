@@ -47,39 +47,37 @@ const CategoryList = (props) => {
     }, [navigation]);
 
     useEffect( () => {
-        SyncStorage.init().then(res=>{
-            const token = SyncStorage.get("bearer-token");
-            
-            if ( !token ) {
-                const data = {
-                    title: { text: "cartLoginTitle", params: {} },
-                    text: { text: "cartLoginMessage", params: {} },
-                    animationIn: "fadeInUp",
-                    animationOut: "fadeOutDown",
-                    buttons: [
-                        {
-                            text: "welcomePageContinue",
-                            textStyle: {
-                                color: "#383838",
-                            },
+        const token = SyncStorage.get("bearer-token");
+        
+        if ( !token ) {
+            const data = {
+                title: { text: "cartLoginTitle", params: {} },
+                text: { text: "cartLoginMessage", params: {} },
+                animationIn: "fadeInUp",
+                animationOut: "fadeOutDown",
+                buttons: [
+                    {
+                        text: "welcomePageContinue",
+                        textStyle: {
+                            color: "#383838",
                         },
-                        {
-                            text: "welcomePageRegister",
-                            onPress: (e) => {
-                                navigation.navigate("RegisterPage");
-                            },
+                    },
+                    {
+                        text: "welcomePageRegister",
+                        onPress: (e) => {
+                            navigation.navigate("RegisterPage");
                         },
-                        {
-                            text: "welcomePageLogin",
-                            onPress: (e) => {
-                                navigation.navigate("LoginPage");
-                            },
+                    },
+                    {
+                        text: "welcomePageLogin",
+                        onPress: (e) => {
+                            navigation.navigate("LoginPage");
                         },
-                    ],
-                };
-                dispatch(ShowModal(data));
-            }
-        })
+                    },
+                ],
+            };
+            dispatch(ShowModal(data));
+        }
     }, []);
 
     const { loading, error, data, refetch } = useQuery(QUERY_CATEGORY_LIST, {

@@ -3,7 +3,7 @@ import { View, FlatList, Animated } from "react-native";
 import { useMutation, useQuery } from '@apollo/client';
 import { LinearGradient } from "expo-linear-gradient";
 import { stateContext, dispatchContext } from "~/contexts";
-import { ShowModal } from "~/actions";
+import { ShowModal, SetCartProducts } from "~/actions";
 import { USER_STATUS_LOGGED } from "~/userStatus";
 import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "~/components/Header/index";
 import OurText from "~/components/OurText";
@@ -16,10 +16,9 @@ import { QUERY_GET_CART } from "~/queries";
 import styles from "./styles";
 
 const LocallyAnimatedFlatList = ({data}) => {
-
     const renderItemsBlock = ({item, index}) => {
         return (
-            <CartItem productId={item.productId} name={item.name} price={item.price} productQuantity={item.productQuantity} imageLink={item.imageLink}/>
+            <CartItem productId={item.product.databaseId} name={item.product.name} price={item.total} productQuantity={item.quantity} imageLink={item.product.image.mediaDetails.file}/>
         );
     };
 
@@ -29,7 +28,7 @@ const LocallyAnimatedFlatList = ({data}) => {
             contentContainerStyle={styles.cartList}
             data={data}
             renderItem={renderItemsBlock}
-            keyExtractor={(item) => String(item.productId)}
+            keyExtractor={(item) => String(item.key)}
         />
     )
 };
@@ -42,7 +41,7 @@ const Cart = (props) => {
     const dispatch = useContext(dispatchContext);
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
-
+    console.log("HEY CART ITEMS", state.cartItems)
     useLayoutEffect( () => {
         navigation.setOptions({
             headerLeft: (props) => <HeaderBackButton navigation={navigation}/>,
@@ -62,10 +61,10 @@ const Cart = (props) => {
             color: "#499eda",
         };
         dispatch(AddToast(toast, "CART_FETCH_ERROR"));
-        console.log("Something went wrong",err)
+        console.log("Something went wrong", err)
     };
     const onCompleted = (data) => {
-        console.log("PRIVED CART DATA", data)
+        dispatch(SetCartProducts(data?.cart?.contents?.nodes || [], data?.cart?.total || 0));
     };
     const { loading, error, data, refetch } = useQuery(QUERY_GET_CART, {
         onError,
