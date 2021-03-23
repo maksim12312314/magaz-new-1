@@ -1,18 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, StatusBar } from "react-native";
 import Modal from 'react-native-modal';
-import { stateContext, dispatchContext } from "~/contexts";
+import {useDispatch, useSelector} from "react-redux";
+
+
 import { CloseModal } from "~/actions";
 import OurText from "~/components/OurText";
 import OurTextButton from "~/components/OurTextButton";
 import styles from "./styles";
-
 const BACKDROP_OPACITY = .7;
 
 const OurModal = (props) => {
-    const state = useContext(stateContext);
+    const state = useSelector(state=>state);
     const modal = state.modal;
-    const dispatch = useContext(dispatchContext);
+    const dispatch = useDispatch();
     const defaultButtons = [
         {
             text: "ok",

@@ -33,8 +33,8 @@ export const SetCategoryList = (categories) => {
     return {type: ACTION_TYPE_SET_CATEGORY_LIST, payload: categories};
 };
 
-export const SetCartProducts = (cartItems) => {
-    return {type: ACTION_TYPE_CART_SET_PRODUCTS, payload: cartItems};
+export const SetCartProducts = (cartItems, cartTotal) => {
+    return {type: ACTION_TYPE_CART_SET_PRODUCTS, payload: cartItems, cartTotal};
 };
 
 export const AddProductToCart = (product, dispatch, t) => {

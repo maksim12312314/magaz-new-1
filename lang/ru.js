@@ -1,7 +1,29 @@
 const ru = {
     translation: {
+        welcomePageTitle: "Добро пожаловать!",
+        welcomePageNote: "Чтобы использовать наше приложение, пожалуйста, войдите или зарегестрируйтесь.",
+        welcomePageRegister: "Зарегестрироваться",
+        welcomePageLogin: "Войти",
+        welcomePageContinue: "Продолжить без входа",
+
+        registerPageTitle: "Регистрация",
+        registerPageFormEmail: "Электронная почта",
+        registerPageFormUsername: "Имя пользователя",
+        registerPageFormPassword: "Пароль",
+        registerPageFormPasswordRetype: "Повторите пароль",
+        registerPageErrorPasswordsDontMatch: "Пароли не совпадают!",
+        registerPageErrorPasswordShort: "Пароль слишком короткий!",
+        registerPageErrorUsernameShort: "Имя пользователя слишком короткое!",
+        registerPageErrorUsernameRegistered: "Данное имя уже занято!",
+        registerPageErrorEmailRegistered: "Данный e-mail уже занят!",
+
+        loginPageTitle: "Вход",
+        loginPageErrorWrongData: "Неверный e-mail или пароль!",
+
         categoryListTitle: "Едопровод",
 
+        activityStandBy: "Ожидайте",
+        activityError: "Что-то пошло не так.",
         activityAborted: "Действие отменено.",
         activityError: "Что-то пошло не так. Повторите попытку!",
         activityRefresh: "Обновить",
@@ -13,6 +35,8 @@ const ru = {
         cartDeleteTitle: "Удалить из корзины",
         cartDeleteMessage: "Вы действительно хотите удалить товар из корзины?",
         cartEmpty: "Здесь пусто(",
+        cartLoginTitle: "Требуется вход в учётную запись!",
+        cartLoginMessage: "Войдите или зарегестрируйтесь чтобы продолжить.",
 
         cancel: "Отмена",
         close: "Закрыть",
@@ -31,6 +55,7 @@ const ru = {
         orderInfoCheckEdit: "Редактировать",
         orderInfoCheckOrder: "Оформить заказ",
         orderFormName: "Имя",
+        orderFormEmail: "Электронная почта",
         orderFormPhone: "Телефон",
         orderFormAddress: "Адрес",
         orderFormFloor: "Этаж",
