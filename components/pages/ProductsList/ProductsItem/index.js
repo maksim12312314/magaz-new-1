@@ -1,9 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { View, ActivityIndicator, Dimensions, Animated } from "react-native";
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+
+
 import { STORE_ADDRESS } from "~/config";
-import { dispatchContext, stateContext } from "~/contexts";
+
 import { AddProductToCart, AddToast } from "~/actions";
 import { ListAnimation } from "~/Animations";
 import OurText from "~/components/OurText";
@@ -32,8 +35,8 @@ const ProductsItem = (props) => {
     const { t } = useTranslation();
     const [isModalVisible, setModalVisible] = useState(false);
 
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
     const onError = (err) => {
         const toast = {
             icon: faShoppingBasket,

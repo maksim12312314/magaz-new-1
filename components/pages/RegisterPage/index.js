@@ -1,13 +1,14 @@
-import React, { useState, useLayoutEffect, useContext } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View, KeyboardAvoidingView, ScrollView } from "react-native";
+import {useSelector} from "react-redux";
 
 import { useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {useDispatch} from "react-redux";
 
-import { stateContext, dispatchContext } from "~/contexts";
 import { SetUserData, AddToast } from "~/actions";
 import { USER_STATUS_LOGGED } from "~/userStatus";
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from "~/patterns";
@@ -24,8 +25,8 @@ const USERNAME_MIN_LENGTH = 4;
 const RegisterPage = (props) => {
     const { navigation } = props;
 
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

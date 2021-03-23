@@ -1,10 +1,11 @@
-import React, { useContext, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { View, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import "react-native-get-random-values";
 import { useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
-import { stateContext, dispatchContext } from "~/contexts";
+import {useDispatch, useSelector} from "react-redux";
+
 import { AddOrderToList, ClearCart, ClearDeliveryDetails } from "~/actions";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "~/components/Header";
 import { ORDER_STATUS_TO_BE_SHIPPED } from "~/components/pages/Orders/orderStates";
@@ -24,8 +25,8 @@ const DeliveryDetailsItem = (props) => {
 }
 
 const DeliveryDetailsCheck = (props) => {
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
     const { navigation } = props;
     const { data, isOrderMade } = props.route.params;
     const onError = (err) => {console.log("well shit", err)}

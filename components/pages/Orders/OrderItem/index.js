@@ -1,6 +1,7 @@
-import React, { useState, useContext, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Animated, View, TouchableOpacity, LayoutAnimation } from "react-native";
-import { dispatchContext } from "~/contexts";
+import {useDispatch} from "react-redux";
+
 import { ChangeOrderStatus, DeleteOrder } from "~/actions";
 import { STORE_ADDRESS } from "~/config";
 import OurText from "~/components/OurText";
@@ -21,7 +22,7 @@ const linear = LayoutAnimation.create(
 );
 
 const OrderItem = (props) => {
-    const dispatch = useContext(dispatchContext);
+    const dispatch = useDispatch();
     const { data, navigation } = props;
     const opacity = useRef(new Animated.Value(1)).current;
     const [height, setHeight] = useState(null);

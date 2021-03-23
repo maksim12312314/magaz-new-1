@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
 import { useQuery } from "@apollo/client";
 import { LinearGradient } from 'expo-linear-gradient';
-import { stateContext, dispatchContext } from "~/contexts";
+import {useDispatch, useSelector} from "react-redux";
+
 import { ShowModal } from "~/actions";
 import { QUERY_CATEGORY_LIST } from '~/queries';
 import { expo } from "~/app.json";
@@ -16,8 +17,8 @@ import SyncStorage from "sync-storage";
 /**Список категорий товаров*/
 const CategoryList = (props) => {
     const { navigation } = props;
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
     const abortController = new AbortController();
     const status = state.user.status;

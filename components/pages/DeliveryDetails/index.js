@@ -1,9 +1,10 @@
-import React, { useState, useContext, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View, ScrollView, KeyboardAvoidingView, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTranslation } from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+
 import { PHONE_PATTERN, EMAIL_PATTERN } from "~/patterns";
-import { stateContext, dispatchContext } from "~/contexts";
 import { ChangeDeliveryField } from "~/actions";
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "~/components/Header";
 import OurText from "~/components/OurText";
@@ -12,8 +13,8 @@ import OurTextField from "~/components/OurTextField";
 import styles from "./styles";
 
 const DeliveryDetails = (props) => {
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
     const { navigation } = props;
     const { t } = useTranslation();
     const [gradStart, gradEnd] = ["#1DC44F", "#3BF3AE"];

@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Animated, Dimensions, View, LayoutAnimation } from "react-native";
-import { stateContext } from "~/contexts";
+
 import { STORE_ADDRESS } from "~/config";
 import OurText from "~/components/OurText";
 import OurImage from "~/components/OurImage";
