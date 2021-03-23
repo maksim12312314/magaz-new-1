@@ -1,79 +1,68 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    mainContainer: {
         flexDirection: "column",
+        marginHorizontal: 8,
+        marginBottom: 12,
+    },
+
+    titleContainer: {
+        alignItems: "center",
         justifyContent: "center",
-        paddingVertical: 30,
-        marginHorizontal: 20,
+        paddingVertical: 20,
     },
     title: {
+        color: "#fff",
         fontSize: 26,
-        color: "#fff",
         textAlign: "center",
-        marginLeft: 90,
     },
-    picture: {
+
+    infoContainer: {
+
+    },
+    infoTopContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    attributesContainer: {
+
+    },
+    infoMiddleContainer: {
+        marginVertical: 8,
+    },
+    infoBottomContainer: {
+        height: 48,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    infoPrice: {
         width: 110,
-        height: 110,
-        borderRadius: 36,
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#707070",
-    },
-    right:
-    {
-        flex: 1,
-        marginRight: 40,
-        marginTop: 20,
-    },
-    left:
-    {
-        flex: 1,
-        marginLeft: 8,
-    },
-    card:
-    {
-        width: 350,
-        maxHeight: 400,
-        flexDirection: "row",
-    },
-    bottom:
-    {
-        width: 350,
-        maxHeight: 400,
-        marginTop: 15,
-        flexDirection: "row",
-    },
-    price:
-    {
+        color: "#fff",
         fontSize: 16,
-        color: "#fff",
-        marginLeft: 20,
-    },
-    picker:
-    {
-        width: 180,
-        color: "#fff",
-    },
-    button: {
-        paddingHorizontal: 40,
-        paddingVertical: 5,
-        borderRadius: 15,
         textAlign: "center",
-        justifyContent: 'center',
-        backgroundColor: '#ffffff',
-        marginLeft: 50,
     },
-    text_button: {
+    buyButton: {
+    },
+    buyButtonText: {
         color: "#078998",
-        
     },
-    descriptionText:
-    {
+    descriptionContainer: {
+        paddingTop: 8,
+        paddingHorizontal: 8,
+        maxHeight: 96,
+        overflow: "hidden",
+    },
+    descriptionText: {
         color: "#ffffff",
-    }
+        fontSize: 18,
+    },
+    buy: {
+        flex: .9,
+        justifyContent: "center"
+    },
 });
 
 export default styles;

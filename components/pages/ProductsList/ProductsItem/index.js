@@ -1,102 +1,136 @@
-import React, {useContext, useState} from "react";
-import { ScrollView, Text, Image, View, TouchableOpacity, AsyncStorage } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, ActivityIndicator, Dimensions, Animated } from "react-native";
+import { useMutation, useQuery } from '@apollo/client';
+import { useTranslation } from "react-i18next";
+import { STORE_ADDRESS } from "~/config";
+import { dispatchContext, stateContext } from "~/contexts";
+import { AddProductToCart, AddToast } from "~/actions";
+import { ListAnimation } from "~/Animations";
+import OurText from "~/components/OurText";
+import OurImage from "~/components/OurImage";
+import OurTextButton from "~/components/OurTextButton";
+import GalleryImg from "~/components/Gallery";
+import OurPicker from "~/components/OurPicker";
+import OurImageSlider from "~/components/OurImageSlider";
 import styles from "./styles";
-import config from "../../../../config";
-import { stateContext, dispatchContext } from "../../../../contexts";
-import {Picker} from "native-base";
-import OurText from "../../../OurText";
+import { MUTATION_ADD_TO_CART } from "~/queries";
+import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import client from "~/apollo";
+import { SetCartProducts } from "~/actions";
+import { QUERY_GET_CART } from "~/queries";
 
-const address = config.getCell("StoreAddress");
 
-const AttrPicker = (props) =>
-{
-    const {data, onValueChange} = props;
-    const [selected, setSelected] = useState(data.options[0]);
+const totalHeight = Dimensions.get("window").height;
+const itemWidth = Dimensions.get("window").width;
+const itemHeight = totalHeight / 2;
+const itemHeight2 = itemHeight + 16;
 
-    return (
-        <>
-        <OurText style={{color:  "#FFF", fontWeight: "bold"}}>{data.name}</OurText>
-        <Picker
-            note
-            mode="dropdown"
-            style={styles.picker}
-            selectedValue={selected}
-            onValueChange={(val) => setSelected(val)}
-        >
-            {data.options.map( (v, i) => <Picker.Item label={v} key={i} value={i} />)}
-        </Picker>
-        </>
-    )
-}
-
-const AttrPickersParent = (props) =>
-{
-    const {data} = props;
-    return (
-        <>
-            {data.map( (v, i) =>
-            {
-                return <AttrPicker data={v} key={i}/>
-            })}
-        </>
-    )
-}
 
 /** Список товаров той или иной категории */
-const ProductsItem = (props) =>
-{
-    const {data} = props;
+const ProductsItem = (props) => {
+    const { data, y, index, name, imageUrl } = props;
+    const { t } = useTranslation();
+    const [isModalVisible, setModalVisible] = useState(false);
+
     const state = useContext(stateContext);
     const dispatch = useContext(dispatchContext);
-    const [selected, setSelected] = useState({});
+    const onError = (err) => {
+        const toast = {
+            icon: faShoppingBasket,
+            text: t("activityError"),
+            duration: 3000,
+            color: "#499eda",
+        };
+        dispatch(AddToast(toast, data.databaseId));
+        console.log("Something went wrong", err)
+    };
+    const onCompleted = (d) => {
+        client.query({query:QUERY_GET_CART}).then( (cartData) => {
+            dispatch(SetCartProducts(cartData?.data?.cart?.contents?.nodes || [], cartData.data.cart.total));
+        });
+        const toast = {
+            icon: faShoppingBasket,
+            text: t("productAddedMessage", {product: data.name}),
+            duration: 3000,
+            color: "#499eda",
+        };
+        dispatch(AddToast(toast, "ADD_CART_" + data.databaseId));
+    }
+    const [addToCart, {loading, error}] = useMutation(MUTATION_ADD_TO_CART, {onError, onCompleted});
+
     const itemAttributes = data?.attributes?.nodes || [];
-    
+    const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
+    const images = [url, ...(data?.galleryImages?.nodes.map((obj) => {
+        return `${STORE_ADDRESS}wp-content/uploads/${obj?.mediaDetails?.file}`
+    }))];
+
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+    // Обрабатываем нажатие на кнопку "Купить"
+    const buyProduct = (e, data) => {
+        const productQuantity = 1;
+        addToCart({
+            variables: {
+                productId: data.databaseId,
+                quantity: productQuantity,
+                clientMutationId: state.user.uuid,
+            }
+        });
+        // getCart();
+    };
+
+    const [translate, scale, opacity] = ListAnimation(y, totalHeight, itemHeight2, itemWidth, index);
+
     return (
-        <View style={styles.container}>
-
-            <OurText style={styles.title}>{data.name}</OurText>
-            <View style={styles.card}>
-                <View style={styles.left}>
-                    <Image
-                        style={styles.picture}
-                        source={{uri: data?.image?.mediaDetails?.file ? `${address}wp-content/uploads/` + data.image.mediaDetails.file
-                        :  `${address}wp-content/uploads/woocommerce-placeholder.png` }}
-                    />
-                </View>
-                    <View style={styles.right}>
-                        <AttrPickersParent data={itemAttributes}/>
-                    </View>
+        <Animated.View style={[styles.mainContainer, {height: itemHeight}, { opacity, transform: [{ translateX: translate }, { scale }] }]}>
+            <View style={styles.titleContainer}>
+                <OurText style={styles.title}>{name}</OurText>
             </View>
-                <View style={styles.bottom}>
-                    <OurText style={styles.price}>Цена: {data.price || "Бесплатно"}</OurText>
-                        <TouchableOpacity style={styles.button} onPress={ (e) =>
+            <View style={styles.infoContainer}>
+                <View style={styles.infoTopContainer}>
+                    <OurImage url={url}
+                              onPress={toggleModal} />
+                    <View style={styles.attributesContainer}>
                         {
-                            // Обрабатываем нажатие на кнопку "Купить"
-
-                            // Заносим данные
-                            let payload = {
-                                id: data.productId,
-                                name: data.name,
-                                count: 1,
-                                price: data.price ? data.price.match(/\d{1,5}.*\d*/)[0] : 0,
-                                stockQuantity: data.stockQuantity || 99,
-                                selectedVariants: [
-                                    "variantID"
-                                ]
-                            }
-                            // Добавляем в корзину
-                            dispatch({type: "AddToCart", payload:payload, dispatch: dispatch});
-                        }}>
-                            <OurText style={styles.text_button}>Купить</OurText>
-                        </TouchableOpacity>
-                </View>
-                    <View>
-                        <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
+                            itemAttributes.length !== 0 ?
+                                itemAttributes.map( (attr, i) => {
+                                    return <OurPicker data={attr} key={i}/>
+                                })
+                            :
+                                <></>
+                        }
                     </View>
-        </View>
-            
-
+                    <OurImageSlider data={images} isModalVisible={isModalVisible} toggleModal={toggleModal} />
+                </View>
+                <View style={styles.infoMiddleContainer}>
+                    <GalleryImg data={data?.galleryImages?.nodes}/>
+                </View>
+                <View style={styles.infoBottomContainer}>
+                    <OurText style={styles.infoPrice}
+                             params={{
+                                 price: ( data.price === 0 || !data.price ) ? t("productFree") : data.price
+                             }}>productPrice</OurText>
+                    <View style={styles.buy} >
+                    {
+                        !loading ?
+                            <OurTextButton style={styles.buyButton}
+                                        textStyle={styles.buyButtonText}
+                                        translate={true}
+                                        onPress={(e) => buyProduct(e, data)}
+                            >productBuy</OurTextButton>
+                        :
+                        <ActivityIndicator size={48} color={"#fff"}/>
+                    }
+                    </View>
+                </View>
+            </View>
+            <View style={styles.descriptionContainer}>
+                <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
+            </View>
+        </Animated.View>
     );
-}
+};
 
-export default ProductsItem;
+export default React.memo(ProductsItem);

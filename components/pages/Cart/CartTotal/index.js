@@ -1,25 +1,17 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import React from "react";
+import { View } from "react-native";
+import OurText from "~/components/OurText";
 import styles from "./styles";
-import { stateContext, dispatchContext } from "../../../../contexts";
-import OurText from "../../../OurText";
 
 /** Компонент, который показывает итоговую цену */
-const CartTotal = (props) =>
-{
-    const context = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-    
-    useEffect( () =>
-    {
-        dispatch({type: "ComputeTotalPrice"});
-    }, []);
+const CartTotal = (props) => {
+    const { total } = props;
 
     return (
         <View style={styles.container}>
-            <OurText style={styles.text}>Итого: {context.cartTotalPrice}$</OurText>
+            <OurText style={styles.text} params={{total, currency: "$"}}>cartTotal</OurText>
         </View>
     );
-}
+};
 
-export default CartTotal; 
+export default React.memo(CartTotal); 

@@ -9,6 +9,15 @@ const styles = StyleSheet.create({
         paddingVertical: 0,
         marginHorizontal: 20,
     },
+    view: {
+        margin: 10,
+        maxWidth: 110,
+    },
+    textView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
     title: {
         fontSize: 16,
         color: "#fff",
@@ -21,7 +30,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderWidth: 1,
         borderColor: "#707070",
-    }
+    },
 });
 
 export default styles;

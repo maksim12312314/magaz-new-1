@@ -18,17 +18,13 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderColor: "#FFF",
     },
-    productslist: {
-        minHeight: Dimensions.get("window").height,
-    },
-    loading: {
-        alignSelf: "center",
-        justifyContent: "center",
-    },
-    error: {
-        fontSize: 18,
-        color: "#fff",
-        textAlign: "center",
+    productList: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        minHeight: "100%",
     },
 });
 

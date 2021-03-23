@@ -3,47 +3,53 @@ import { StyleSheet, Dimensions } from "react-native";
 // CART PAGE STYLES
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    flatList: {
+        width: "100%",
+    },
+    cartList: {
         flexDirection: "column",
-        /*justifyContent: "flex-start",
-        alignItems: "center",*/
-        minHeight: Dimensions.get("window").height,
-        //height: Dimensions.get("window").height,
+    },
+    gradient: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        minHeight: "100%",
     },
     items: {
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    itemsBlock: {
+        flex: 1,
         flexDirection: "column",
-    },
-    button_enabled: {
-        paddingHorizontal: 18,
-        paddingVertical: 4,
-        justifyContent: "center",
         alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: '#ffffff',
+        justifyContent: "space-between",
+        width: "100%",
+    },
+    emptyText: {
+        marginTop: 18,
+        color: "#fff",
+        fontSize: 24,
+        textAlign: "center",
+    },
+    cartIcon: {
+        width: 140,
+        borderBottomWidth: 1,
+        borderColor: "#FFF",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        marginBottom: 8,
+    },
+    bottomContainer: {
+        paddingHorizontal: 12,
+        width: "100%",
+    },
+    checkoutButton: {
+        width: Dimensions.get("window").width - 16,
+        width: "100%",
         left: 0,
         right: 0,
         bottom: 0,
-        marginBottom: 50,
-    },
-    button_disabled: {
-        paddingHorizontal: 18,
-        paddingVertical: 4,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        backgroundColor: '#FFFA',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        marginBottom: 50,
-    },
-    text_button: {
-        color: "#E4724F",
+        marginTop: 8,
+        marginBottom: 30,
     },
 });
 

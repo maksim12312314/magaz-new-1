@@ -1,108 +1,93 @@
-import React, { useState, useContext, useEffect } from "react";
-import { stateContext, dispatchContext } from "../../../contexts";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
-import styles from "./styles";
-import Header from "./../../Header/index";
+import React, { useRef, useLayoutEffect } from "react";
+import { Animated, FlatList } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useQuery } from "@apollo/client";
+import { QUERY_PRODUCT_LIST } from "~/queries";
+import { HeaderBackButton, HeaderCartButton, HeaderTitle } from "~/components/Header/index";
+import OurActivityIndicator from "~/components/OurActivityIndicator";
 import ProductsItem from './ProductsItem/index';
-import config from "../../../config";
-import OurText from "../../OurText";
+import styles from "./styles";
 
-const address = config.getCell("StoreAddress");
 
-/**Список товаров той или иной категории */
-const ProductsList = (props) =>
-{
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
-    const [error, setError] = useState(false);
-    
-    // Получаем данные от сервера
-    useEffect( () =>
-    {
-        fetch(`${address}graphql`, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                query: `
-                    {
-                        products(where: {categoryId: ${state.currentCategory.id}}) {
-                            nodes {
-                                productId
-                                name
-                                description
-                                image {
-                                  mediaDetails {
-                                    file
-                                  }
-                                }
-                                ... on VariableProduct {
-                                  variations {
-                                    nodes {
-                                      price
-                                      variationId
-                                      name
-                                    }
-                                  }
-                                  attributes {
-                                    nodes {
-                                      attributeId
-                                      name
-                                      options
-                                    }
-                                  }
-                                }
-                                ... on SimpleProduct {
-                                  price
-                                }
-                              }
-                        }
-                    }
-                `,
-            }),
-            })
-            .then(res => {return res.json()})
-            .then( (res) => 
-                {
-                    const {data} = res
-                    if ( data.errors )
-                        setError(true)
-                    else
-                        // Устанавливаем полученные данные
-                        dispatch({type: "SetProductsList", payload: data, id: state.currentCategory.id});
-                })
-            // Иначе показываем ошибку
-            .catch(err => setError(true))
-    }, [state.currentCategory]);
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+
+const LocallyAnimatedFlatList = ({data, refreshing, onRefresh}) => {
+    const y = useRef(new Animated.Value(0)).current;
+    const onScroll = Animated.event([{ nativeEvent: { contentOffset: { y } } }], {
+        useNativeDriver: true,
+    });
+
+    const renderProductItem = ({item, index}) => {
+        return (
+            <ProductsItem   y={y}
+                            index={index}
+                            id={item.databaseId}
+                            data={item}
+                            name={item.name}
+                            imageUrl={item.image?.mediaDetails?.file} />
+        );
+    };
 
     return (
-            <ScrollView style={styles.view}>
-                <LinearGradient
-                    style={styles.productslist}
-                    locations={[0, 1.0]} 
-                    colors={['#2454e5', '#499eda']}>
-                    <Header {...props} showBack={true} showTitle={true} showCart={true}/>
-                    { state.products && state.products[state.currentCategory.id] ?
-                    <View style={styles.items}>
-                        <View style={styles.headTitle}>
-                            <OurText style={styles.textTitle}>{state.currentCategory.name}</OurText>
-                        </View>
+        <AnimatedFlatList
+            contentContainerStyle={{paddingTop: 12}}
+            initialNumToRender={2}
+            data={data}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            renderItem={ renderProductItem }
+            keyExtractor={item => String(item.databaseId)}
 
-                        {state.products[state.currentCategory.id].map( (v, i) =>
-                            {
-                                return <ProductsItem key={i} data={v}/>
-                            })
-                        }
-                    </View>
-                    : error ? <OurText style={styles.error}>Произошла ошибка при подключении. Проверьте интернет соединение и повторите попытку.</OurText>
-                    : <ActivityIndicator style={styles.loading} size="large" color="#fff"/>
-                    }
-                </LinearGradient>
-            </ScrollView>
+            {...{ onScroll }}
+        />
+    )
+};
 
+const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
+
+/**Список товаров той или иной категории */
+const ProductsList = (props) => {
+    const { navigation } = props;
+    const { currentCategory } = props.route.params;
+    const abortController = new AbortController();
+
+    const [gradStart, gradEnd] = ['#499eda', '#2454e5'];
+
+    useLayoutEffect( () => {
+        navigation.setOptions({
+            headerLeft: (props)=><HeaderBackButton navigation={navigation}/>,
+            headerCenter: (props)=><HeaderTitle navigation={navigation} title={currentCategory.name}/>,
+            headerRight: (props)=><HeaderCartButton navigation={navigation}/>,
+            headerStyle: {
+                backgroundColor: gradStart,
+            },
+        });
+    }, [navigation]);
+
+    const { loading, error, data, refetch } = useQuery(QUERY_PRODUCT_LIST, {
+        variables: { categoryId: currentCategory.id },
+        context: {
+            fetchOptions: {
+                signal: abortController.signal,
+            }
+        },
+        onError: (err) => {console.log(`Error while fetching products in category ${currentCategory.id}`, error)}
+    });
+
+    return (
+        <>
+            <LinearGradient
+                style={styles.productList}
+                locations={[0, 1.0]}
+                colors={[gradStart, gradEnd]} />
+            {
+                ( loading || error || abortController.signal.aborted ) ?
+                    <OurActivityIndicator error={error} abortController={abortController} doRefresh={refetch} buttonTextColor={gradStart}/>
+                :
+                    <MemoedLocallyAnimatedFlatList data={data?.products?.nodes} refreshing={loading} onRefresh={()=>{refetch()}}/>
+            }
+        </>
     );
-}
+};
 
-export default ProductsList;
+export default React.memo(ProductsList);
