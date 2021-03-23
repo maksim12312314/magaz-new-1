@@ -23,9 +23,10 @@ const ru = {
         categoryListTitle: "Едопровод",
 
         activityStandBy: "Ожидайте",
+        activityLoading: "Загрузка...",
         activityError: "Что-то пошло не так.",
+        activityError2: "Что-то пошло не так. Повторите попытку!",
         activityAborted: "Действие отменено.",
-        activityError: "Что-то пошло не так. Повторите попытку!",
         activityRefresh: "Обновить",
 
         cartTitle: "Корзина",

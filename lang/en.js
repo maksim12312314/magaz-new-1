@@ -23,9 +23,10 @@ const en = {
         categoryListTitle: "Edoprovod",
 
         activityStandBy: "Stand By",
+        activityLoading: "Loading...",
         activityError: "Something went wrong.",
+        activityError2: "Something went wrong. Try again!",
         activityAborted: "Action canceled.",
-        activityError: "Something went wrong. Try again!",
         activityRefresh: "Refresh",
 
         cartTitle: "Cart",
