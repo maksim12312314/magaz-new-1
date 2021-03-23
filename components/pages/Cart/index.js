@@ -1,8 +1,9 @@
-import React, {useState, useContext, useLayoutEffect} from "react";
+import React, {useState, useLayoutEffect} from "react";
 import { View, FlatList, Animated } from "react-native";
 import { useMutation, useQuery } from '@apollo/client';
 import { LinearGradient } from "expo-linear-gradient";
-import { stateContext, dispatchContext } from "~/contexts";
+import {useDispatch, useSelector} from "react-redux";
+
 import { ShowModal, SetCartProducts } from "~/actions";
 import { USER_STATUS_LOGGED } from "~/userStatus";
 import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "~/components/Header/index";
@@ -37,8 +38,8 @@ const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
 
 /** Компонент корзины */
 const Cart = (props) => {
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
     console.log("HEY CART ITEMS", state.cartItems)

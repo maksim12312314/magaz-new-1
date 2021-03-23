@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRoute, useNavigationState } from "@react-navigation/native";
 import { View, TouchableOpacity } from "react-native";
 import { faChevronLeft, faShoppingBasket, faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 import { Badge } from 'native-base';
-import { stateContext, dispatchContext } from "~/contexts";
+import {useDispatch, useSelector} from "react-redux";
+
 import OurText from "~/components/OurText";
 import OurIconButton from "~/components/OurIconButton";
 import styles from "./styles.js";
@@ -55,7 +56,7 @@ export const HeaderTitle = (props) => {
 
 export const HeaderCartButton = (props) => {
     const { navigation } =  props;
-    const state = useContext(stateContext);
+    const state = useSelector(state=>state);
 
     const goToCart = (e) => {
         navigation.navigate("Cart");
@@ -101,7 +102,7 @@ export const HeaderCartButton = (props) => {
 
 export const HeaderOrdersButton = (props) => {
     const { navigation } =  props;
-    const state = useContext(stateContext);
+    const state = useSelector(state=>state);
 
     const goToOrders = (e) => {
         navigation.navigate("Orders");
@@ -152,8 +153,8 @@ const Header = (props) =>
     const showBack = (typeof(props.showBack) === "boolean")
         ? props.showBack : !isFirstRouteInParent();
     
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
 
     const goBack = (e) => {
         navigation.goBack();

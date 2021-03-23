@@ -1,7 +1,8 @@
-import React, { useState, useLayoutEffect, useContext, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { View } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
-import { stateContext, dispatchContext } from "~/contexts";
+import {useDispatch, useSelector} from "react-redux";
+
 import { SetUserData } from "~/actions";
 import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_UNREGISTERED, USER_STATUS_LOGGED, USER_STATUS_LOGIN_SKIPPED } from "~/userStatus";
 import { HeaderTitle } from "~/components/Header";
@@ -13,8 +14,8 @@ import styles from "./styles";
 const WelcomePage = (props) => {
     const { navigation } = props;
 
-    const state = useContext(stateContext);
-    const dispatch = useContext(dispatchContext);
+    const state = useSelector(state=>state);
+    const dispatch = useDispatch();
     const status = state.user.status;
 
     const [loading, setLoading] = useState(status === USER_STATUS_NOT_CHECKED);

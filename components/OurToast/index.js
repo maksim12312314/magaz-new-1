@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { KeyboardAvoidingView } from "react-native";
-import { stateContext } from "~/contexts";
+import {useSelector} from "react-redux";
+
+
 import ToastItem from "./ToastItem";
-import { v4 as uuidv4 } from 'uuid';
+
 import styles from "./styles";
 
 const OurToast = (props) => {
-    const state = useContext(stateContext);
+    const state = useSelector(state=>state);
     const toasts = Array.from(state.toasts.values());
 
     return (

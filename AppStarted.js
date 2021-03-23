@@ -3,10 +3,14 @@ import { AppRegistry } from "react-native";
 import { ApolloProvider } from '@apollo/client';
 import { NavigationContainer } from "@react-navigation/native";
 import { enableScreens } from "react-native-screens";
-import { expo } from "./app.json";
+
+
+import {createStore, applyMiddleware} from "redux";
+import {Provider} from "react-redux";
+import thunk from "redux-thunk";
+
 import { reducer, initialState } from "./reducer";
-import { ShowModal } from "./actions";
-import { stateContext, dispatchContext } from "./contexts";
+
 import { createDBTables } from "./db_handler";
 import AppStackNavigator from "./navigation";
 import OurModal from "./components/OurModal";
@@ -18,21 +22,27 @@ import "./utils";
 
 enableScreens();
 
+
+const store = createStore(reducer, initialState, applyMiddleware(thunk));
+
+
 /** Контейнер приложения **/
 const AppContainer = () => {
 	return (
 		<>
+		<Provider store={store}>
 			<NavigationContainer>
 				<AppStackNavigator/>
 			</NavigationContainer>
 			<OurModal/>
 			<OurToast/>
+		</Provider>
 		</>
 	);	
 }
 
 const AppStarted = () => {
-	const [state, dispatch] = useReducer(reducer, initialState);
+
 
 	useEffect( () => {
 		createDBTables();
@@ -40,13 +50,10 @@ const AppStarted = () => {
 	}, []);
 
 	return (
-		<stateContext.Provider value={state}>
-			<dispatchContext.Provider value={dispatch}>
 				<ApolloProvider client={client}>
 					<AppContainer/>
 				</ApolloProvider>
-			</dispatchContext.Provider>
-		</stateContext.Provider>
+
 	);
 };
 

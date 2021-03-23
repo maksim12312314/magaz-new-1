@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState, useRef }  from "react";
+import React, { useEffect, useState, useRef }  from "react";
 import { Animated, Easing, Dimensions, View, LayoutAnimation } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { dispatchContext } from "~/contexts";
+import {useDispatch, useSelector} from "react-redux";
 import { DeleteToast } from "~/actions";
 import OurText from "~/components/OurText";
 import styles from "./styles";
@@ -18,7 +18,7 @@ const easeInEaseOut = LayoutAnimation.create(
 
 const ToastItem = (props) => {
     const { id, duration, text, icon, color, translate } = props;
-    const dispatch = useContext(dispatchContext);
+    const dispatch = useDispatch();
     const [timer, setTimer] = useState(null);
     const [height, setHeight] = useState(TOAST_HEIGHT_MIN);
     const anim = useRef(new Animated.Value(0)).current;
