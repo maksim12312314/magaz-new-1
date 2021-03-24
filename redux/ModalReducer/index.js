@@ -9,18 +9,18 @@ export const initialModalState = {
     buttons: [], // Кнопки
 };
 
-const modalReducer = ( state = initialCartState, action ) => {
+const modalReducer = ( state = initialModalState, action ) => {
     switch (action.type) {
 
         /**
          * Открывает модальное окно
          */
         case MODAL_SHOW: {
-            const newState = {...state};
             const { payload } = action;
+            let newState = {...state};
             if ( payload )
-                newState.modal = { ...newState.modal, ...payload }
-            newState.modal.visible = true;
+                newState = { ...newState.modal, ...payload }
+            newState.visible = true;
 
             return newState;
         }
@@ -30,7 +30,7 @@ const modalReducer = ( state = initialCartState, action ) => {
          */
         case MODAL_CLOSE: {
             const newState = {...state};
-            newState.modal.visible = false;
+            newState.visible = false;
 
             return newState;
         }
@@ -39,11 +39,11 @@ const modalReducer = ( state = initialCartState, action ) => {
          * Переключает состояние модального окна
          */
         case MODAL_TOGGLE: {
-            const newState = {...state};
             const { payload } = action;
+            let newState = {...state};
             if ( payload )
-                newState.modal = { ...newState.modal, ...payload }
-            newState.modal.visible = !newState.modal.visible;
+                newState = { ...newState.modal, ...payload }
+            newState.visible = !newState.visible;
 
             return newState;
         }
