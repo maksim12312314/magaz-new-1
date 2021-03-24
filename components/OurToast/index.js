@@ -7,7 +7,7 @@ import styles from "./styles";
 
 const OurToast = (props) => {
     const state = useSelector(state=>state);
-    const toasts = Array.from(state.toasts.values());
+    const toasts = Array.from(state.toastReducer.toastList.values());
 
     return (
         <KeyboardAvoidingView behavior={"padding"} pointerEvents="box-none" style={styles.mainContainer}>

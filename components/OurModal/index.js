@@ -10,8 +10,7 @@ import styles from "./styles";
 const BACKDROP_OPACITY = .7;
 
 const OurModal = (props) => {
-    const state = useSelector(state=>state);
-    const modal = state.modal;
+    const modal = useSelector(state=>state.modalReducer);
     const dispatch = useDispatch();
     const defaultButtons = [
         {
