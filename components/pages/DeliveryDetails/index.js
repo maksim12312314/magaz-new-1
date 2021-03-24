@@ -1,11 +1,12 @@
 import React, { useState, useLayoutEffect } from "react";
-import { View, ScrollView, KeyboardAvoidingView, Dimensions } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useTranslation } from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
 
-import { PHONE_PATTERN, EMAIL_PATTERN } from "~/patterns";
-import { ChangeDeliveryField } from "~/actions";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { ChangeDeliveryField } from "~/redux/DeliveryDetailsReducer/actions";
+import { PHONE_PATTERN, EMAIL_PATTERN } from "~/utils/patterns";
+
 import { HeaderBackButton, HeaderTitle, HeaderCartButton } from "~/components/Header";
 import OurText from "~/components/OurText";
 import OurTextButton from "~/components/OurTextButton";

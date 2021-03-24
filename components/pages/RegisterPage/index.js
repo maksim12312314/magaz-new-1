@@ -1,24 +1,22 @@
 import React, { useState, useLayoutEffect } from "react";
 import { View, KeyboardAvoidingView, ScrollView } from "react-native";
-import {useSelector} from "react-redux";
+import { LinearGradient } from 'expo-linear-gradient';
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
+import { useSelector, useDispatch } from "react-redux";
 import { useMutation } from '@apollo/client';
 import { v4 as uuidv4 } from 'uuid';
 
-import { LinearGradient } from 'expo-linear-gradient';
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import {useDispatch} from "react-redux";
+import { AddToast } from "~/redux/ToastReducer/actions";
+import { MUTATION_REGISTER_USER } from "~/apollo/queries";
+import { EMAIL_PATTERN, PASSWORD_PATTERN } from "~/utils/patterns";
 
-import { SetUserData, AddToast } from "~/actions";
-import { USER_STATUS_LOGGED } from "~/userStatus";
-import { EMAIL_PATTERN, PASSWORD_PATTERN } from "~/patterns";
-import { MUTATION_REGISTER_USER } from "~/queries";
 import { HeaderTitle, HeaderBackButton } from "~/components/Header";
-
 import OurTextField from "~/components/OurTextField";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import OurTextButton from "~/components/OurTextButton";
 import styles from "./styles";
+import SyncStorage from "sync-storage";
 
 const USERNAME_MIN_LENGTH = 4;
 
@@ -27,11 +25,13 @@ const RegisterPage = (props) => {
 
     const state = useSelector(state=>state);
     const dispatch = useDispatch();
+
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [passwordRetype, setPasswordRetype] = useState("");
     const [gradStart, gradMiddle, gradEnd] = ["#B0E8E4", "#86A8E7","#7F7FD5"];
+
     const customerId = uuidv4();
 
     const onError = (err) => {
@@ -47,17 +47,7 @@ const RegisterPage = (props) => {
     };
     const onCompleted = (data) => {
         console.log("USER REGISTERED", data);
-        const userData = {
-            status: USER_STATUS_LOGGED, // Состояние пользователя
-            uuid: customerId,
-            databaseId: data.login.user.databaseId,
-            username,
-            email,
-            password,
-            jwtAuthToken: data.registerUser.user.jwtAuthToken,
-            jwtRefreshToken: data.registerUser.user.jwtRefreshToken,
-        };
-        dispatch(SetUserData(userData));
+        SyncStorage.set("user-uuid", customerId);
         
         navigation.popToTop();
     };

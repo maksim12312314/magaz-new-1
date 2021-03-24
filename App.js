@@ -4,7 +4,11 @@ import { expo } from "./app.json";
 import { createDBTables } from "./utils/db_handler";
 import SyncStorage from "sync-storage";
 
-import AppStarted from "./AppStarted";
+import "react-native-get-random-values";
+import "./i18n";
+import "./utils";
+
+import Main from "./Main";
 import LoadingScreen from "./components/pages/LoadingScreen";
 
 const App = () => {
@@ -24,12 +28,12 @@ const App = () => {
 
 	return (
 		loaded ?
-			<AppStarted/>
+			<Main/>
 		:
 			<LoadingScreen />
 	);
 };
 
-AppRegistry.registerComponent(expo.name, () => App);
+AppRegistry.registerComponent(expo.name, App, null);
 
 export default App;

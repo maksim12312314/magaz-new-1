@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { View, ActivityIndicator, Dimensions, Animated } from "react-native";
-import { useMutation, useQuery } from '@apollo/client';
+
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { AddProductToCart } from "~/redux/CartReducer/actions";
 
-import { STORE_ADDRESS } from "~/config";
-import { AddToast, SetCartProducts } from "~/actions";
-import { MUTATION_ADD_TO_CART, QUERY_GET_CART } from "~/apollo/queries";
-import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { STORE_ADDRESS } from "~/utils/config";
+import { HTML_PATTERN }  from "~/utils/patterns";
 import { ListAnimation } from "./animation";
-
-import client from "~/apollo";
 
 import OurText from "~/components/OurText";
 import OurImage from "~/components/OurImage";
@@ -35,29 +32,6 @@ const ProductsItem = (props) => {
 
     const state = useSelector(state=>state);
     const dispatch = useDispatch();
-    const onError = (err) => {
-        const toast = {
-            icon: faShoppingBasket,
-            text: t("activityError"),
-            duration: 3000,
-            color: "#499eda",
-        };
-        dispatch(AddToast(toast, data.databaseId));
-        console.log("Something went wrong", err)
-    };
-    const onCompleted = (d) => {
-        client.query({query:QUERY_GET_CART}).then( (cartData) => {
-            dispatch(SetCartProducts(cartData?.data?.cart?.contents?.nodes || [], cartData.data.cart.total));
-        });
-        const toast = {
-            icon: faShoppingBasket,
-            text: t("productAddedMessage", {product: data.name}),
-            duration: 3000,
-            color: "#499eda",
-        };
-        dispatch(AddToast(toast, "ADD_CART_" + data.databaseId));
-    }
-    const [addToCart, {loading, error}] = useMutation(MUTATION_ADD_TO_CART, {onError, onCompleted});
 
     const itemAttributes = data?.attributes?.nodes || [];
     const url = data?.image?.mediaDetails?.file ? `${STORE_ADDRESS}wp-content/uploads/${data?.image?.mediaDetails?.file}` : null;
@@ -72,14 +46,8 @@ const ProductsItem = (props) => {
     // Обрабатываем нажатие на кнопку "Купить"
     const buyProduct = (e, data) => {
         const productQuantity = 1;
-        addToCart({
-            variables: {
-                productId: data.databaseId,
-                quantity: productQuantity,
-                clientMutationId: state.user.uuid,
-            }
-        });
-        // getCart();
+        // TODO
+        dispatch(AddProductToCart());
     };
 
     const [translate, scale, opacity] = ListAnimation(y, totalHeight, itemHeight2, itemWidth, index);
@@ -128,7 +96,7 @@ const ProductsItem = (props) => {
                 </View>
             </View>
             <View style={styles.descriptionContainer}>
-                <OurText style={styles.descriptionText}>{data.description?.replace(/<\/*.+?\/*>/gi, "") || ""}</OurText>
+                <OurText style={styles.descriptionText}>{data.description?.replace(HTML_PATTERN, "") || ""}</OurText>
             </View>
         </Animated.View>
     );

@@ -1,14 +1,15 @@
 import React, { useState, useRef } from "react";
 import { Animated, View, TouchableOpacity, LayoutAnimation } from "react-native";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { ChangeOrderStatus, DeleteOrder } from "~/actions";
-import { STORE_ADDRESS } from "~/config";
+import { ChangeOrderStatus, DeleteOrder } from "~/redux/OrdersReducer/actions";
+import { statusToText, ORDER_STATUS_CANCELED } from "../orderStates";
+import { STORE_ADDRESS } from "~/utils/config";
+
 import OurText from "~/components/OurText";
 import OurTextButton from "~/components/OurTextButton";
 import OurImage from "~/components/OurImage";
 import OurImageSlider from "~/components/OurImageSlider";
-import { statusToText, ORDER_STATUS_CANCELED } from "../orderStates";
 import styles from "./styles";
 
 const MAX_IMAGES = 4;

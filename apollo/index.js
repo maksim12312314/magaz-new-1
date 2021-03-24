@@ -1,5 +1,5 @@
 import { ApolloClient, HttpLink, ApolloLink, InMemoryCache } from '@apollo/client';
-import { STORE_ADDRESS } from "./config";
+import { STORE_ADDRESS } from "~/utils/config";
 import SyncStorage from "sync-storage";
 
 const httpLink = new HttpLink({

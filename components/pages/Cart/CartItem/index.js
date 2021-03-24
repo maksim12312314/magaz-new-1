@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Animated, Dimensions, View, LayoutAnimation } from "react-native";
 
-import { STORE_ADDRESS } from "~/config";
+import { STORE_ADDRESS } from "~/utils/config";
+
 import OurText from "~/components/OurText";
 import OurImage from "~/components/OurImage";
 import OurImageSlider from "~/components/OurImageSlider";
-import ItemCount from "./ItemCount";
+//import ItemCount from "./ItemCount";
 import styles from "./styles";
 
 const ANIMATION_DURATION = 200;
@@ -50,7 +51,7 @@ const CartItem = (props) => {
                 <OurText style={styles.itemCount} params={{quantity: productQuantity}}>cartPcs</OurText>
                 <View style={styles.itemCountController}>
                     <OurText style={styles.itemPrice}>{newPrice}</OurText>
-                    <ItemCount productId={productId} quantity={productQuantity} onRemove={onRemove}/>
+                    {/*<ItemCount productId={productId} quantity={productQuantity} onRemove={onRemove}/>*/}
                 </View>
             </View>
             <View style={styles.borderContainer}>

@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { View, StatusBar } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { CloseModal } from "~/redux/ModalReducer/actions";
+
 import Modal from 'react-native-modal';
-import {useDispatch, useSelector} from "react-redux";
-
-
-import { CloseModal } from "~/actions";
 import OurText from "~/components/OurText";
 import OurTextButton from "~/components/OurTextButton";
 import styles from "./styles";

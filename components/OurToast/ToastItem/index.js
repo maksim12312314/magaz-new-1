@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef }  from "react";
 import { Animated, Easing, Dimensions, View, LayoutAnimation } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {useDispatch, useSelector} from "react-redux";
-import { DeleteToast } from "~/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { DeleteToast } from "~/redux/ToastReducer/actions";
 import OurText from "~/components/OurText";
 import styles from "./styles";
 

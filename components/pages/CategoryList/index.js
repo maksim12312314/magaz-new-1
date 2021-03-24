@@ -1,17 +1,19 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import { FlatList } from "react-native";
-import { useQuery } from "@apollo/client";
 import { LinearGradient } from 'expo-linear-gradient';
-import {useDispatch, useSelector} from "react-redux";
 
-import { ShowModal } from "~/actions";
-import { QUERY_CATEGORY_LIST } from '~/queries';
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@apollo/client";
+import { QUERY_CATEGORY_LIST } from '~/apollo/queries';
+import { ShowModal } from "~/redux/ModalReducer/actions";
+
 import { expo } from "~/app.json";
+import SyncStorage from "sync-storage";
+
 import { HeaderTitle, HeaderCartButton } from "~/components/Header";
 import OurActivityIndicator from "~/components/OurActivityIndicator";
 import CategoryItem from "./CategoryItem";
 import styles from "./styles";
-import SyncStorage from "sync-storage";
 
 
 /**Список категорий товаров*/

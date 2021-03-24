@@ -1,10 +1,8 @@
 import React from "react";
 import { KeyboardAvoidingView } from "react-native";
-import {useSelector} from "react-redux";
-
+import { useSelector } from "react-redux";
 
 import ToastItem from "./ToastItem";
-
 import styles from "./styles";
 
 const OurToast = (props) => {
