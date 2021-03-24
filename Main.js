@@ -13,11 +13,6 @@ import AppStackNavigator from "./navigation";
 import OurModal from "./components/OurModal";
 import OurToast from "~/components/OurToast";
 
-import "react-native-get-random-values";
-import "./i18n";
-import "./utils";
-
-
 enableScreens();
 
 const Main = () => {
