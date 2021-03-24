@@ -1,35 +1,31 @@
-import React, { useReducer, useEffect } from "react";
-import { AppRegistry } from "react-native";
+import React from "react";
 import { ApolloProvider } from '@apollo/client';
+
 import { NavigationContainer } from "@react-navigation/native";
 import { enableScreens } from "react-native-screens";
 
-
-import {createStore, applyMiddleware} from "redux";
-import {Provider} from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
 import { reducer, initialState } from "./reducer";
 
-import { createDBTables } from "./db_handler";
 import AppStackNavigator from "./navigation";
 import OurModal from "./components/OurModal";
 import OurToast from "~/components/OurToast";
 import client from "./apollo";
+
 import "react-native-get-random-values";
 import "./i18n";
 import "./utils";
 
 enableScreens();
 
-
 const store = createStore(reducer, initialState, applyMiddleware(thunk));
-
 
 /** Контейнер приложения **/
 const AppContainer = () => {
 	return (
-		<>
 		<Provider store={store}>
 			<NavigationContainer>
 				<AppStackNavigator/>
@@ -37,23 +33,15 @@ const AppContainer = () => {
 			<OurModal/>
 			<OurToast/>
 		</Provider>
-		</>
 	);	
 }
 
 const AppStarted = () => {
 
-
-	useEffect( () => {
-		createDBTables();
-		
-	}, []);
-
 	return (
-				<ApolloProvider client={client}>
-					<AppContainer/>
-				</ApolloProvider>
-
+		<ApolloProvider client={client}>
+			<AppContainer/>
+		</ApolloProvider>
 	);
 };
 

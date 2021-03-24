@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { View, ActivityIndicator, Dimensions, Animated } from "react-native";
 import { useMutation, useQuery } from '@apollo/client';
 import { useTranslation } from "react-i18next";
-import {useDispatch, useSelector} from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 
 import { STORE_ADDRESS } from "~/config";
+import { AddToast, SetCartProducts } from "~/actions";
+import { MUTATION_ADD_TO_CART, QUERY_GET_CART } from "~/apollo/queries";
+import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
+import { ListAnimation } from "./animation";
 
-import { AddProductToCart, AddToast } from "~/actions";
-import { ListAnimation } from "~/Animations";
+import client from "~/apollo";
+
 import OurText from "~/components/OurText";
 import OurImage from "~/components/OurImage";
 import OurTextButton from "~/components/OurTextButton";
@@ -16,11 +19,6 @@ import GalleryImg from "~/components/Gallery";
 import OurPicker from "~/components/OurPicker";
 import OurImageSlider from "~/components/OurImageSlider";
 import styles from "./styles";
-import { MUTATION_ADD_TO_CART } from "~/queries";
-import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
-import client from "~/apollo";
-import { SetCartProducts } from "~/actions";
-import { QUERY_GET_CART } from "~/queries";
 
 
 const totalHeight = Dimensions.get("window").height;

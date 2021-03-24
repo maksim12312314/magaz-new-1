@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useRoute, useNavigationState } from "@react-navigation/native";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, LayoutAnimation } from "react-native";
+import { useQuery } from '@apollo/client';
+import { QUERY_GET_CART } from "~/queries";
 import { faChevronLeft, faShoppingBasket, faBoxOpen } from '@fortawesome/free-solid-svg-icons';
 import { Badge } from 'native-base';
-import {useDispatch, useSelector} from "react-redux";
+import { SetCartProducts } from "~/actions";
 
+import OurActivityIndicator from "~/components/OurActivityIndicator";
 import OurText from "~/components/OurText";
 import OurIconButton from "~/components/OurIconButton";
 import styles from "./styles.js";
@@ -54,9 +58,35 @@ export const HeaderTitle = (props) => {
     );
 };
 
+const easeInEaseOut = LayoutAnimation.create(
+    200,
+    LayoutAnimation.Types.easeInEaseOut,
+    LayoutAnimation.Properties.scaleY,
+);
+
 export const HeaderCartButton = (props) => {
     const { navigation } =  props;
     const state = useSelector(state=>state);
+    const dispatch = useDispatch();
+
+    const onError = (err) => {
+        const toast = {
+            icon: faShoppingBasket,
+            text: t("activityError"),
+            duration: 3000,
+            color: "#499eda",
+        };
+        dispatch(AddToast(toast, "CART_FETCH_ERROR"));
+        console.log("Something went wrong", err)
+    };
+    const onCompleted = (data) => {
+        LayoutAnimation.configureNext(easeInEaseOut);
+        dispatch(SetCartProducts(data?.cart?.contents?.nodes || [], data?.cart?.total || 0));
+    };
+    const { loading, error, data, refetch } = useQuery(QUERY_GET_CART, {
+        onError,
+        onCompleted,
+    });
 
     const goToCart = (e) => {
         navigation.navigate("Cart");
@@ -68,20 +98,25 @@ export const HeaderCartButton = (props) => {
                 <View style={styles.iconCart}>
                     <OurIconButton icon={faShoppingBasket} size={50} onPress={goToCart}>
                         {
-                            state?.cartItems?.size ?
+                            state?.cartItems?.size || loading ?
                                 <Badge success style={styles.badge}>
-                                    <OurText style={styles.badgeText}>
-                                        {
-                                            state?.cartItems?.size ?
-                                                (() => {
-                                                    if ( state.cartItems.size < 10 )
-                                                        return state.cartItems.size;
-                                                    else
-                                                        return "9+";
-                                                })()
-                                                : <></>
-                                        }
-                                    </OurText>
+                                    {
+                                        loading ?
+                                            <OurActivityIndicator size={20} oneState={true}/>
+                                        :
+                                            <OurText style={styles.badgeText}>
+                                                {
+                                                    state?.cartItems?.size ?
+                                                        (() => {
+                                                            if ( state.cartItems.size < 10 )
+                                                                return state.cartItems.size;
+                                                            else
+                                                                return "9+";
+                                                        })()
+                                                        : <></>
+                                                }
+                                            </OurText>
+                                    }
                                 </Badge>
                                 : <></>
                         }

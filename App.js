@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { AppRegistry } from "react-native";
-import { enableScreens } from "react-native-screens";
 import { expo } from "./app.json";
-import AppStarted from "./AppStarted";
-import LoadingScreen from "./components/pages/LoadingScreen";
-
+import { createDBTables } from "./utils/db_handler";
 import SyncStorage from "sync-storage";
 
-
-enableScreens();
-
+import AppStarted from "./AppStarted";
+import LoadingScreen from "./components/pages/LoadingScreen";
 
 const App = () => {
 	const [loaded, setLoaded] = useState(false);
 
+	const initApp = async () => {
+		await SyncStorage.init();
+		console.log("SyncStorage initialized.");
+		await createDBTables();
+		console.log("Database initialized.");
+
+		setLoaded(true);
+	};
 	useEffect( () => {
-		SyncStorage.init().then(res=> {
-			//setTimeout(() => {
-				console.log("App init");
-				setLoaded(true);
-			//}, 2000 * Math.random()); // Ну красиво же
-		})
-		
+		initApp();
 	}, []);
 
 	return (

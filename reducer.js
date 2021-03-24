@@ -36,11 +36,11 @@ import {
     updateOrderStatus,
     deleteOrderFromDB,
     updateUserTokens,
-} from "./db_handler";
+} from "./utils/db_handler";
 import { AddToast } from "./actions";
-import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_TOKEN_EXPIRED } from "./userStatus";
-import { STORE_ADDRESS } from "./config";
-import { getUserLoginQuery } from "./queries";
+import { USER_STATUS_NOT_CHECKED, USER_STATUS_REGISTERED, USER_STATUS_TOKEN_EXPIRED } from "./utils/userStatus";
+import { STORE_ADDRESS } from "./utils/config";
+import { getUserLoginQuery } from "./apollo/queries";
 
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
