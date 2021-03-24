@@ -16,7 +16,7 @@ const toastReducer = ( state = initialToastState, action ) => {
 
             if ( payload ) {
                 payload.id = id || uuidv4();
-                newState.toasts.set(payload.id, payload);
+                newState.toastList.set(payload.id, payload);
                 return newState;
             }
             return state;
@@ -30,7 +30,7 @@ const toastReducer = ( state = initialToastState, action ) => {
             const { id } = action;
             
             if ( id ) {
-                newState.toasts.delete(id)
+                newState.toastList.delete(id)
                 return newState;
             }
             return state;
@@ -44,7 +44,7 @@ const toastReducer = ( state = initialToastState, action ) => {
             const { id, duration } = action;
             
             if ( id && duration ) {
-                const toast = newState.toasts.get(id);
+                const toast = newState.toastList.get(id);
                 toast.duration = duration;
                 newState.toast.set(id, toast);
                 return newState;
