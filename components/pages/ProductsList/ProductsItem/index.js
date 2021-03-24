@@ -29,6 +29,7 @@ const ProductsItem = (props) => {
     const { data, y, index, name, imageUrl } = props;
     const { t } = useTranslation();
     const [isModalVisible, setModalVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const state = useSelector(state=>state);
     const dispatch = useDispatch();
@@ -44,10 +45,10 @@ const ProductsItem = (props) => {
     };
 
     // Обрабатываем нажатие на кнопку "Купить"
-    const buyProduct = (e, data) => {
+    const buyProduct = (e) => {
         const productQuantity = 1;
-        // TODO
-        dispatch(AddProductToCart());
+
+        dispatch(AddProductToCart(data.databaseId, name, productQuantity, setLoading));
     };
 
     const [translate, scale, opacity] = ListAnimation(y, totalHeight, itemHeight2, itemWidth, index);
@@ -87,7 +88,7 @@ const ProductsItem = (props) => {
                             <OurTextButton style={styles.buyButton}
                                         textStyle={styles.buyButtonText}
                                         translate={true}
-                                        onPress={(e) => buyProduct(e, data)}
+                                        onPress={(e) => buyProduct(e)}
                             >productBuy</OurTextButton>
                         :
                         <ActivityIndicator size={48} color={"#fff"}/>

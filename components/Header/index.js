@@ -69,6 +69,10 @@ export const HeaderCartButton = (props) => {
         navigation.navigate("Cart");
     };
 
+    useEffect( () => {
+        LayoutAnimation.configureNext(easeInEaseOut);
+    }, [state.total]);
+
     return (
         <View style={styles.container}>
             <View style={styles.cartContainer}>
@@ -99,9 +103,9 @@ export const HeaderCartButton = (props) => {
                         }
                     </OurIconButton>
                     {
-                    state.cartTotalPrice ?
+                    state.total ?
                         <OurText style={styles.priceText}>
-                            {state.cartTotalPrice}
+                            {state.total}
                         </OurText>
                     :
                         <></>
