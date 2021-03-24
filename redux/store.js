@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
 import thunk from "redux-thunk";
 
 import cartReducer from "./CartReducer";
@@ -7,13 +7,6 @@ import toastReducer from "./ToastReducer";
 import ordersReducer from "./OrdersReducer";
 import deliveryDetailsReducer from "./DeliveryDetailsReducer";
 
-console.log("REDUCERS", 
-    cartReducer,
-    modalReducer,
-    toastReducer,
-    ordersReducer,
-    deliveryDetailsReducer)
-
 const reducer = combineReducers({
     cartReducer,
     modalReducer,
@@ -21,8 +14,10 @@ const reducer = combineReducers({
     ordersReducer,
     deliveryDetailsReducer,
 });
-console.log("REDUCERS COMBINED")
 
-const store = createStore(reducer, applyMiddleware(thunk));
+const store = createStore(reducer, compose(
+    applyMiddleware(thunk),
+    (window && (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)()
+));
 
 export default store;
