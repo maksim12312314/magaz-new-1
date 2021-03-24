@@ -63,7 +63,7 @@ const easeInEaseOut = LayoutAnimation.create(
 
 export const HeaderCartButton = (props) => {
     const { navigation } =  props;
-    const state = useSelector(state=>state);
+    const state = useSelector(state=>state.cartReducer);
 
     const goToCart = (e) => {
         navigation.navigate("Cart");
@@ -75,20 +75,20 @@ export const HeaderCartButton = (props) => {
                 <View style={styles.iconCart}>
                     <OurIconButton icon={faShoppingBasket} size={50} onPress={goToCart}>
                         {
-                            state?.cartItems?.size ?
+                            state.productList?.size || state.loading ?
                                 <Badge success style={styles.badge}>
                                     {
-                                        false ?
+                                        state.loading ?
                                             <OurActivityIndicator size={20} oneState={true}/>
                                         :
                                             <OurText style={styles.badgeText}>
                                                 {
-                                                    state?.cartItems?.size ?
+                                                    state?.productList?.size ?
                                                         (() => {
-                                                            if ( state.cartItems.size < 10 )
-                                                                return state.cartItems.size;
+                                                            if ( state.productList.size < 19 )
+                                                                return state.productList.size;
                                                             else
-                                                                return "9+";
+                                                                return "99+";
                                                         })()
                                                         : <></>
                                                 }

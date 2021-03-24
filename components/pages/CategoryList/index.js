@@ -3,6 +3,7 @@ import { FlatList } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useDispatch, useSelector } from "react-redux";
+import { FetchCartProductList } from "~/redux/CartReducer/actions";
 import { useQuery } from "@apollo/client";
 import { QUERY_CATEGORY_LIST } from '~/apollo/queries';
 import { ShowModal } from "~/redux/ModalReducer/actions";
@@ -23,7 +24,6 @@ const CategoryList = (props) => {
     const dispatch = useDispatch();
     const [gradStart, gradEnd] = ["#65B7B9", "#078998"];
     const abortController = new AbortController();
-    const status = state.user.status;
 
     const showAppInfo = (e) => {
         const data = {
@@ -36,6 +36,8 @@ const CategoryList = (props) => {
             }]
         };
         dispatch(ShowModal(data));
+        SyncStorage.set("bearer-token", null);
+        SyncStorage.set("user-uuid", null);
     };
 
     useLayoutEffect( () => {
@@ -52,7 +54,9 @@ const CategoryList = (props) => {
     useEffect( () => {
         const token = SyncStorage.get("bearer-token");
         
-        if ( !token ) {
+        if ( token ) {
+            dispatch(FetchCartProductList);
+        } else {
             const data = {
                 title: { text: "cartLoginTitle", params: {} },
                 text: { text: "cartLoginMessage", params: {} },

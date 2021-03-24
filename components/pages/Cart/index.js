@@ -1,8 +1,10 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { View, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
+import { FetchCartProductList } from "~/redux/CartReducer/actions";
 import { ShowModal } from "~/redux/ModalReducer/actions";
+import SyncStorage from "sync-storage";
 
 import { HeaderBackButton, HeaderTitle, HeaderOrdersButton } from "~/components/Header/index";
 import CartItem from "./CartItem";
@@ -34,10 +36,16 @@ const MemoedLocallyAnimatedFlatList = React.memo(LocallyAnimatedFlatList);
 
 /** Компонент корзины */
 const Cart = (props) => {
-    const state = useSelector(state=>state);
+    const state = useSelector(state=>state.cartReducer);
     const dispatch = useDispatch();
     const { navigation } = props;
     const [gradStart, gradEnd] = ["#E81C1C", "#E4724F"];
+
+    useEffect(() => {
+        if ( !state.loading ) {
+            dispatch(FetchCartProductList);
+        }
+    }, []);
 
     useLayoutEffect( () => {
         navigation.setOptions({
@@ -49,27 +57,9 @@ const Cart = (props) => {
             },
         });
     }, [navigation]);
-    /*
-    const onError = (err) => {
-        const toast = {
-            icon: faShoppingBasket,
-            text: t("activityError"),
-            duration: 3000,
-            color: "#499eda",
-        };
-        dispatch(AddToast(toast, "CART_FETCH_ERROR"));
-        console.log("Something went wrong", err)
-    };
-    const onCompleted = (data) => {
-        dispatch(SetCartProducts(data?.cart?.contents?.nodes || [], data?.cart?.total || 0));
-    };
-    const { loading, error, data, refetch } = useQuery(QUERY_GET_CART, {
-        onError,
-        onCompleted,
-    });*/
 
     const toDeliveryDetails = (e) => {
-        if ( state.cartItems?.size ) {
+        if ( state.productList?.size ) {
             if ( SyncStorage.get("bearer-token") ) {
                 const loginModalData = {
                     title: { text: "cartLoginTitle", params: {} },
@@ -113,21 +103,21 @@ const Cart = (props) => {
 
                 <View style={styles.items}>
                     {
-                        loading ?
-                        <OurActivityIndicator />
+                        state.loading ?
+                            <OurActivityIndicator />
                         :
-                        state.cartItems?.size === 0 && !loading ?
-                            <OurText style={styles.emptyText}
-                                translate={true}>cartEmpty</OurText>
-                        : <></>
+                            state.productList.size === 0 ?
+                                <OurText style={styles.emptyText}
+                                    translate={true}>cartEmpty</OurText>
+                            : <></>
                         
                     }
-                    <MemoedLocallyAnimatedFlatList data={Array.from(state.cartItems.values())}/>
-                    <CartTotal total={state.cartTotalPrice} />
+                    <MemoedLocallyAnimatedFlatList data={Array.from(state.productList.values())}/>
+                    <CartTotal total={state.total} />
                     <View style={styles.bottomContainer}>
                     <OurTextButton
                         translate={true}
-                        disabled={!state.cartItems.size}
+                        disabled={!state.productList.size}
                         onPress={toDeliveryDetails}
                         style={styles.checkoutButton}
                         textStyle={{color: gradEnd}}
