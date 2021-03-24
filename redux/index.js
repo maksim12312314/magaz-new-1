@@ -4,15 +4,15 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import cartReducer from "./CartReducer";
 import modalReducer from "./ModalReducer";
 import toastReducer from "./ToastReducer";
-import deliveryDetailsReducer from "./DeliveryDetailsReducer";
 import ordersReducer from "./OrdersReducer";
+import deliveryDetailsReducer from "./DeliveryDetailsReducer";
 
 const reducer = combineReducers({
     cartReducer,
     modalReducer,
     toastReducer,
-    deliveryDetailsReducer,
     ordersReducer,
+    deliveryDetailsReducer,
 });
 
 const store = createStore(reducer, applyMiddleware(thunk));
