@@ -40,7 +40,12 @@ export const AddProductToCart = (productId, productName, quantity=1, setLoading=
     setLoading(true);
 
     try {
-        const mutationId = SyncStorage.get("user-uuid") || uuidv4();
+        let mutationId = SyncStorage.get("user-uuid");
+        if ( !mutationId ) {
+            mutationId = uuidv4();
+            SyncStorage.set("user-uuid", mutationId);
+        }
+
         await client.mutate({
             mutation: MUTATION_ADD_TO_CART,
             variables: {
@@ -55,7 +60,7 @@ export const AddProductToCart = (productId, productName, quantity=1, setLoading=
             duration: 3000,
             color: "#499eda",
         };
-        dispatch(AddToast(toast, "PRODUCT_ADDED_" + productName));
+        dispatch(AddToast(toast, "PRODUCT_ADDED_" + productId));
         dispatch(FetchCartProductList);
         setLoading(false);
     } catch (e) {
