@@ -27,7 +27,7 @@ const DeliveryDetailsItem = (props) => {
 }
 
 const DeliveryDetailsCheck = (props) => {
-    const state = useSelector(state=>state);
+    const state = useSelector(state=>state.deliveryDetailsReducer);
     const dispatch = useDispatch();
     const { navigation } = props;
     const { data, isOrderMade } = props.route.params;
@@ -52,22 +52,20 @@ const DeliveryDetailsCheck = (props) => {
     const makeAnOrder = (e) => {
         const orderData = {
             deliveryDetails: {
-                name: state.deliveryDetails.name.value,
+                firstname: state.deliveryDetails.firstname.value,
+                lastname: state.deliveryDetails.lastname.value,
                 email: state.deliveryDetails.email.value,
                 phone: state.deliveryDetails.phone.value,
                 address: state.deliveryDetails.address.value,
-                floor: state.deliveryDetails.floor.value,
+                postcode: state.deliveryDetails.postcode.value,
                 notes: state.deliveryDetails.notes.value,
-                time: state.deliveryDetails.time.value,
             },
             uuid: uuidv4(),
             status:  ORDER_STATUS_TO_BE_SHIPPED,
-            products: state.cartItems,
-            totalPrice: state.cartTotalPrice,
         };
-        dispatch(MakeOrder(orderData));
-        dispatch(ClearCart());
-        dispatch(ClearDeliveryDetails());
+        //dispatch(MakeOrder(orderData));
+        //dispatch(ClearCart());
+        //dispatch(ClearDeliveryDetails());
         navigation.popToTop();
         navigation.navigate("Orders");
     };
@@ -85,7 +83,9 @@ const DeliveryDetailsCheck = (props) => {
             </View>
             <ScrollView>
                 <DeliveryDetailsItem field={"orderFormName"}
-                                     text={data.name}/>
+                                     text={data.firstname}/>
+                <DeliveryDetailsItem field={"orderFormLastName"}
+                                     text={data.lastname}/>
                 <DeliveryDetailsItem field={"orderFormEmail"}
                                      text={data.email}/>
                 <DeliveryDetailsItem field={"orderFormPhone"}

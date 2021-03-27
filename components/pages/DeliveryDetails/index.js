@@ -14,7 +14,7 @@ import OurTextField from "~/components/OurTextField";
 import styles from "./styles";
 
 const DeliveryDetails = (props) => {
-    const state = useSelector(state=>state);
+    const state = useSelector(state=>state.deliveryDetailsReducer);
     const dispatch = useDispatch();
     const { navigation } = props;
     const { t } = useTranslation();
@@ -59,13 +59,13 @@ const DeliveryDetails = (props) => {
 
     const goToDetailsCheck = (e) => {
         const deliveryDetails = {
-            name: state.deliveryDetails.name.value,
+            firstname: state.deliveryDetails.firstname.value,
+            lastname: state.deliveryDetails.lastname.value,
             email: state.deliveryDetails.email.value,
             phone: state.deliveryDetails.phone.value,
             address: state.deliveryDetails.address.value,
-            floor: state.deliveryDetails.floor.value,
+            postcode: state.deliveryDetails.postcode.value,
             notes: state.deliveryDetails.notes.value,
-            time: state.deliveryDetails.time.value,
         };
         navigation.navigate("DeliveryDetailsCheck", { data: deliveryDetails, isOrderMade: false });
     };
@@ -76,15 +76,20 @@ const DeliveryDetails = (props) => {
         <View style={styles.mainContainer}>
             <KeyboardAvoidingView style={styles.infoContainer}>
                 <ScrollView style={styles.scrollView} contentContainerStyle={styles.details}>
-                    <OurTextField name="name"
+                    <OurTextField name="firstname"
                                   autoCompleteType="name"
-                                  defValue={state.deliveryDetails.name.value}
+                                  defValue={state.deliveryDetails.firstname.value}
                                   onValidate={validateForm}
-                                  placeholder={t("orderFormName")}/>
+                                  placeholder={t("orderFormFirstName")}/>
+                    <OurTextField name="lastname"
+                                  autoCompleteType="name"
+                                  defValue={state.deliveryDetails.lastname.value}
+                                  onValidate={validateForm}
+                                  placeholder={t("orderFormLastName")}/>
                     <OurTextField name="email"
                                 keyboardType="email-address"
                                 autoCompleteType="email"
-                                defValue={state.user.email || state.deliveryDetails.email.value}
+                                defValue={state.deliveryDetails.email.value}
                                 onValidate={validateFormEmail}
                                 placeholder={t("orderFormEmail")}/>
                     <OurTextField name="phone"
@@ -98,15 +103,11 @@ const DeliveryDetails = (props) => {
                                 defValue={state.deliveryDetails.address.value}
                                 onValidate={validateForm}
                                 placeholder={t("orderFormAddress")}/>
-                    <OurTextField name="floor"
-                                keyboardType="phone-pad"
-                                defValue={state.deliveryDetails.floor.value}
+                    <OurTextField name="postcode"
+                                autoCompleteType={"postal-code"}
+                                defValue={state.deliveryDetails.postcode.value}
                                 onValidate={validateForm}
-                                placeholder={t("orderFormFloor")}/>
-                    <OurTextField name="time"
-                                defValue={state.deliveryDetails.time.value}
-                                onValidate={validateForm}
-                                placeholder={t("orderFormDeliveryTime")}/>
+                                placeholder={t("orderFormPostcode")}/>
                     <OurTextField name="notes"
                                 defValue={state.deliveryDetails.notes.value}
                                 onValidate={validateForm}
@@ -114,7 +115,7 @@ const DeliveryDetails = (props) => {
                 </ScrollView>
             </KeyboardAvoidingView>
             <View style={styles.bottomContainer}>
-                <OurTextButton disabled={!state.allDetailsAreValid} onPress={goToDetailsCheck} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
+                <OurTextButton disabled={!state.allFieldsAreValid} onPress={goToDetailsCheck} textStyle={{color: gradEnd}} translate={true}>orderInfoCheckOrder</OurTextButton>
             </View>
         </View>
         </>
