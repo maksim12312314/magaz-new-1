@@ -14,13 +14,12 @@ export const SetCartProductList = (productList=[], total=0) => {
 export const FetchCartProductList = async (dispatch) => {
     dispatch(SetCartLoading(true));
 
-    let cartData;
     try {
-        cartData = await client.query({ query: QUERY_GET_CART, fetchPolicy: "no-cache" });
+        const cartData = await client.query({ query: QUERY_GET_CART, fetchPolicy: "no-cache" });
 
         dispatch(SetCartProductList(cartData?.data?.cart?.contents?.nodes, cartData?.data?.cart?.total));
-        dispatch(SetCartLoading(false));
-    } catch {
+    } catch (e) {
+        console.log("CART FETCH ERROR", e);
         const toast = {
             icon: faShoppingBasket,
             text: i18n.t("activityError"),
@@ -29,6 +28,7 @@ export const FetchCartProductList = async (dispatch) => {
         };
         dispatch(AddToast(toast, "CART_FETCH_ERROR"));
     }
+    dispatch(SetCartLoading(false));
 };
 
 export const SetCartLoading = (loading=false) => {
