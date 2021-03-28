@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ActivityIndicator, Dimensions, Animated } from "react-native";
+import { View, Dimensions, Animated } from "react-native";
 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import { ListAnimation } from "./animation";
 import OurText from "~/components/OurText";
 import OurImage from "~/components/OurImage";
 import OurTextButton from "~/components/OurTextButton";
+import OurActivityIndicator from "~/components/OurActivityIndicator";
 import GalleryImg from "~/components/Gallery";
 import OurPicker from "~/components/OurPicker";
 import OurImageSlider from "~/components/OurImageSlider";
@@ -91,7 +92,7 @@ const ProductsItem = (props) => {
                                         onPress={(e) => buyProduct(e)}
                             >productBuy</OurTextButton>
                         :
-                        <ActivityIndicator size={48} color={"#fff"}/>
+                        <OurActivityIndicator oneState={true} size={48} color={"#fff"}/>
                     }
                     </View>
                 </View>
