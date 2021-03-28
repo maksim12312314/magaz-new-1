@@ -7,8 +7,8 @@ import OurText from "~/components/OurText";
 import styles from "./styles";
 
 const ANIMATION_DURATION = 200;
-const TOAST_HEIGHT_MIN = .00001;
-const TOAST_HEIGHT_MAX = 64;
+const TOAST_HEIGHT_MIN = 0;
+const TOAST_HEIGHT_MAX = 48;
 
 const easeInEaseOut = LayoutAnimation.create(
     ANIMATION_DURATION,
