@@ -86,12 +86,10 @@ const DeliveryDetailsCheck = (props) => {
                                      text={data.phone}/>
                 <DeliveryDetailsItem field={"orderFormAddress"}
                                      text={data.address}/>
-                <DeliveryDetailsItem field={"orderFormFloor"}
-                                     text={data.floor}/>
+                <DeliveryDetailsItem field={"orderFormPostcode"}
+                                     text={data.postcode}/>
                 <DeliveryDetailsItem field={"orderFormNotes"}
                                      text={data.notes}/>
-                <DeliveryDetailsItem field={"orderFormDeliveryTime"}
-                                     text={data.time}/>
             </ScrollView>
             {
             !isOrderMade ?
