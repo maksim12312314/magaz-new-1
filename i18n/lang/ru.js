@@ -52,6 +52,7 @@ const ru = {
         ordersTitle: "Заказы",
         ordersEmpty: "Здесь пусто(",
         
+        orderAdded: "Ваш заказ размещён!",
         orderInfoCheck: "Пожалуйста, проверьте информацию.",
         orderInfoCheckEdit: "Редактировать",
         orderInfoCheckOrder: "Оформить заказ",

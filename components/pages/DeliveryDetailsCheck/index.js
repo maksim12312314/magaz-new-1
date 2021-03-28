@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from 'uuid';
 
 import { ClearCart } from "~/redux/CartReducer/actions";
-import { MakeOrder } from "~/redux/OrdersReducer/actions";
+import { AddOrder } from "~/redux/OrdersReducer/actions";
 import { ClearDeliveryDetails } from "~/redux/DeliveryDetailsReducer/actions";
 import { ORDER_STATUS_TO_BE_SHIPPED } from "~/components/pages/Orders/orderStates";
 
@@ -51,23 +51,17 @@ const DeliveryDetailsCheck = (props) => {
 
     const makeAnOrder = (e) => {
         const orderData = {
-            deliveryDetails: {
-                firstname: state.deliveryDetails.firstname.value,
-                lastname: state.deliveryDetails.lastname.value,
-                email: state.deliveryDetails.email.value,
-                phone: state.deliveryDetails.phone.value,
-                address: state.deliveryDetails.address.value,
-                postcode: state.deliveryDetails.postcode.value,
-                notes: state.deliveryDetails.notes.value,
-            },
-            uuid: uuidv4(),
-            status:  ORDER_STATUS_TO_BE_SHIPPED,
+            firstName: state.deliveryDetails.firstname.value,
+            lastName: state.deliveryDetails.lastname.value,
+            email: state.deliveryDetails.email.value,
+            phone: state.deliveryDetails.phone.value,
+            address: state.deliveryDetails.address.value,
+            postcode: state.deliveryDetails.postcode.value,
+            notes: state.deliveryDetails.notes.value,
         };
-        //dispatch(MakeOrder(orderData));
-        //dispatch(ClearCart());
-        //dispatch(ClearDeliveryDetails());
+        dispatch(AddOrder(orderData));
         navigation.popToTop();
-        navigation.navigate("Orders");
+        //navigation.navigate("Orders");
     };
 
     return (
