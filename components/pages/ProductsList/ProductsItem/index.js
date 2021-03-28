@@ -21,7 +21,7 @@ import styles from "./styles";
 
 const totalHeight = Dimensions.get("window").height;
 const itemWidth = Dimensions.get("window").width;
-const itemHeight = totalHeight / 2;
+const itemHeight = totalHeight / 2 + 2;
 const itemHeight2 = itemHeight + 16;
 
 

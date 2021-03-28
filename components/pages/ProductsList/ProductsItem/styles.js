@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         marginHorizontal: 8,
         marginBottom: 12,
+        overflow: "hidden",
     },
 
     titleContainer: {
