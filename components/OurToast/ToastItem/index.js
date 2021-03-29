@@ -10,26 +10,16 @@ const ANIMATION_DURATION = 200;
 const TOAST_HEIGHT_MIN = 0;
 const TOAST_HEIGHT_MAX = 48;
 
-const easeInEaseOut = LayoutAnimation.create(
-    ANIMATION_DURATION,
-    LayoutAnimation.Types.easeInEaseOut,
-    LayoutAnimation.Properties.scaleY,
-);
-
 const ToastItem = (props) => {
-    const { id, duration, text, icon, color, translate } = props;
+    const { id, duration, text, icon, color, translate, postDelete } = props;
     const dispatch = useDispatch();
     const [timer, setTimer] = useState(null);
-    const [height, setHeight] = useState(TOAST_HEIGHT_MIN);
     const anim = useRef(new Animated.Value(0)).current;
     //const posX = useRef(new Animated.Value(Dimensions.get("screen").width)).current;
     
     // Анимация появления
     const animIn = () => {
-        // Анимируем высоту
-        LayoutAnimation.configureNext(easeInEaseOut);
-        setHeight(TOAST_HEIGHT_MAX);
-        
+
         // Запускаем анимацию
         Animated.timing(anim, {
             toValue: 1,
@@ -40,10 +30,6 @@ const ToastItem = (props) => {
 
     // Анимация исчезновения
     const animOut = () => {
-        // Анимируем высоту
-        LayoutAnimation.configureNext(easeInEaseOut);
-        setHeight(TOAST_HEIGHT_MIN);
-        
         // Запускаем анимацию
         Animated.timing(anim, {
             toValue: 2,
@@ -52,6 +38,8 @@ const ToastItem = (props) => {
         }).start( () => {
             // Удаляем элемент после окончания анимации
             dispatch(DeleteToast(id));
+            if ( postDelete )
+                postDelete();
         } );
     };
 
@@ -81,7 +69,7 @@ const ToastItem = (props) => {
     });
 
     return (
-        <Animated.View style={[styles.mainContainer, {height, opacity, transform: [{ translateX }] }]}>
+        <Animated.View style={[styles.mainContainer, {height: TOAST_HEIGHT_MAX, opacity, transform: [{ translateX }] }]}>
             <>
             {
                 icon ?
