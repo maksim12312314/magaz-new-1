@@ -60,7 +60,7 @@ export const AddOrder = (data) => async (dispatch) => {
             icon: faBoxOpen,
             text: i18n.t("activityError"),
             duration: 3000,
-            color: "#499eda",
+            color: "#da4949",
         };
         dispatch(AddToast(toast, "ORDER_ADD_ERROR"));
     }
