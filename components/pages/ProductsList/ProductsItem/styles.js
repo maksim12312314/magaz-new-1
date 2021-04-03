@@ -7,7 +7,11 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         overflow: "hidden",
     },
-
+    counterContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end",
+    },
     titleContainer: {
         alignItems: "center",
         justifyContent: "center",
