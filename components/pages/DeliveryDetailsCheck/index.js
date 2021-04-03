@@ -76,7 +76,7 @@ const DeliveryDetailsCheck = (props) => {
             }
             </View>
             <ScrollView>
-                <DeliveryDetailsItem field={"orderFormName"}
+                <DeliveryDetailsItem field={"orderFormFirstName"}
                                      text={data.firstname}/>
                 <DeliveryDetailsItem field={"orderFormLastName"}
                                      text={data.lastname}/>
