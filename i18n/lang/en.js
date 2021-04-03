@@ -78,6 +78,7 @@ const en = {
         productPrice: "Price: {{price}}",
         productFree: "Free",
         productBuy: "Buy",
+        productQuantity: "Quantity",
         productAddedMessage: "{{product}} added to your cart!",
         productsPickerSearch: "Search...",
 

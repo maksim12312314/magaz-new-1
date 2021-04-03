@@ -79,6 +79,7 @@ const ru = {
         productPrice: "Цена: {{price}}",
         productFree: "Бесплатно",
         productBuy: "Купить",
+        productQuantity: "Количество",
         productAddedMessage: "Товар {{product}} добавлен в вашу корзину!",
         productsPickerSearch: "Найти...",
 
