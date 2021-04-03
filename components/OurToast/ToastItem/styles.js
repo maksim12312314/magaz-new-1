@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginVertical: 4,
 
-        borderRadius: 12,
+        borderRadius: 8,
         elevation: 2,
     },
     iconContainer: {

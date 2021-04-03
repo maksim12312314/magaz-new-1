@@ -23,6 +23,7 @@ const ToastItem = (props) => {
         // Запускаем анимацию
         Animated.timing(anim, {
             toValue: 1,
+            easing: Easing.bounce,
             duration: ANIMATION_DURATION,
             useNativeDriver: true,
         }).start();
@@ -56,20 +57,21 @@ const ToastItem = (props) => {
 
     }, [duration]);
 
-    const screenWidth = Dimensions.get("screen").width;
+    const screenHeight = Dimensions.get("screen").height;
     const opacity = anim.interpolate({
-        inputRange: [0, 1, 2],
+        inputRange: [0, 1, 1.2],
         outputRange: [0, 1, 0],
         extrapolateRight: "clamp",
     });
-    const translateX = anim.interpolate({
+    const translateY = anim.interpolate({
         inputRange: [0, 1, 2],
-        outputRange: [screenWidth, 0, -screenWidth],
+        outputRange: [screenHeight, 0, -screenHeight],
         extrapolateRight: "clamp",
     });
 
     return (
-        <Animated.View style={[styles.mainContainer, {height: TOAST_HEIGHT_MAX, opacity, transform: [{ translateX }] }]}>
+        <Animated.View style={[styles.mainContainer, {height: TOAST_HEIGHT_MAX, opacity, transform: [{ translateY }] }]}>
+            <View style={{position: "absolute", backgroundColor: color, height: TOAST_HEIGHT_MAX, width: 16, left: 0}}/>
             <>
             {
                 icon ?
