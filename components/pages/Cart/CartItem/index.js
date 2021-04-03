@@ -59,7 +59,7 @@ const CartItem = (props) => {
             </View>
             <View style={styles.bottomContainer}>
                 <View style={styles.counterContainer}>
-                    <OurCounter onChange={onQuantityChange} value={quantity} color="#499eda"/>
+                    <OurCounter onChange={onQuantityChange} value={quantity} color="#E81C1C"/>
                     {/*<OurText style={[styles.itemPrice, {marginLeft: 8}]} translate={true}>productQuantity</OurText>*/}
                 </View>
                 <OurText style={styles.itemPrice} translate={true} params={{total: price}}>cartTotal</OurText>
