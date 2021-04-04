@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: 8,
     },
+    deleteButton: {
+        backgroundColor: "#fff",
+        padding: 8,
+        borderRadius: 100,
+        marginLeft: 8,
+    },
     itemName: {
         color: "#FFF",
         fontSize: 18,

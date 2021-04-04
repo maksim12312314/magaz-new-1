@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Animated, Dimensions, View, LayoutAnimation } from "react-native";
+import { useDispatch } from "react-redux";
+import { ShowModal } from "~/redux/ModalReducer/actions";
+import { Animated, View, LayoutAnimation } from "react-native";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { STORE_ADDRESS } from "~/utils/config";
 
 import OurText from "~/components/OurText";
+import OurIconButton from "~/components/OurIconButton";
 import OurImage from "~/components/OurImage";
 import OurImageSlider from "~/components/OurImageSlider";
 import OurCounter from "~/components/OurCounter";
@@ -25,8 +29,9 @@ const MAX_QUANTITY = Infinity;
 const CartItem = (props) => {
     const { productId, name, price, productQuantity, imageLink } = props;
     const [isModalVisible, setModalVisible] = useState(false);
-    const [quantity, setQuantity] = useState(productQuantity || MIN_QUANTITY)
+    const [quantity, setQuantity] = useState(productQuantity || MIN_QUANTITY);
     const opacity = useRef(new Animated.Value(1)).current;
+    const dispatch = useDispatch();
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -38,15 +43,37 @@ const CartItem = (props) => {
         setQuantity(Math.clamp(quantity, MIN_QUANTITY, MAX_QUANTITY));
     };
 
-    const onRemove = (callback) => {
-        LayoutAnimation.configureNext(linear);
-        Animated.timing(opacity, {
-            toValue: 0,
-            duration: ANIMATION_DURATION,
-            useNativeDriver: true,
-        }).start(callback);
-        //setHeight(PRODUCT_MIN_HEIGHT);
+    const onRemove = () => {
+        const modal = {
+            title: { text: "cartDeleteTitle", params: {} },
+            text: { text: "cartDeleteMessage", params: {} },
+            animationIn: "fadeInUp",
+            animationOut: "fadeOutDown",
+            buttons: [
+                {
+                    text: "cancel",
+                    textStyle: {
+                        color: "#383838",
+                    },
+                },
+                {
+                    text: "ok",
+                    onPress: (e) => {
+                        Animated.timing(opacity, {
+                            toValue: 0,
+                            duration: ANIMATION_DURATION,
+                            useNativeDriver: true,
+                        }).start(() => {
+                            // TODO
+                        });
+                    },
+                },
+            ],
+        };
+        dispatch(ShowModal(modal));
+
     };
+
     const total = price.match(/(\d{0,99})\.(\d{0,99})(\D)/);
     const newPrice = total[1] + total[3];
 
@@ -61,6 +88,7 @@ const CartItem = (props) => {
                 <View style={styles.counterContainer}>
                     <OurCounter onChange={onQuantityChange} value={quantity} color="#E81C1C"/>
                     {/*<OurText style={[styles.itemPrice, {marginLeft: 8}]} translate={true}>productQuantity</OurText>*/}
+                    <OurIconButton style={styles.deleteButton} onPress={onRemove} icon={faTrash} color="#E81C1C" />
                 </View>
                 <OurText style={styles.itemPrice} translate={true} params={{total: price}}>cartTotal</OurText>
             </View>
