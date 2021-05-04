@@ -15,9 +15,14 @@ const reducer = combineReducers({
     deliveryDetailsReducer,
 });
 
-const store = createStore(reducer, compose(
-    applyMiddleware(thunk),
-    (window && (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)()
-));
+const store = __DEV__ ? 
+            createStore(reducer, compose(
+                applyMiddleware(thunk),
+                 (window && (window).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)() 
+            ))
+            :
+            createStore(reducer, applyMiddleware(thunk) );
+
+
 
 export default store;
