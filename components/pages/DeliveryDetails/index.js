@@ -13,6 +13,8 @@ import OurTextButton from "~/components/OurTextButton";
 import OurTextField from "~/components/OurTextField";
 import styles from "./styles";
 
+import {Formik, Form, Field} from "formik"
+
 const DeliveryDetails = (props) => {
     const state = useSelector(state=>state.deliveryDetailsReducer);
     const dispatch = useDispatch();
@@ -70,48 +72,65 @@ const DeliveryDetails = (props) => {
         navigation.navigate("DeliveryDetailsCheck", { data: deliveryDetails, isOrderMade: false });
     };
 
+
+    const initialValues = {
+        firstname: "",
+        lastname: "",
+        email: "",
+        phone: "",
+        address: "",
+        postcode: "",
+        notes: ""
+    }
+
     return (
         <>
         <LinearGradient style={styles.background} locations={[0, 1.0]} colors={[gradStart, gradEnd]}/>
         <View style={styles.mainContainer}>
             <KeyboardAvoidingView style={styles.infoContainer}>
                 <ScrollView style={styles.scrollView} contentContainerStyle={styles.details}>
-                    <OurTextField name="firstname"
-                                  autoCompleteType="name"
-                                  defValue={state.deliveryDetails.firstname.value}
-                                  onValidate={validateForm}
-                                  placeholder={t("orderFormFirstName")}/>
-                    <OurTextField name="lastname"
-                                  autoCompleteType="name"
-                                  defValue={state.deliveryDetails.lastname.value}
-                                  onValidate={validateForm}
-                                  placeholder={t("orderFormLastName")}/>
-                    <OurTextField name="email"
-                                keyboardType="email-address"
-                                autoCompleteType="email"
-                                defValue={state.deliveryDetails.email.value}
-                                onValidate={validateFormEmail}
-                                placeholder={t("orderFormEmail")}/>
-                    <OurTextField name="phone"
-                                keyboardType="phone-pad"
-                                autoCompleteType="tel"
-                                defValue={state.deliveryDetails.phone.value}
-                                onValidate={validateFormPhone}
-                                placeholder={t("orderFormPhone")}/>
-                    <OurTextField name="address"
-                                autoCompleteType="street-address"
-                                defValue={state.deliveryDetails.address.value}
-                                onValidate={validateForm}
-                                placeholder={t("orderFormAddress")}/>
-                    <OurTextField name="postcode"
-                                autoCompleteType={"postal-code"}
-                                defValue={state.deliveryDetails.postcode.value}
-                                onValidate={validateForm}
-                                placeholder={t("orderFormPostcode")}/>
-                    <OurTextField name="notes"
-                                defValue={state.deliveryDetails.notes.value}
-                                onValidate={validateForm}
-                                placeholder={t("orderFormNotes")}/>
+                    <Formik
+                        initialValues = {initialValues}
+                    >
+                        <Form>
+                            <Field name="firstname"
+                                        autoCompleteType="name"
+                                        defValue={state.deliveryDetails.firstname.value}
+                                        onValidate={validateForm}
+                                        placeholder={t("orderFormFirstName")}/>
+                            <Field name="lastname"
+                                        autoCompleteType="name"
+                                        defValue={state.deliveryDetails.lastname.value}
+                                        onValidate={validateForm}
+                                        placeholder={t("orderFormLastName")}/>
+                            <Field name="email"
+                                        keyboardType="email-address"
+                                        autoCompleteType="email"
+                                        defValue={state.deliveryDetails.email.value}
+                                        onValidate={validateFormEmail}
+                                        placeholder={t("orderFormEmail")}/>
+                            <Field name="phone"
+                                        keyboardType="phone-pad"
+                                        autoCompleteType="tel"
+                                        defValue={state.deliveryDetails.phone.value}
+                                        onValidate={validateFormPhone}
+                                        placeholder={t("orderFormPhone")}/>
+                            <Field name="address"
+                                        autoCompleteType="street-address"
+                                        defValue={state.deliveryDetails.address.value}
+                                        onValidate={validateForm}
+                                        placeholder={t("orderFormAddress")}/>
+                            <Field name="postcode"
+                                        autoCompleteType={"postal-code"}
+                                        defValue={state.deliveryDetails.postcode.value}
+                                        onValidate={validateForm}
+                                        placeholder={t("orderFormPostcode")}/>
+                            <Field name="notes"
+                                        defValue={state.deliveryDetails.notes.value}
+                                        onValidate={validateForm}
+                                        placeholder={t("orderFormNotes")}/>
+                        </Form>
+                    </Formik>
                 </ScrollView>
             </KeyboardAvoidingView>
             <View style={styles.bottomContainer}>
